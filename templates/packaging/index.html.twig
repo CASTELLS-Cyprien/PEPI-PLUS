@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Packaging index{% endblock %}
+
+{% block body %}
+    <h1>Packaging index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Label</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for packaging in packagings %}
+            <tr>
+                <td>{{ packaging.id }}</td>
+                <td>{{ packaging.label }}</td>
+                <td>
+                    <a href="{{ path('app_packaging_show', {'id': packaging.id}) }}">show</a>
+                    <a href="{{ path('app_packaging_edit', {'id': packaging.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_packaging_new') }}">Create new</a>
+{% endblock %}
