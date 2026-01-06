@@ -1,25 +1,114 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        {% block title %}Pépi+ - Gestion de stock{% endblock %}
-    </title>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>
+			{% block title %}Pépi+ - Gestion de stock
+			{% endblock %}
+		</title>
 
-    {# CSS compilé via Webpack Encore #}
-    {% block stylesheets %}
-        {{ encore_entry_link_tags('app') }}
-    {% endblock %}
+		<style>:root
+		{
+			/* Couleurs charte Pépi+ */
+			--forest: #2D6A4F;
+			--olive-clair: #95B49A;
+			--menthe-clair: #D9EDd4;
+			--terre-cuite: #D97D3C;
+			--danger: #9B2D30;
+			--gris-anthracite: #333D33;
+			--gris-clair: #F5F5F5;
 
-    {# Tailwind CDN (si besoin) #}
-    <script src="https://cdn.tailwindcss.com"></script>
+			/* Quelques variables utiles bonus */
+			--shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+			--shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+			--radius-lg: 0.75rem;
+		}
 
-    {# Google Fonts #}
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet"> 
+		body {
+			font-family: 'Open Sans', system-ui, sans-serif;
+			color: var(--gris-anthracite);
+			background-color: var(--menthe-clair);
+		}
+
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			font-family: 'Montserrat', sans-serif;
+			font-weight: 600;
+		}
+
+		/* Classes utilitaires personnalisées très utilisées (facultatif) */
+		.bg-forest {
+			background-color: var(--forest);
+		}
+
+		.text-forest {
+			color: var(--forest);
+		}
+
+		.border-forest {
+			border-color: var(--forest);
+		}
+
+		.hover\:bg-forest:hover {
+			background-color: var(--forest);
+		}
+
+		.bg-olive-clair {
+			background-color: var(--olive-clair);
+		}
+
+		.text-olive-clair {
+			color: var(--olive-clair);
+		}
+
+		.bg-menthe-clair {
+			background-color: var(--menthe-clair);
+		}
+
+		.bg-danger {
+			background-color: var(--danger);
+		}
+
+		.text-danger {
+			color: var(--danger);
+		}
+
+		.card {
+			background-color: white;
+			border-radius: var(--radius-lg);
+			box-shadow: var(--shadow-md);
+			border: 1px solid color-mix(in srgb, var(--olive-clair), transparent 70%);
+		}
+	</style>
+
+	{# CSS compilé via Webpack Encore #}
+	{% block stylesheets %}
+		{{ encore_entry_link_tags('app') }}
+	{% endblock %}
+
+	{# Tailwind CDN (si besoin) #}
+	<script src="https://cdn.tailwindcss.com"></script>
+
+	{# Google Fonts #}
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body class="antialiased">
-    {% block body %}{% endblock %}
-    {% block javascripts %}{{ encore_entry_script_tags('app') }}{% endblock %}
-</body>
-</html>
+	{% if app.user %}
+		{% include 'includes/sidebar.html.twig' %}
+		{% include 'includes/header.html.twig' %}
+	{% endif %}
+
+	{% block body %}
+	
+	{% endblock %}
+
+
+	{% block javascripts %}
+		{{ encore_entry_script_tags('app') }}
+	{% endblock %}
+</body></html>

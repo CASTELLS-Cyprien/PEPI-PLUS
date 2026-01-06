@@ -1,34 +1,56 @@
+{# templates/plant/edit.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Plant{% endblock %}
+{% block title %}Modifier
+	{{ plant.commonName }}
+	| Pépi+
+{% endblock %}
 
 {% block body %}
-    <h1>Plant</h1>
+	<div
+		class="p-6 max-w-4xl mx-auto">
+		{# En-tête avec navigation #}
+		<div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+			<div>
+				<nav class="flex mb-2 text-sm text-gray-500" aria-label="Breadcrumb">
+					<a href="{{ path('app_plant_index') }}" class="hover:text-forest transition-colors">Catalogue</a>
+					<span class="mx-2">/</span>
+					<span class="font-semibold text-forest">Modification</span>
+				</nav>
+				<h1 class="text-3xl font-bold text-forest">Modifier la fiche</h1>
+				<p class="text-gray-600 mt-1">
+					Édition de :
+					<span class="font-semibold italic text-forest">{{ plant.latinName }}</span>
+				</p>
+			</div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ plant.id }}</td>
-            </tr>
-            <tr>
-                <th>LatinName</th>
-                <td>{{ plant.latinName }}</td>
-            </tr>
-            <tr>
-                <th>CommonName</th>
-                <td>{{ plant.commonName }}</td>
-            </tr>
-            <tr>
-                <th>Type</th>
-                <td>{{ plant.type }}</td>
-            </tr>
-        </tbody>
-    </table>
+			<div class="flex items-center gap-3">
+				<a href="{{ path('app_plant_show', {'id': plant.id}) }}" class="px-4 py-2 bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 rounded-lg transition font-medium flex items-center shadow-sm">
+					<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+					</svg>
+					Voir la fiche
+				</a>
+				{{ include('plant/_delete_form.html.twig') }}
+			</div>
+		</div>
 
-    <a href="{{ path('app_plant_index') }}">back to list</a>
+		{# Formulaire principal #}
+		<div class="card bg-white shadow-xl overflow-hidden border-t-4 border-forest">
+			<div class="p-8">
+				{{ include('plant/_form.html.twig', {'button_label': 'Enregistrer les modifications'}) }}
+			</div>
 
-    <a href="{{ path('app_plant_edit', {'id': plant.id}) }}">edit</a>
-
-    {{ include('plant/_delete_form.html.twig') }}
+			<div class="bg-gray-50 px-8 py-4 border-t border-gray-100 flex justify-between items-center">
+				<a href="{{ path('app_plant_index') }}" class="text-sm text-gray-500 hover:text-forest transition flex items-center">
+					<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+					</svg>
+					Retour au catalogue
+				</a>
+				<span class="text-xs text-gray-400 italic">Dernière modification de l'ID #{{ plant.id }}</span>
+			</div>
+		</div>
+	</div>
 {% endblock %}
