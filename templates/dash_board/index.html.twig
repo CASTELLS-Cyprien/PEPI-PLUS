@@ -1,107 +1,367 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+{% endblock %}
+
 {% block body %}
-    <div class="min-h-screen bg-gray-100 flex">
+	<div class="min-h-screen bg-menthe-clair font-open-sans">
+		<!-- Sidebar -->
+		<aside class="fixed inset-y-0 left-0 w-72 bg-forest text-white shadow-xl overflow-y-auto hidden lg:block z-50">
+			<div class="p-6 border-b border-white/20">
+				<h1 class="text-3xl font-bold font-montserrat tracking-tight text-white">
+					Pépi<span class="text-olive-clair">+</span>
+				</h1>
+				<p class="text-xs text-white/70 mt-1">Gestion intelligente</p>
+			</div>
 
-        <aside class="w-64 bg-slate-800 text-white flex-shrink-0 hidden md:flex flex-col">
-            <div class="p-6 text-2xl font-bold border-b border-slate-700 text-emerald-400">
-                Pépi+
-            </div>
-            <nav class="flex-1 p-4 space-y-2">
-                <a href="#" class="block py-2.5 px-4 rounded transition duration-200 bg-emerald-600 text-white">
-                    <i class="fas fa-home mr-2"></i>
-                    Dashboard
-                </a>
+			<nav class="p-5 space-y-1.5">
+				<a href="#" class="flex items-center px-4 py-3 rounded-lg bg-white/20 text-white font-medium shadow-md">
+					<svg class="w-5 h-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+					</svg>
+					Dashboard
+				</a>
 
-                {% if is_granted('ROLE_USER') %}
-                    <p class="text-xs uppercase text-slate-500 font-semibold pt-4 ml-4">
-                        Gestion
-                    </p>
-                    <a href="{{ path('app_plant_index') }}" class="block py-2.5 px-4 rounded hover:bg-slate-700 transition">
-                        <i class="fas fa-leaf mr-2"></i>
-                        Catalogue
-                    </a>
-                    <a href="{{ path('app_stock_index') }}" class="block py-2.5 px-4 rounded hover:bg-slate-700 transition">
-                        <i class="fas fa-boxes mr-2"></i>
-                        Stocks
-                    </a>
-                {% endif %}
+				<div class="pt-6 pb-2">
+					<p class="px-4 text-xs uppercase font-semibold tracking-wider text-white/60">Gestion</p>
+				</div>
 
-                {% if is_granted('ROLE_ADMIN') %}
-                    <p class="text-xs uppercase text-slate-500 font-semibold pt-4 ml-4">
-                        Administration
-                    </p>
-                    <a href="{{ path('app_user_index') }}" class="block py-2.5 px-4 rounded hover:bg-slate-700 transition">
-                        <i class="fas fa-users mr-2"></i>
-                        Utilisateurs
-                    </a>
-                {% endif %}
-            </nav>
-            <div class="p-4 border-t border-slate-700">
-                <a href="{{ path('app_logout') }}" class="text-sm text-slate-400 hover:text-white">
-                    Déconnexion
-                </a>
-            </div>
-        </aside>
+				<a href="{{ path('app_plant_index') }}" class="flex items-center px-4 py-2.5 rounded-lg hover:bg-white/10 transition text-white/90 hover:text-white">
+					<svg class="w-5 h-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+					</svg>
+					Catalogue des plants
+				</a>
 
-        <main class="flex-1">
-            <header class="bg-white shadow-sm py-4 px-8 flex justify-between items-center">
-                <h2 class="text-xl font-semibold text-gray-700">
-                    Tableau de bord
-                </h2>
-                <div class="flex items-center space-x-4">
-                    <span class="text-sm text-gray-500">
-                        {{ app.user.email }}
-                    </span>
-                    <div class="h-8 w-8 rounded-full bg-emerald-500 flex items-center justify-center text-white font-bold">
-                        {{ app.user.email|first|upper }}
-                    </div>
-                </div>
-            </header>
+				<a href="{{ path('app_stock_index') }}" class="flex items-center px-4 py-2.5 rounded-lg hover:bg-white/10 transition text-white/90 hover:text-white">
+					<svg class="w-5 h-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+					</svg>
+					Stocks (réel + virtuel)
+				</a>
 
-            <div class="p-8">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+				{% if is_granted('ROLE_ADMIN') %}
+					<div class="pt-6 pb-2">
+						<p class="px-4 text-xs uppercase font-semibold tracking-wider text-white/60">Administration</p>
+					</div>
+					<a href="{{ path('app_user_index') }}" class="flex items-center px-4 py-2.5 rounded-lg hover:bg-white/10 transition text-white/90 hover:text-white">
+						<svg class="w-5 h-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+						</svg>
+						Gestion utilisateurs
+					</a>
+				{% endif %}
+			</nav>
 
-                    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                        <div class="text-sm font-medium text-gray-500 truncate">
-                            Total Plants en Stock
-                        </div>
-                        <div class="mt-1 text-3xl font-semibold text-gray-900">
-                            1,240
-                        </div>
-                        <div class="mt-4">
-                            <span class="text-emerald-600 text-sm font-medium">
-                                Réel + Virtuel
-                            </span>
-                        </div>
-                    </div>
+			<div class="absolute bottom-0 w-full p-5 border-t border-white/20">
+				<a href="{{ path('app_logout') }}" class="flex items-center text-sm text-white/90 hover:text-white transition">
+					<svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+					</svg>
+					Déconnexion
+				</a>
+			</div>
+		</aside>
 
-                    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                        <div class="text-sm font-medium text-gray-500 truncate">
-                            Commandes à traiter
-                        </div>
-                        <div class="mt-1 text-3xl font-semibold text-emerald-600">
-                            12
-                        </div>
-                        <div class="mt-4 text-sm text-gray-600">
-                            Statut : Réservé
-                        </div>
-                    </div>
+		<!-- Main Content -->
+		<main class="lg:ml-72 min-h-screen">
+			<!-- Header -->
+			<header class="bg-gradient-to-r from-forest to-olive-clair text-white shadow-xl sticky top-0 z-40">
+				<div class="px-6 py-5 flex justify-between items-center">
+					<div>
+						<h1 class="text-2xl font-montserrat font-bold">Tableau de bord</h1>
+						<p class="text-sm opacity-90 mt-0.5">Vue d'ensemble de votre activité</p>
+					</div>
 
-                    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                        <div class="text-sm font-medium text-gray-500 truncate">
-                            Saison actuelle
-                        </div>
-                        <div class="mt-1 text-3xl font-semibold text-blue-600">
-                            2026
-                        </div>
-                        <div class="mt-4 text-sm text-gray-600 italic">
-                            Période de plantation
-                        </div>
-                    </div>
+					<div class="flex items-center space-x-4">
+						<div class="hidden sm:block text-right">
+							<p class="text-sm font-medium">{{ app.user.email }}</p>
+							<p class="text-xs opacity-75">Connecté</p>
+						</div>
+						<div class="h-12 w-12 rounded-full bg-white/20 flex items-center justify-center font-bold text-xl border-2 border-white/30 hover:bg-white/30 transition cursor-pointer">
+							{{ app.user.email|first|upper }}
+						</div>
+					</div>
+				</div>
+			</header>
 
-                </div>
-            </div>
-        </main>
-    </div>
+			<!-- Content -->
+			<div class="p-6 lg:p-10">
+				<!-- Quick Stats -->
+				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+					<!-- Stock Global -->
+					<div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-forest hover:shadow-xl transition transform hover:-translate-y-1">
+						<div class="flex items-center justify-between mb-3">
+							<div class="h-12 w-12 bg-forest/10 rounded-lg flex items-center justify-center">
+								<svg class="w-6 h-6 text-forest" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+								</svg>
+							</div>
+							<span class="text-xs bg-forest/10 text-forest px-2 py-1 rounded-full font-semibold">+12%</span>
+						</div>
+						<p class="text-sm font-medium text-gray-600 uppercase tracking-wide">Stock global</p>
+						<p class="text-4xl font-bold font-montserrat text-forest mt-2">2 847</p>
+						<p class="text-xs text-gray-500 mt-2">Plants saison 2026</p>
+					</div>
+
+					<!-- Réservations -->
+					<div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-terre-cuite hover:shadow-xl transition transform hover:-translate-y-1">
+						<div class="flex items-center justify-between mb-3">
+							<div class="h-12 w-12 bg-terre-cuite/10 rounded-lg flex items-center justify-center">
+								<svg class="w-6 h-6 text-terre-cuite" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+								</svg>
+							</div>
+							<span class="text-xs bg-terre-cuite/10 text-terre-cuite px-2 py-1 rounded-full font-semibold">En cours</span>
+						</div>
+						<p class="text-sm font-medium text-gray-600 uppercase tracking-wide">Réservations</p>
+						<p class="text-4xl font-bold font-montserrat text-terre-cuite mt-2">18</p>
+						<p class="text-xs text-gray-500 mt-2">Commandes "Réservé"</p>
+					</div>
+
+					<!-- Saison Active -->
+					<div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-olive-clair hover:shadow-xl transition transform hover:-translate-y-1">
+						<div class="flex items-center justify-between mb-3">
+							<div class="h-12 w-12 bg-olive-clair/20 rounded-lg flex items-center justify-center">
+								<svg class="w-6 h-6 text-olive-clair" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+								</svg>
+							</div>
+							<span class="text-xs bg-olive-clair/20 text-forest px-2 py-1 rounded-full font-semibold">Actif</span>
+						</div>
+						<p class="text-sm font-medium text-gray-600 uppercase tracking-wide">Saison active</p>
+						<p class="text-4xl font-bold font-montserrat text-forest mt-2">2026</p>
+						<p class="text-xs text-gray-500 mt-2">Production principale</p>
+					</div>
+
+					<!-- Alertes -->
+					<div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-danger hover:shadow-xl transition transform hover:-translate-y-1">
+						<div class="flex items-center justify-between mb-3">
+							<div class="h-12 w-12 bg-danger/10 rounded-lg flex items-center justify-center">
+								<svg class="w-6 h-6 text-danger" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+								</svg>
+							</div>
+							<span class="text-xs bg-danger/10 text-danger px-2 py-1 rounded-full font-semibold">Urgent</span>
+						</div>
+						<p class="text-sm font-medium text-gray-600 uppercase tracking-wide">Alertes stock</p>
+						<p class="text-4xl font-bold font-montserrat text-danger mt-2">7</p>
+						<p class="text-xs text-gray-500 mt-2">Essences < 10 unités</p>
+					</div>
+				</div>
+
+				<!-- Main Grid -->
+				<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+					<!-- Activité Récente (2 colonnes) -->
+					<div class="lg:col-span-2 bg-white rounded-xl shadow-lg p-6 border border-olive-clair/30">
+						<div class="flex items-center justify-between mb-6">
+							<h2 class="text-xl font-montserrat font-semibold text-forest flex items-center">
+								<svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+								</svg>
+								Activité récente
+							</h2>
+							<button class="text-sm text-forest hover:text-olive-clair font-medium">Voir tout →</button>
+						</div>
+						
+						<div class="space-y-4">
+							<!-- Item 1 -->
+							<div class="flex items-start p-4 bg-forest/5 rounded-lg hover:bg-forest/10 transition">
+								<div class="h-10 w-10 bg-forest/20 rounded-lg flex items-center justify-center flex-shrink-0">
+									<svg class="w-5 h-5 text-forest" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+									</svg>
+								</div>
+								<div class="ml-4 flex-1">
+									<p class="font-medium text-gray-900">Commande #C-2026-047</p>
+									<p class="text-sm text-gray-600">120 plants réservés par Client Verdoy</p>
+									<p class="text-xs text-gray-500 mt-1">Il y a 2 heures</p>
+								</div>
+								<span class="text-xs bg-forest text-white px-2 py-1 rounded-full font-semibold">Confirmé</span>
+							</div>
+
+							<!-- Item 2 -->
+							<div class="flex items-start p-4 bg-terre-cuite/5 rounded-lg hover:bg-terre-cuite/10 transition">
+								<div class="h-10 w-10 bg-terre-cuite/20 rounded-lg flex items-center justify-center flex-shrink-0">
+									<svg class="w-5 h-5 text-terre-cuite" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+									</svg>
+								</div>
+								<div class="ml-4 flex-1">
+									<p class="font-medium text-gray-900">Mise à jour stock</p>
+									<p class="text-sm text-gray-600">Partenaire Verdoy - Saison 2026</p>
+									<p class="text-xs text-gray-500 mt-1">Il y a 5 heures</p>
+								</div>
+								<span class="text-xs bg-terre-cuite text-white px-2 py-1 rounded-full font-semibold">Traité</span>
+							</div>
+
+							<!-- Item 3 (Alerte) -->
+							<div class="flex items-start p-4 bg-danger/5 rounded-lg hover:bg-danger/10 transition border border-danger/20">
+								<div class="h-10 w-10 bg-danger/20 rounded-lg flex items-center justify-center flex-shrink-0">
+									<svg class="w-5 h-5 text-danger" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+									</svg>
+								</div>
+								<div class="ml-4 flex-1">
+									<p class="font-medium text-danger">Alerte stock critique</p>
+									<p class="text-sm text-gray-600">Chêne pédonculé - Stock virtuel à 0</p>
+									<p class="text-xs text-gray-500 mt-1">Il y a 1 jour</p>
+								</div>
+								<span class="text-xs bg-danger text-white px-2 py-1 rounded-full font-semibold">Urgent</span>
+							</div>
+						</div>
+					</div>
+
+					<!-- Actions Rapides -->
+					<div class="bg-white rounded-xl shadow-lg p-6 border border-olive-clair/30">
+						<h2 class="text-xl font-montserrat font-semibold text-forest mb-6 flex items-center">
+							<svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+							</svg>
+							Actions rapides
+						</h2>
+						
+						<div class="space-y-3">
+							<a href="#" class="block bg-gradient-to-r from-forest to-forest/90 text-white p-4 rounded-lg hover:shadow-lg transition transform hover:-translate-y-1">
+								<div class="flex items-center">
+									<svg class="w-5 h-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+									</svg>
+									<span class="font-medium">Nouvelle commande</span>
+								</div>
+							</a>
+
+							<a href="#" class="block bg-gradient-to-r from-olive-clair to-olive-clair/90 text-white p-4 rounded-lg hover:shadow-lg transition transform hover:-translate-y-1">
+								<div class="flex items-center">
+									<svg class="w-5 h-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+									</svg>
+									<span class="font-medium">Mettre à jour stock</span>
+								</div>
+							</a>
+
+							<a href="#" class="block bg-gradient-to-r from-terre-cuite to-terre-cuite/90 text-white p-4 rounded-lg hover:shadow-lg transition transform hover:-translate-y-1">
+								<div class="flex items-center">
+									<svg class="w-5 h-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+									</svg>
+									<span class="font-medium">Voir traçabilité</span>
+								</div>
+							</a>
+
+							<a href="{{ path('app_plant_index') }}" class="block border-2 border-forest/30 text-forest p-4 rounded-lg hover:bg-forest/5 transition">
+								<div class="flex items-center">
+									<svg class="w-5 h-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+									</svg>
+									<span class="font-medium">Catalogue plants</span>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<!-- Bottom Section -->
+				<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+					<!-- Top Essences -->
+					<div class="bg-white rounded-xl shadow-lg p-6 border border-olive-clair/30">
+						<h2 class="text-xl font-montserrat font-semibold text-forest mb-6">Top 5 essences</h2>
+						<div class="space-y-4">
+							<div class="flex items-center justify-between">
+								<div class="flex items-center">
+									<div class="h-10 w-10 bg-forest/10 rounded-lg flex items-center justify-center">
+										<span class="font-bold text-forest">1</span>
+									</div>
+									<span class="ml-3 font-medium">Chêne pédonculé</span>
+								</div>
+								<span class="text-sm text-gray-600">847 plants</span>
+							</div>
+							<div class="flex items-center justify-between">
+								<div class="flex items-center">
+									<div class="h-10 w-10 bg-olive-clair/20 rounded-lg flex items-center justify-center">
+										<span class="font-bold text-forest">2</span>
+									</div>
+									<span class="ml-3 font-medium">Hêtre commun</span>
+								</div>
+								<span class="text-sm text-gray-600">623 plants</span>
+							</div>
+							<div class="flex items-center justify-between">
+								<div class="flex items-center">
+									<div class="h-10 w-10 bg-olive-clair/20 rounded-lg flex items-center justify-center">
+										<span class="font-bold text-forest">3</span>
+									</div>
+									<span class="ml-3 font-medium">Érable sycomore</span>
+								</div>
+								<span class="text-sm text-gray-600">518 plants</span>
+							</div>
+							<div class="flex items-center justify-between">
+								<div class="flex items-center">
+									<div class="h-10 w-10 bg-olive-clair/20 rounded-lg flex items-center justify-center">
+										<span class="font-bold text-gray-500">4</span>
+									</div>
+									<span class="ml-3 font-medium">Châtaignier</span>
+								</div>
+								<span class="text-sm text-gray-600">412 plants</span>
+							</div>
+							<div class="flex items-center justify-between">
+								<div class="flex items-center">
+									<div class="h-10 w-10 bg-olive-clair/20 rounded-lg flex items-center justify-center">
+										<span class="font-bold text-gray-500">5</span>
+									</div>
+									<span class="ml-3 font-medium">Frêne commun</span>
+								</div>
+								<span class="text-sm text-gray-600">347 plants</span>
+							</div>
+						</div>
+					</div>
+
+					<!-- Statistiques mensuelles -->
+					<div class="bg-white rounded-xl shadow-lg p-6 border border-olive-clair/30">
+						<h2 class="text-xl font-montserrat font-semibold text-forest mb-6">Performance mensuelle</h2>
+						<div class="space-y-5">
+							<div>
+								<div class="flex justify-between text-sm mb-2">
+									<span class="text-gray-600">Commandes traitées</span>
+									<span class="font-semibold text-forest">85%</span>
+								</div>
+								<div class="h-3 bg-gray-200 rounded-full overflow-hidden">
+									<div class="h-full bg-gradient-to-r from-forest to-olive-clair" style="width: 85%"></div>
+								</div>
+							</div>
+							<div>
+								<div class="flex justify-between text-sm mb-2">
+									<span class="text-gray-600">Taux de satisfaction</span>
+									<span class="font-semibold text-forest">92%</span>
+								</div>
+								<div class="h-3 bg-gray-200 rounded-full overflow-hidden">
+									<div class="h-full bg-gradient-to-r from-forest to-olive-clair" style="width: 92%"></div>
+								</div>
+							</div>
+							<div>
+								<div class="flex justify-between text-sm mb-2">
+									<span class="text-gray-600">Stock optimisé</span>
+									<span class="font-semibold text-terre-cuite">78%</span>
+								</div>
+								<div class="h-3 bg-gray-200 rounded-full overflow-hidden">
+									<div class="h-full bg-gradient-to-r from-terre-cuite to-olive-clair" style="width: 78%"></div>
+								</div>
+							</div>
+							<div class="mt-6 pt-6 border-t border-gray-200">
+								<div class="flex justify-between items-center">
+									<div>
+										<p class="text-sm text-gray-600">Chiffre d'affaires</p>
+										<p class="text-2xl font-bold text-forest mt-1">24 580 €</p>
+									</div>
+									<div class="text-right">
+										<span class="text-xs bg-forest/10 text-forest px-3 py-1 rounded-full font-semibold">+18% ce mois</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
 {% endblock %}

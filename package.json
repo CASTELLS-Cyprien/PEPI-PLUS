@@ -26,5 +26,23 @@
     "dependencies": {
         "@tailwindcss/postcss": "^4.1.18",
         "postcss-loader": "^8.2.0"
-    }
+    },
+    "name": "pepi-plus",
+    "version": "1.0.0",
+    "description": "",
+    "main": "webpack.config.js",
+    "directories": {
+        "test": "tests"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/CASTELLS-Cyprien/PEPI-PLUS.git"
+    },
+    "keywords": [],
+    "author": "",
+    "type": "commonjs",
+    "bugs": {
+        "url": "https://github.com/CASTELLS-Cyprien/PEPI-PLUS/issues"
+    },
+    "homepage": "https://github.com/CASTELLS-Cyprien/PEPI-PLUS#readme"
 }
