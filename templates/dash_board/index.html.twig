@@ -1,20 +1,107 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello DashBoardController!{% endblock %}
-
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <div class="min-h-screen bg-gray-100 flex">
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+        <aside class="w-64 bg-slate-800 text-white flex-shrink-0 hidden md:flex flex-col">
+            <div class="p-6 text-2xl font-bold border-b border-slate-700 text-emerald-400">
+                Pépi+
+            </div>
+            <nav class="flex-1 p-4 space-y-2">
+                <a href="#" class="block py-2.5 px-4 rounded transition duration-200 bg-emerald-600 text-white">
+                    <i class="fas fa-home mr-2"></i>
+                    Dashboard
+                </a>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/TSD TSD/Desktop/Cyprien CASTELLS/PEPI-PLUS/src/Controller/DashBoardController.php</code></li>
-        <li>Your template at <code>C:/Users/TSD TSD/Desktop/Cyprien CASTELLS/PEPI-PLUS/templates/dash_board/index.html.twig</code></li>
-    </ul>
-</div>
+                {% if is_granted('ROLE_USER') %}
+                    <p class="text-xs uppercase text-slate-500 font-semibold pt-4 ml-4">
+                        Gestion
+                    </p>
+                    <a href="{{ path('app_plant_index') }}" class="block py-2.5 px-4 rounded hover:bg-slate-700 transition">
+                        <i class="fas fa-leaf mr-2"></i>
+                        Catalogue
+                    </a>
+                    <a href="{{ path('app_stock_index') }}" class="block py-2.5 px-4 rounded hover:bg-slate-700 transition">
+                        <i class="fas fa-boxes mr-2"></i>
+                        Stocks
+                    </a>
+                {% endif %}
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <p class="text-xs uppercase text-slate-500 font-semibold pt-4 ml-4">
+                        Administration
+                    </p>
+                    <a href="{{ path('app_user_index') }}" class="block py-2.5 px-4 rounded hover:bg-slate-700 transition">
+                        <i class="fas fa-users mr-2"></i>
+                        Utilisateurs
+                    </a>
+                {% endif %}
+            </nav>
+            <div class="p-4 border-t border-slate-700">
+                <a href="{{ path('app_logout') }}" class="text-sm text-slate-400 hover:text-white">
+                    Déconnexion
+                </a>
+            </div>
+        </aside>
+
+        <main class="flex-1">
+            <header class="bg-white shadow-sm py-4 px-8 flex justify-between items-center">
+                <h2 class="text-xl font-semibold text-gray-700">
+                    Tableau de bord
+                </h2>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-500">
+                        {{ app.user.email }}
+                    </span>
+                    <div class="h-8 w-8 rounded-full bg-emerald-500 flex items-center justify-center text-white font-bold">
+                        {{ app.user.email|first|upper }}
+                    </div>
+                </div>
+            </header>
+
+            <div class="p-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                        <div class="text-sm font-medium text-gray-500 truncate">
+                            Total Plants en Stock
+                        </div>
+                        <div class="mt-1 text-3xl font-semibold text-gray-900">
+                            1,240
+                        </div>
+                        <div class="mt-4">
+                            <span class="text-emerald-600 text-sm font-medium">
+                                Réel + Virtuel
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                        <div class="text-sm font-medium text-gray-500 truncate">
+                            Commandes à traiter
+                        </div>
+                        <div class="mt-1 text-3xl font-semibold text-emerald-600">
+                            12
+                        </div>
+                        <div class="mt-4 text-sm text-gray-600">
+                            Statut : Réservé
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                        <div class="text-sm font-medium text-gray-500 truncate">
+                            Saison actuelle
+                        </div>
+                        <div class="mt-1 text-3xl font-semibold text-blue-600">
+                            2026
+                        </div>
+                        <div class="mt-4 text-sm text-gray-600 italic">
+                            Période de plantation
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
 {% endblock %}
