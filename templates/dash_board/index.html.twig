@@ -1,287 +1,308 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+{% block title %}Tableau de bord
 {% endblock %}
 
 {% block body %}
-	<div class="min-h-screen bg-menthe-clair font-open-sans">
-			<!-- Content -->
-			<div class="p-6 lg:p-10">
-				<!-- Quick Stats -->
-				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-					<!-- Stock Global -->
-					<div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-forest hover:shadow-xl transition transform hover:-translate-y-1">
-						<div class="flex items-center justify-between mb-3">
-							<div class="h-12 w-12 bg-forest/10 rounded-lg flex items-center justify-center">
-								<svg class="w-6 h-6 text-forest" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-								</svg>
-							</div>
-							<span class="text-xs bg-forest/10 text-forest px-2 py-1 rounded-full font-semibold">+12%</span>
-						</div>
-						<p class="text-sm font-medium text-gray-600 uppercase tracking-wide">Stock global</p>
-						<p class="text-4xl font-bold font-montserrat text-forest mt-2">2 847</p>
-						<p class="text-xs text-gray-500 mt-2">Plants saison 2026</p>
+	<div
+		class="min-h-screen bg-gray-100">
+		{# Header #}
+		<div class="bg-white shadow-sm border-b border-gray-200">
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+				<div class="flex items-center justify-between">
+					<div>
+						<h1 class="text-2xl font-bold text-gray-900">Tableau de bord</h1>
+						<p class="mt-1 text-sm text-gray-500">Bienvenue sur votre espace d'administration</p>
 					</div>
-
-					<!-- Réservations -->
-					<div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-terre-cuite hover:shadow-xl transition transform hover:-translate-y-1">
-						<div class="flex items-center justify-between mb-3">
-							<div class="h-12 w-12 bg-terre-cuite/10 rounded-lg flex items-center justify-center">
-								<svg class="w-6 h-6 text-terre-cuite" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-								</svg>
-							</div>
-							<span class="text-xs bg-terre-cuite/10 text-terre-cuite px-2 py-1 rounded-full font-semibold">En cours</span>
-						</div>
-						<p class="text-sm font-medium text-gray-600 uppercase tracking-wide">Réservations</p>
-						<p class="text-4xl font-bold font-montserrat text-terre-cuite mt-2">18</p>
-						<p class="text-xs text-gray-500 mt-2">Commandes "Réservé"</p>
-					</div>
-
-					<!-- Saison Active -->
-					<div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-olive-clair hover:shadow-xl transition transform hover:-translate-y-1">
-						<div class="flex items-center justify-between mb-3">
-							<div class="h-12 w-12 bg-olive-clair/20 rounded-lg flex items-center justify-center">
-								<svg class="w-6 h-6 text-olive-clair" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-								</svg>
-							</div>
-							<span class="text-xs bg-olive-clair/20 text-forest px-2 py-1 rounded-full font-semibold">Actif</span>
-						</div>
-						<p class="text-sm font-medium text-gray-600 uppercase tracking-wide">Saison active</p>
-						<p class="text-4xl font-bold font-montserrat text-forest mt-2">2026</p>
-						<p class="text-xs text-gray-500 mt-2">Production principale</p>
-					</div>
-
-					<!-- Alertes -->
-					<div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-danger hover:shadow-xl transition transform hover:-translate-y-1">
-						<div class="flex items-center justify-between mb-3">
-							<div class="h-12 w-12 bg-danger/10 rounded-lg flex items-center justify-center">
-								<svg class="w-6 h-6 text-danger" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-								</svg>
-							</div>
-							<span class="text-xs bg-danger/10 text-danger px-2 py-1 rounded-full font-semibold">Urgent</span>
-						</div>
-						<p class="text-sm font-medium text-gray-600 uppercase tracking-wide">Alertes stock</p>
-						<p class="text-4xl font-bold font-montserrat text-danger mt-2">7</p>
-						<p class="text-xs text-gray-500 mt-2">Essences < 10 unités</p>
-					</div>
-				</div>
-
-				<!-- Main Grid -->
-				<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-					<!-- Activité Récente (2 colonnes) -->
-					<div class="lg:col-span-2 bg-white rounded-xl shadow-lg p-6 border border-olive-clair/30">
-						<div class="flex items-center justify-between mb-6">
-							<h2 class="text-xl font-montserrat font-semibold text-forest flex items-center">
-								<svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-								</svg>
-								Activité récente
-							</h2>
-							<button class="text-sm text-forest hover:text-olive-clair font-medium">Voir tout →</button>
-						</div>
-						
-						<div class="space-y-4">
-							<!-- Item 1 -->
-							<div class="flex items-start p-4 bg-forest/5 rounded-lg hover:bg-forest/10 transition">
-								<div class="h-10 w-10 bg-forest/20 rounded-lg flex items-center justify-center flex-shrink-0">
-									<svg class="w-5 h-5 text-forest" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-									</svg>
-								</div>
-								<div class="ml-4 flex-1">
-									<p class="font-medium text-gray-900">Commande #C-2026-047</p>
-									<p class="text-sm text-gray-600">120 plants réservés par Client Verdoy</p>
-									<p class="text-xs text-gray-500 mt-1">Il y a 2 heures</p>
-								</div>
-								<span class="text-xs bg-forest text-white px-2 py-1 rounded-full font-semibold">Confirmé</span>
-							</div>
-
-							<!-- Item 2 -->
-							<div class="flex items-start p-4 bg-terre-cuite/5 rounded-lg hover:bg-terre-cuite/10 transition">
-								<div class="h-10 w-10 bg-terre-cuite/20 rounded-lg flex items-center justify-center flex-shrink-0">
-									<svg class="w-5 h-5 text-terre-cuite" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-									</svg>
-								</div>
-								<div class="ml-4 flex-1">
-									<p class="font-medium text-gray-900">Mise à jour stock</p>
-									<p class="text-sm text-gray-600">Partenaire Verdoy - Saison 2026</p>
-									<p class="text-xs text-gray-500 mt-1">Il y a 5 heures</p>
-								</div>
-								<span class="text-xs bg-terre-cuite text-white px-2 py-1 rounded-full font-semibold">Traité</span>
-							</div>
-
-							<!-- Item 3 (Alerte) -->
-							<div class="flex items-start p-4 bg-danger/5 rounded-lg hover:bg-danger/10 transition border border-danger/20">
-								<div class="h-10 w-10 bg-danger/20 rounded-lg flex items-center justify-center flex-shrink-0">
-									<svg class="w-5 h-5 text-danger" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-									</svg>
-								</div>
-								<div class="ml-4 flex-1">
-									<p class="font-medium text-danger">Alerte stock critique</p>
-									<p class="text-sm text-gray-600">Chêne pédonculé - Stock virtuel à 0</p>
-									<p class="text-xs text-gray-500 mt-1">Il y a 1 jour</p>
-								</div>
-								<span class="text-xs bg-danger text-white px-2 py-1 rounded-full font-semibold">Urgent</span>
-							</div>
-						</div>
-					</div>
-
-					<!-- Actions Rapides -->
-					<div class="bg-white rounded-xl shadow-lg p-6 border border-olive-clair/30">
-						<h2 class="text-xl font-montserrat font-semibold text-forest mb-6 flex items-center">
-							<svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-							</svg>
-							Actions rapides
-						</h2>
-						
-						<div class="space-y-3">
-							<a href="#" class="block bg-gradient-to-r from-forest to-forest/90 text-white p-4 rounded-lg hover:shadow-lg transition transform hover:-translate-y-1">
-								<div class="flex items-center">
-									<svg class="w-5 h-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-									</svg>
-									<span class="font-medium">Nouvelle commande</span>
-								</div>
-							</a>
-
-							<a href="#" class="block bg-gradient-to-r from-olive-clair to-olive-clair/90 text-white p-4 rounded-lg hover:shadow-lg transition transform hover:-translate-y-1">
-								<div class="flex items-center">
-									<svg class="w-5 h-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-									</svg>
-									<span class="font-medium">Mettre à jour stock</span>
-								</div>
-							</a>
-
-							<a href="#" class="block bg-gradient-to-r from-terre-cuite to-terre-cuite/90 text-white p-4 rounded-lg hover:shadow-lg transition transform hover:-translate-y-1">
-								<div class="flex items-center">
-									<svg class="w-5 h-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-									</svg>
-									<span class="font-medium">Voir traçabilité</span>
-								</div>
-							</a>
-
-							<a href="{{ path('app_plant_index') }}" class="block border-2 border-forest/30 text-forest p-4 rounded-lg hover:bg-forest/5 transition">
-								<div class="flex items-center">
-									<svg class="w-5 h-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
-									</svg>
-									<span class="font-medium">Catalogue plants</span>
-								</div>
-							</a>
-						</div>
-					</div>
-				</div>
-
-				<!-- Bottom Section -->
-				<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-					<!-- Top Essences -->
-					<div class="bg-white rounded-xl shadow-lg p-6 border border-olive-clair/30">
-						<h2 class="text-xl font-montserrat font-semibold text-forest mb-6">Top 5 essences</h2>
-						<div class="space-y-4">
-							<div class="flex items-center justify-between">
-								<div class="flex items-center">
-									<div class="h-10 w-10 bg-forest/10 rounded-lg flex items-center justify-center">
-										<span class="font-bold text-forest">1</span>
-									</div>
-									<span class="ml-3 font-medium">Chêne pédonculé</span>
-								</div>
-								<span class="text-sm text-gray-600">847 plants</span>
-							</div>
-							<div class="flex items-center justify-between">
-								<div class="flex items-center">
-									<div class="h-10 w-10 bg-olive-clair/20 rounded-lg flex items-center justify-center">
-										<span class="font-bold text-forest">2</span>
-									</div>
-									<span class="ml-3 font-medium">Hêtre commun</span>
-								</div>
-								<span class="text-sm text-gray-600">623 plants</span>
-							</div>
-							<div class="flex items-center justify-between">
-								<div class="flex items-center">
-									<div class="h-10 w-10 bg-olive-clair/20 rounded-lg flex items-center justify-center">
-										<span class="font-bold text-forest">3</span>
-									</div>
-									<span class="ml-3 font-medium">Érable sycomore</span>
-								</div>
-								<span class="text-sm text-gray-600">518 plants</span>
-							</div>
-							<div class="flex items-center justify-between">
-								<div class="flex items-center">
-									<div class="h-10 w-10 bg-olive-clair/20 rounded-lg flex items-center justify-center">
-										<span class="font-bold text-gray-500">4</span>
-									</div>
-									<span class="ml-3 font-medium">Châtaignier</span>
-								</div>
-								<span class="text-sm text-gray-600">412 plants</span>
-							</div>
-							<div class="flex items-center justify-between">
-								<div class="flex items-center">
-									<div class="h-10 w-10 bg-olive-clair/20 rounded-lg flex items-center justify-center">
-										<span class="font-bold text-gray-500">5</span>
-									</div>
-									<span class="ml-3 font-medium">Frêne commun</span>
-								</div>
-								<span class="text-sm text-gray-600">347 plants</span>
-							</div>
-						</div>
-					</div>
-
-					<!-- Statistiques mensuelles -->
-					<div class="bg-white rounded-xl shadow-lg p-6 border border-olive-clair/30">
-						<h2 class="text-xl font-montserrat font-semibold text-forest mb-6">Performance mensuelle</h2>
-						<div class="space-y-5">
-							<div>
-								<div class="flex justify-between text-sm mb-2">
-									<span class="text-gray-600">Commandes traitées</span>
-									<span class="font-semibold text-forest">85%</span>
-								</div>
-								<div class="h-3 bg-gray-200 rounded-full overflow-hidden">
-									<div class="h-full bg-gradient-to-r from-forest to-olive-clair" style="width: 85%"></div>
-								</div>
-							</div>
-							<div>
-								<div class="flex justify-between text-sm mb-2">
-									<span class="text-gray-600">Taux de satisfaction</span>
-									<span class="font-semibold text-forest">92%</span>
-								</div>
-								<div class="h-3 bg-gray-200 rounded-full overflow-hidden">
-									<div class="h-full bg-gradient-to-r from-forest to-olive-clair" style="width: 92%"></div>
-								</div>
-							</div>
-							<div>
-								<div class="flex justify-between text-sm mb-2">
-									<span class="text-gray-600">Stock optimisé</span>
-									<span class="font-semibold text-terre-cuite">78%</span>
-								</div>
-								<div class="h-3 bg-gray-200 rounded-full overflow-hidden">
-									<div class="h-full bg-gradient-to-r from-terre-cuite to-olive-clair" style="width: 78%"></div>
-								</div>
-							</div>
-							<div class="mt-6 pt-6 border-t border-gray-200">
-								<div class="flex justify-between items-center">
-									<div>
-										<p class="text-sm text-gray-600">Chiffre d'affaires</p>
-										<p class="text-2xl font-bold text-forest mt-1">24 580 €</p>
-									</div>
-									<div class="text-right">
-										<span class="text-xs bg-forest/10 text-forest px-3 py-1 rounded-full font-semibold">+18% ce mois</span>
-									</div>
-								</div>
-							</div>
+					<div class="flex items-center space-x-3">
+						<span class="text-sm text-gray-600">{{ "now"|date("d/m/Y à H:i") }}</span>
+						<div class="h-8 w-8 rounded-full bg-green-600 flex items-center justify-center text-white font-medium">
+							{{ app.user ? app.user.email|slice(0, 1)|upper : 'A' }}
 						</div>
 					</div>
 				</div>
 			</div>
-		</main>
+		</div>
+
+		{# Content #}
+		<div
+			class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+			{# Statistiques principales #}
+			<div
+				class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+				{# Card 1 - Total éléments #}
+				<div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+					<div class="p-6">
+						<div class="flex items-center">
+							<div class="flex-shrink-0">
+								<div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+									<svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+									</svg>
+								</div>
+							</div>
+							<div class="ml-5 w-0 flex-1">
+								<dl>
+									<dt class="text-sm font-medium text-gray-500 truncate">Total éléments</dt>
+									<dd class="flex items-baseline">
+										<div class="text-2xl font-semibold text-gray-900">{{ total_items ?? 0 }}</div>
+										<div class="ml-2 flex items-baseline text-sm font-semibold text-green-600">
+											<svg class="w-4 h-4 mr-0.5" fill="currentColor" viewbox="0 0 20 20">
+												<path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+											</svg>
+											12%
+										</div>
+									</dd>
+								</dl>
+							</div>
+						</div>
+					</div>
+					<div class="bg-gray-50 px-6 py-3 border-t border-gray-200">
+						<a href="{{ path('app_plant_index') }}" class="text-sm font-medium text-green-600 hover:text-green-500">
+							Voir tout →
+						</a>
+					</div>
+				</div>
+
+				{# Card 2 - Utilisateurs #}
+				<div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+					<div class="p-6">
+						<div class="flex items-center">
+							<div class="flex-shrink-0">
+								<div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+									<svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+									</svg>
+								</div>
+							</div>
+							<div class="ml-5 w-0 flex-1">
+								<dl>
+									<dt class="text-sm font-medium text-gray-500 truncate">Utilisateurs</dt>
+									<dd class="flex items-baseline">
+										<div class="text-2xl font-semibold text-gray-900">{{ total_users ?? 0 }}</div>
+										<div class="ml-2 flex items-baseline text-sm font-semibold text-green-600">
+											<svg class="w-4 h-4 mr-0.5" fill="currentColor" viewbox="0 0 20 20">
+												<path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+											</svg>
+											8%
+										</div>
+									</dd>
+								</dl>
+							</div>
+						</div>
+					</div>
+					<div class="bg-gray-50 px-6 py-3 border-t border-gray-200">
+						<a href="{{ path('app_user_index') }}" class="text-sm font-medium text-green-600 hover:text-green-500">
+							Gérer →
+						</a>
+					</div>
+				</div>
+
+				{# Card 3 - Revenus #}
+				<div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+					<div class="p-6">
+						<div class="flex items-center">
+							<div class="flex-shrink-0">
+								<div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+									<svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+									</svg>
+								</div>
+							</div>
+							<div class="ml-5 w-0 flex-1">
+								<dl>
+									<dt class="text-sm font-medium text-gray-500 truncate">Revenus du mois</dt>
+									<dd class="flex items-baseline">
+										<div class="text-2xl font-semibold text-gray-900">{{ revenue ?? '0' }}€</div>
+										<div class="ml-2 flex items-baseline text-sm font-semibold text-red-600">
+											<svg class="w-4 h-4 mr-0.5" fill="currentColor" viewbox="0 0 20 20">
+												<path fill-rule="evenodd" d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 012 0v7.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+											</svg>
+											3%
+										</div>
+									</dd>
+								</dl>
+							</div>
+						</div>
+					</div>
+					<div class="bg-gray-50 px-6 py-3 border-t border-gray-200">
+						<a href="#" class="text-sm font-medium text-green-600 hover:text-green-500">
+							Détails →
+						</a>
+					</div>
+				</div>
+
+				{# Card 4 - Taux de conversion #}
+				<div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+					<div class="p-6">
+						<div class="flex items-center">
+							<div class="flex-shrink-0">
+								<div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+									<svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+									</svg>
+								</div>
+							</div>
+							<div class="ml-5 w-0 flex-1">
+								<dl>
+									<dt class="text-sm font-medium text-gray-500 truncate">Taux de conversion</dt>
+									<dd class="flex items-baseline">
+										<div class="text-2xl font-semibold text-gray-900">{{ conversion_rate ?? '0' }}%</div>
+										<div class="ml-2 flex items-baseline text-sm font-semibold text-green-600">
+											<svg class="w-4 h-4 mr-0.5" fill="currentColor" viewbox="0 0 20 20">
+												<path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+											</svg>
+											5%
+										</div>
+									</dd>
+								</dl>
+							</div>
+						</div>
+					</div>
+					<div class="bg-gray-50 px-6 py-3 border-t border-gray-200">
+						<a href="#" class="text-sm font-medium text-green-600 hover:text-green-500">
+							Analyser →
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<div
+				class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+				{# Activité récente #}
+				<div class="lg:col-span-2">
+					<div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+						<div class="px-6 py-5 border-b border-gray-200 bg-gray-50">
+							<h3 class="text-lg font-medium text-gray-900">Activité récente</h3>
+						</div>
+						<div class="divide-y divide-gray-200">
+							{% for i in 1..5 %}
+								<div class="px-6 py-4 hover:bg-gray-50 transition-colors">
+									<div class="flex items-center space-x-4">
+										<div class="flex-shrink-0">
+											<div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+												<svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+													<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+												</svg>
+											</div>
+										</div>
+										<div class="flex-1 min-w-0">
+											<p class="text-sm font-medium text-gray-900 truncate">
+												Nouvel élément créé
+											</p>
+											<p class="text-sm text-gray-500 truncate">
+												Élément #{{ 100 + i }}
+												a été ajouté au système
+											</p>
+										</div>
+										<div class="flex-shrink-0 text-sm text-gray-500">
+											Il y a
+											{{ i }}
+											min
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+						<div class="bg-gray-50 px-6 py-3 border-t border-gray-200">
+							<a href="#" class="text-sm font-medium text-green-600 hover:text-green-500">
+								Voir toute l'activité →
+							</a>
+						</div>
+					</div>
+				</div>
+
+				{# Actions rapides #}
+				<div class="lg:col-span-1">
+					<div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-6">
+						<div class="px-6 py-5 border-b border-gray-200 bg-gray-50">
+							<h3 class="text-lg font-medium text-gray-900">Actions rapides</h3>
+						</div>
+						<div class="p-6 space-y-3">
+							<a href="{{ path('app_plant_new') }}" class="flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors group">
+								<div class="flex items-center">
+									<svg class="w-5 h-5 text-gray-400 group-hover:text-green-600 mr-3" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+									</svg>
+									<span class="text-sm font-medium text-gray-900">Créer un plant</span>
+								</div>
+								<svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+								</svg>
+							</a>
+
+							<a href="{{ path('app_stock_index') }}" class="flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors group">
+								<div class="flex items-center">
+									<svg class="w-5 h-5 text-gray-400 group-hover:text-green-600 mr-3" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+									</svg>
+									<span class="text-sm font-medium text-gray-900">Gérer les stocks</span>
+								</div>
+								<svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+								</svg>
+							</a>
+
+							<a href="#" class="flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors group">
+								<div class="flex items-center">
+									<svg class="w-5 h-5 text-gray-400 group-hover:text-green-600 mr-3" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+									</svg>
+									<span class="text-sm font-medium text-gray-900">Voir les rapports</span>
+								</div>
+								<svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+								</svg>
+							</a>
+
+							<a href="#" class="flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors group">
+								<div class="flex items-center">
+									<svg class="w-5 h-5 text-gray-400 group-hover:text-green-600 mr-3" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+									</svg>
+									<span class="text-sm font-medium text-gray-900">Paramètres</span>
+								</div>
+								<svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+								</svg>
+							</a>
+						</div>
+					</div>
+
+					{# Statistiques système #}
+					<div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+						<div class="px-6 py-5 border-b border-gray-200 bg-gray-50">
+							<h3 class="text-lg font-medium text-gray-900">Système</h3>
+						</div>
+						<div class="p-6">
+							<dl class="space-y-4">
+								<div class="flex justify-between">
+									<dt class="text-sm text-gray-500">Version</dt>
+									<dd class="text-sm font-medium text-gray-900">{{ app_version ?? '1.0.0' }}</dd>
+								</div>
+								<div class="flex justify-between">
+									<dt class="text-sm text-gray-500">Symfony</dt>
+									<dd class="text-sm font-medium text-gray-900">{{ constant('Symfony\\Component\\HttpKernel\\Kernel::VERSION') }}</dd>
+								</div>
+								<div class="flex justify-between">
+									<dt class="text-sm text-gray-500">PHP</dt>
+									<dd class="text-sm font-medium text-gray-900">{{ constant('PHP_VERSION') }}</dd>
+								</div>
+								<div class="flex justify-between">
+									<dt class="text-sm text-gray-500">Environnement</dt>
+									<dd>
+										<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ app.environment == 'prod' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+											{{ app.environment }}
+										</span>
+									</dd>
+								</div>
+							</dl>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 {% endblock %}

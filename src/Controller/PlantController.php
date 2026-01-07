@@ -14,11 +14,29 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/plant')]
 final class PlantController extends AbstractController
 {
+    /**
+     * Cette fonction gère maintenant la recherche ET la pagination
+     */
     #[Route(name: 'app_plant_index', methods: ['GET'])]
-    public function index(PlantRepository $plantRepository): Response
+    public function index(Request $request, PlantRepository $plantRepository): Response
     {
+        // 1. Gestion de la Recherche (récupère le paramètre 'q' dans l'URL)
+        $searchTerm = $request->query->get('q');
+
+        // 2. Gestion de la Pagination (page 1 par défaut, limite de 25)
+        $page = $request->query->getInt('page', 1);
+        $limit = 25;
+
+        $plants = $plantRepository->findPlantsPaginated($page, $limit, $searchTerm);
+        $totalItems = $plantRepository->countTotalPlants($searchTerm);
+        $totalPages = ceil($totalItems / $limit);
+
         return $this->render('plant/index.html.twig', [
-            'plants' => $plantRepository->findAll(),
+            'plants' => $plants,
+            'searchTerm' => $searchTerm,
+            'currentPage' => $page,
+            'totalPages' => $totalPages,
+            'totalItems' => $totalItems
         ]);
     }
 
@@ -71,7 +89,7 @@ final class PlantController extends AbstractController
     #[Route('/{id}', name: 'app_plant_delete', methods: ['POST'])]
     public function delete(Request $request, Plant $plant, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$plant->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $plant->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($plant);
             $entityManager->flush();
         }

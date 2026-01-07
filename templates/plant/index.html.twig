@@ -1,82 +1,157 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Catalogue des plants | Pépi+
+{% block title %}Liste des éléments
 {% endblock %}
 
 {% block body %}
-	<div class="p-6 bg-menthe-clair ">
-		<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-			<div>
-				<h1 class="text-3xl font-bold text-forest">Catalogue des plants</h1>
-				<p class="text-gray-600 mt-1">Gérez la liste complète de vos végétaux et leurs informations.</p>
+	<div
+		class="min-h-screen bg-gray-100">
+		{# Header #}
+		<div class="bg-white shadow-sm border-b border-gray-200">
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+				<div class="flex items-center justify-between">
+					<div>
+						<h1 class="text-2xl font-bold text-gray-900">Liste des éléments</h1>
+						<p class="mt-1 text-sm text-gray-500">Gérez vos éléments ici</p>
+					</div>
+					<a href="{{ path('app_plant_new') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">
+						<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+						</svg>
+						Créer un nouvel élément
+					</a>
+				</div>
 			</div>
-
-			<a href="{{ path('app_plant_new') }}" class="inline-flex items-center px-5 py-2.5 bg-forest hover:bg-opacity-90 text-white font-semibold rounded-lg shadow-md transition-all duration-200 ease-in-out transform hover:-translate-y-0.5">
-				<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-				</svg>
-				Ajouter un plant
-			</a>
 		</div>
 
-		<div class="card overflow-hidden border-0 shadow-lg bg-white rounded-xl">
+		{# Content #}
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+			<div
+				class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+				{# Filters/Search Bar (optionnel) #}
+				<div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+					<div class="flex items-center">
+						<div class="flex-1">
+							<div class="relative">
+								<form method="GET" action="{{ path('app_plant_index') }}" class="flex-1">
+									<div class="relative">
+										<input type="text" name="q" value="{{ searchTerm }}" placeholder="Rechercher par nom..." class="w-full sm:w-96 px-4 py-2 pl-10 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 outline-none">
+										<button type="submit" class="absolute left-3 top-2.5">
+											<svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+											</svg>
+										</button>
+									</div>
+								</form>
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+							</svg>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{# Table #}
 			<div class="overflow-x-auto">
-				<table class="w-full text-left border-collapse">
-					<thead>
-						<tr class="bg-forest text-white uppercase text-xs font-bold tracking-wider">
-							<th class="px-6 py-4">ID</th>
-							<th class="px-6 py-4">Nom Latin</th>
-							<th class="px-6 py-4">Nom Commun</th>
-							<th class="px-6 py-4 text-center">Type</th>
-							<th class="px-6 py-4 text-right">Actions</th>
+				<table class="min-w-full divide-y divide-gray-200">
+					<thead class="bg-gray-50">
+						<tr>
+							<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+								ID
+							</th>
+							<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+								Nom Latin
+							</th>
+							<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+								Nom Commun
+							</th>
+							<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+								Type
+							</th>
+							<th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+								Actions
+							</th>
 						</tr>
 					</thead>
-					<tbody class="divide-y divide-gray-100">
-						{% for plant in plants %}
-							<tr class="hover:bg-menthe-clair/30 transition-colors duration-150">
-								<td class="px-6 py-4 font-mono text-sm text-gray-500">
-									#{{ plant.id }}
+					<tbody class="bg-white divide-y divide-gray-200">
+						{% for item in plants %}
+							<tr class="hover:bg-gray-50 transition-colors">
+								<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+									{{ item.id }}
 								</td>
-								<td class="px-6 py-4 font-semibold text-forest italic">
-									{{ plant.latinName }}
+								<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+									{{ item.latinName }}
 								</td>
-								<td class="px-6 py-4 text-gray-700">
-									{{ plant.commonName }}
+								<td class="px-6 py-4 text-sm text-gray-500">
+									{{ item.commonName }}
 								</td>
-								<td class="px-6 py-4 text-center">
-									<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-olive-clair text-white">
-										{{ plant.type }}
-									</span>
+								<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+									{{ item.type }}
 								</td>
-								<td class="px-6 py-4 text-right">
-									<div class="flex justify-end gap-3">
-										<a href="{{ path('app_plant_show', {'id': plant.id}) }}" class="text-olive-clair hover:text-forest transition-colors p-1" title="Voir">
-											<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-											</svg>
-										</a>
-										<a href="{{ path('app_plant_edit', {'id': plant.id}) }}" class="text-orange-500 hover:text-terre-cuite transition-colors p-1" title="Modifier">
-											<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-											</svg>
-										</a>
-									</div>
+								<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+									<a href="{{ path('app_plant_show', {'id': item.id}) }}" class="inline-flex items-center text-green-600 hover:text-green-900">
+										<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+										</svg>
+									</a>
+									<a href="{{ path('app_plant_edit', {'id': item.id}) }}" class="inline-flex items-center text-green-600 hover:text-green-800 transition-colors">
+										<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+										</svg>
+									</a>
 								</td>
 							</tr>
 						{% else %}
 							<tr>
-								<td colspan="5" class="px-6 py-12 text-center text-gray-500 italic bg-gray-50">
-									<svg class="w-12 h-12 mx-auto text-gray-300 mb-3" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+								<td colspan="5" class="px-6 py-12 text-center text-sm text-gray-500">
+									<svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24">
 										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
 									</svg>
-									Aucun plant trouvé dans le catalogue.
+									<p class="mt-2">Aucun élément trouvé</p>
+									<p class="mt-1">
+										<a href="{{ path('app_plant_new') }}" class="text-green-600 hover:text-green-500">Créez votre premier élément</a>
+									</p>
 								</td>
 							</tr>
 						{% endfor %}
 					</tbody>
 				</table>
 			</div>
+
+			{# Pagination (optionnel) #}
+			<div class="flex items-center justify-between">
+				<div class="text-sm text-gray-700">
+					Affichage de
+					<span class="font-medium">{{ plants|length }}</span>
+					sur
+					<span class="font-medium">{{ totalItems }}</span>
+					résultats
+				</div>
+				<div
+					class="flex space-x-2">
+					{# Bouton Précédent : désactivé si on est sur la page 1 #}
+					{% if currentPage > 1 %}
+						<a href="{{ path('app_plant_index', {page: currentPage - 1, q: searchTerm}) }}" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+							Précédent
+						</a>
+					{% else %}
+						<span class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-200 rounded-md cursor-not-allowed">
+							Précédent
+						</span>
+					{% endif %}
+
+					{# Bouton Suivant : désactivé si on est à la dernière page #}
+					{% if currentPage < totalPages %}
+						<a href="{{ path('app_plant_index', {page: currentPage + 1, q: searchTerm}) }}" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+							Suivant
+						</a>
+					{% else %}
+						<span class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-200 rounded-md cursor-not-allowed">
+							Suivant
+						</span>
+					{% endif %}
+				</div>
+			</div>
 		</div>
 	</div>
-{% endblock %}
+</div>{% endblock %}
