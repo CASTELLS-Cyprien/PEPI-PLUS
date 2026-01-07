@@ -14,24 +14,35 @@
 			Tableau de bord
 		</a>
 
+		{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_COLABO') %}
+			<a href="{{ path('app_stock_index') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors
+										   {{ app.request.get('_route') == 'app_stock_index' ? 'bg-forest/10 text-forest font-bold' : 'text-slate-600 hover:bg-slate-50 hover:text-forest' }}">
+				<svg class="w-5 h-5 mr-3 {{ app.request.get('_route') == 'app_stock_index' ? 'text-forest' : 'text-slate-400 group-hover:text-forest' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+				</svg>
+				Stock Global
+			</a>
+		{% endif %}
+
 		<div class="pt-5 pb-1">
 			<p class="px-3 text-[11px] uppercase font-bold tracking-wider text-slate-400">Gestion</p>
 		</div>
+		{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_COLABO') %}
+			<a href="{{ path('app_plant_index') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') starts with 'app_plant' ? 'bg-forest/10 text-forest' : 'text-slate-600 hover:bg-slate-50 hover:text-forest' }}">
+				<svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-forest" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+				</svg>
+				Catalogue des plants
+			</a>
 
-		<a href="{{ path('app_plant_index') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') starts with 'app_plant' ? 'bg-forest/10 text-forest' : 'text-slate-600 hover:bg-slate-50 hover:text-forest' }}">
-			<svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-forest" fill="none" viewbox="0 0 24 24" stroke="currentColor">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
-			</svg>
-			Catalogue des plants
-		</a>
-
-		<a href="{{ path('app_stock_index') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') starts with 'app_stock' ? 'bg-forest/10 text-forest' : 'text-slate-600 hover:bg-slate-50 hover:text-forest' }}">
-			<svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-forest" fill="none" viewbox="0 0 24 24" stroke="currentColor">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-			</svg>
-			Stocks (réel + virtuel)
-		</a>
-
+			<a href="{{ path('app_stock_gestion_index') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors
+					       {{ app.request.get('_route') == 'app_stock_gestion_index' ? 'bg-forest/10 text-forest font-bold' : 'text-slate-600 hover:bg-slate-50 hover:text-forest' }}">
+				<svg class="w-5 h-5 mr-3 {{ app.request.get('_route') == 'app_stock_gestion_index' ? 'text-forest' : 'text-slate-400 group-hover:text-forest' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+				</svg>
+				Inventaire Interne
+			</a>
+		{% endif %}
 		{% if is_granted('ROLE_ADMIN') %}
 			<div class="pt-5 pb-1">
 				<p class="px-3 text-[11px] uppercase font-bold tracking-wider text-slate-400">Administration</p>

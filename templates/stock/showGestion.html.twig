@@ -1,36 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détails du Stock - {{ stock.plant.latinName }}
+{% block title %}Détails du Stock -
+	{{ stock.plant.latinName }}
 {% endblock %}
 
 {% block body %}
-	<div class="min-h-screen bg-gray-100">
+	<div
+		class="min-h-screen bg-gray-100">
 		{# Header #}
 		<div class="bg-white shadow-sm border-b border-gray-200">
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 				<div class="flex items-center justify-between">
 					<div class="flex items-center space-x-3">
-						<a href="{{ path('app_stock_index') }}" class="text-gray-400 hover:text-gray-600">
+						<a href="{{ path('app_stock_gestion_index') }}" class="text-gray-400 hover:text-gray-600">
 							<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
 							</svg>
 						</a>
 						<div>
 							<h1 class="text-2xl font-bold text-gray-900">Détails de l'élément de Stock</h1>
-							<p class="mt-1 text-sm text-gray-500">ID: {{ stock.id }} | {{ stock.plant.latinName }}</p>
+							<p class="mt-1 text-sm text-gray-500">ID:
+								{{ stock.id }}
+								|
+								{{ stock.plant.latinName }}</p>
 						</div>
-					</div>
-
-					<div class="flex items-center space-x-3">
-						{% if is_granted('ROLE_COLLABORATOR') and stock.partner is null %}
-							<a href="{{ path('app_stock_edit', {'id': stock.id}) }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700">
-								<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-								</svg>
-								Modifier
-							</a>
-						{% endif %}
-						{{ include('stock/_delete_form.html.twig') }}
 					</div>
 				</div>
 			</div>
@@ -43,7 +36,8 @@
 					<h3 class="text-lg leading-6 font-medium text-gray-900">Informations sur la ressource</h3>
 				</div>
 				<div class="px-4 py-5 sm:p-0">
-					<dl class="sm:divide-y sm:divide-gray-200">
+					<dl
+						class="sm:divide-y sm:divide-gray-200">
 						{# Plante #}
 						<div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
 							<dt class="text-sm font-medium text-gray-500">Plante</dt>
@@ -55,7 +49,7 @@
 
 						{# Origine #}
 						<div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-							<dt class="text-sm font-medium text-gray-500">Origine / Partenaire</dt>
+							<dt class="text-sm font-medium text-gray-500">Origine</dt>
 							<dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
 								{% if stock.partner is null %}
 									<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
@@ -99,11 +93,11 @@
 			</div>
 
 			<div class="mt-6">
-				<a href="{{ path('app_stock_index') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-500 flex items-center">
-					<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<a href="{{ path('app_stock_gestion_index') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-500 flex items-center">
+					<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewbox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
 					</svg>
-					Retour à l'inventaire global
+					Retour à l'inventaire interne
 				</a>
 			</div>
 		</div>

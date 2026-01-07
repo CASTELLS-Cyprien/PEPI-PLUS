@@ -3,13 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Packaging;
-use App\Entity\Partner;
 use App\Entity\Plant;
 use App\Entity\Season;
 use App\Entity\Stock;
-use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,27 +17,25 @@ class StockType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('quantity')
             ->add('plant', EntityType::class, [
                 'class' => Plant::class,
-                'choice_label' => 'id',
+                'choice_label' => 'commonName', // Affiche le nom commun
+                'label' => 'Plante',
             ])
             ->add('packaging', EntityType::class, [
                 'class' => Packaging::class,
-                'choice_label' => 'id',
+                'choice_label' => 'label', // Affiche le label (ex: Sachet 50g)
+                'label' => 'Conditionnement',
             ])
             ->add('season', EntityType::class, [
                 'class' => Season::class,
-                'choice_label' => 'id',
+                'choice_label' => 'year', // Affiche l'année
+                'label' => 'Saison',
             ])
-            ->add('partner', EntityType::class, [
-                'class' => Partner::class,
-                'choice_label' => 'id',
+            ->add('quantity', NumberType::class, [
+                'label' => 'Quantité',
             ])
-            ->add('updated_by', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
-            ])
+            // Partner et UpdatedBy sont supprimés pour être gérés par le contrôleur
         ;
     }
 
