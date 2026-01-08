@@ -12,9 +12,6 @@
 		{{ encore_entry_link_tags('app') }}
 	{% endblock %}
 
-	{# Tailwind CDN (si besoin) #}
-	<script src="https://cdn.tailwindcss.com"></script>
-
 	{# Google Fonts #}
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
@@ -27,11 +24,12 @@
 	{% endif %}
 
 	{# Ce conteneur "main" va maintenant gérer la marge à gauche #}
-	<main class="flex-1 {% if app.user %}lg:ml-72{% endif %} min-h-screen"> {% block body %}{% endblock %}
-		</main>
+	<main class="flex-1 {% if app.user %}lg:ml-72{% endif %} min-h-screen"> 
+		{% block body %}{% endblock %}
+	</main>
 
-		{% block javascripts %}
-			{{ encore_entry_script_tags('app') }}
-		{% endblock %}
+	{% block javascripts %}
+		{{ encore_entry_script_tags('app') }}
+	{% endblock %}
 	</body>
 </html>
