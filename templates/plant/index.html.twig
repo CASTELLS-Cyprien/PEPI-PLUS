@@ -18,7 +18,7 @@
 						<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewbox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
 						</svg>
-						Créer un nouvel élément
+						Créer un nouveau plant
 					</a>
 				</div>
 			</div>
@@ -26,29 +26,6 @@
 
 		{# Content #}
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-			<div
-				class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
-				{# Filters/Search Bar (optionnel) #}
-				<div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-					<div class="flex items-center">
-						<div class="flex-1">
-							<div class="relative">
-								<form method="GET" action="{{ path('app_plant_index') }}" class="flex-1">
-									<div class="relative">
-										<input type="text" name="q" value="{{ searchTerm }}" placeholder="Rechercher par nom..." class="w-full sm:w-96 px-4 py-2 pl-10 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 outline-none">
-										<button type="submit" class="absolute left-3 top-2.5">
-											<svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-											</svg>
-										</button>
-									</div>
-								</form>
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-							</svg>
-						</div>
-					</div>
-				</div>
-			</div>
 
 			{# Table #}
 			<div class="overflow-x-auto">
@@ -116,41 +93,6 @@
 						{% endfor %}
 					</tbody>
 				</table>
-			</div>
-
-			{# Pagination (optionnel) #}
-			<div class="flex items-center justify-between">
-				<div class="text-sm text-gray-700">
-					Affichage de
-					<span class="font-medium">{{ plants|length }}</span>
-					sur
-					<span class="font-medium">{{ totalItems }}</span>
-					résultats
-				</div>
-				<div
-					class="flex space-x-2">
-					{# Bouton Précédent : désactivé si on est sur la page 1 #}
-					{% if currentPage > 1 %}
-						<a href="{{ path('app_plant_index', {page: currentPage - 1, q: searchTerm}) }}" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
-							Précédent
-						</a>
-					{% else %}
-						<span class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-200 rounded-md cursor-not-allowed">
-							Précédent
-						</span>
-					{% endif %}
-
-					{# Bouton Suivant : désactivé si on est à la dernière page #}
-					{% if currentPage < totalPages %}
-						<a href="{{ path('app_plant_index', {page: currentPage + 1, q: searchTerm}) }}" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
-							Suivant
-						</a>
-					{% else %}
-						<span class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-200 rounded-md cursor-not-allowed">
-							Suivant
-						</span>
-					{% endif %}
-				</div>
 			</div>
 		</div>
 	</div>
