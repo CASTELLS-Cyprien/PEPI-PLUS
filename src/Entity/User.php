@@ -134,7 +134,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $data = (array) $this;
         $data["\0" . self::class . "\0password"] = hash('crc32c', $this->password);
-        
+
         return $data;
     }
 
@@ -237,6 +237,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             }
         }
 
+        return $this;
+    }
+
+    // src/Entity/User.php
+
+    #[ORM\Column]
+    private bool $mustChangePassword = false;
+
+    public function isMustChangePassword(): ?bool
+    {
+        return $this->mustChangePassword;
+    }
+
+    public function setMustChangePassword(bool $mustChangePassword): static
+    {
+        $this->mustChangePassword = $mustChangePassword;
         return $this;
     }
 }
