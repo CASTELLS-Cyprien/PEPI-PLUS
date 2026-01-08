@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Profil - Pépi+
+{% endblock %}
+
+{% block body %}
+	<div class="min-h-screen bg-gray-100/50 py-10">
+		<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+			<div class="mb-8">
+				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+					<div class="flex items-center justify-between">
+						<div>
+							<a href="{{ path('app_dashboard') }}" class="hover:text-forest">Dashboard</a>
+							<span class="mx-2">/</span>
+							<span class="text-gray-900 font-medium">Mon Profil</span>
+						</div>
+						<div class="flex items-center space-x-3">
+							<div class="h-8 w-8 rounded-full bg-green-600 flex items-center justify-center text-white font-medium">
+								{{ app.user ? app.user.email|slice(0, 1)|upper : 'A' }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% for message in app.flashes('success') %}
+				<div class="mb-6 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg flex items-center shadow-sm">
+					<svg class="w-5 h-5 mr-3 flex-shrink-0" fill="currentColor" viewbox="0 0 20 20">
+						<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+					</svg>
+					<span class="text-sm font-bold">{{ message }}</span>
+				</div>
+			{% endfor %}
+			<div
+				class="space-y-6">
+
+				{# SECTION 1 : IDENTITÉ #}
+				<div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+					<div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
+						<h3 class="text-xs font-bold uppercase tracking-widest text-gray-400">Informations Générales</h3>
+						<div class="h-10 w-10 rounded-full bg-forest text-white flex items-center justify-center font-bold">
+							{{ app.user.firstName|first|upper }}{{ app.user.lastName|first|upper }}
+						</div>
+					</div>
+
+					<div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-y-8 gap-x-12">
+						<div>
+							<p class="text-xs font-bold text-gray-400 uppercase mb-1">Prénom</p>
+							<p class="text-sm font-semibold text-gray-900 border-b border-gray-50 pb-2">{{ app.user.firstName }}</p>
+						</div>
+
+						<div>
+							<p class="text-xs font-bold text-gray-400 uppercase mb-1">Nom</p>
+							<p class="text-sm font-semibold text-gray-900 border-b border-gray-50 pb-2">{{ app.user.lastName }}</p>
+						</div>
+					</div>
+				</div>
+
+				{# SECTION 2 : COMPTE (EMAIL & SÉCURITÉ) #}
+				<div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+					<div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+						<h3 class="text-xs font-bold uppercase tracking-widest text-gray-400">Sécurité & Accès</h3>
+					</div>
+
+					<div
+						class="divide-y divide-gray-100">
+						{# Email - Lecture seule pour l'UX #}
+						<div class="p-6 flex items-center justify-between group">
+							<div class="flex items-center space-x-4">
+								<div class="p-2 bg-gray-100 rounded-lg group-hover:bg-forest/10 transition-colors">
+									<svg class="w-5 h-5 text-gray-500 group-hover:text-forest" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.206"/></svg>
+								</div>
+								<div>
+									<p class="text-sm font-bold text-gray-900">Adresse e-mail</p>
+									<p class="text-xs text-gray-500">{{ app.user.email }}</p>
+								</div>
+							</div>
+						</div>
+
+						{# Mot de passe - Action directe #}
+						<div class="p-6 flex items-center justify-between group hover:bg-gray-50/50 transition-all">
+							<div class="flex items-center space-x-4">
+								<div class="p-2 bg-gray-100 rounded-lg group-hover:bg-amber-100 transition-colors">
+									<svg class="w-5 h-5 text-gray-500 group-hover:text-amber-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+								</div>
+								<div>
+									<p class="text-sm font-bold text-gray-900">Mot de passe</p>
+									<p class="text-xs text-gray-500">Dernière mise à jour recommandée tous les 6 mois.</p>
+								</div>
+							</div>
+							<a href="{{ path('app_user_change_password') }}" class="inline-flex items-center px-4 py-2 text-sm font-bold text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 hover:border-amber-500 hover:text-amber-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-all shadow-sm">
+								<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+								Modifier
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="mt-6">
+					<a href="{{ path('app_dashboard') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-500 flex items-center">
+						<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+						</svg>
+						Retour au tableau de bord
+					</a>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+{% endblock %}

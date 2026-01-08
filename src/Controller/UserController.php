@@ -103,6 +103,7 @@ final class UserController extends AbstractController
     #[Route('/profile/change-password', name: 'app_user_change_password', methods: ['GET', 'POST'])]
     public function changePassword(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
         $form = $this->createForm(ChangePasswordType::class); // Formulaire avec juste plainPassword et confirmation
         $form->handleRequest($request);
@@ -120,5 +121,33 @@ final class UserController extends AbstractController
         }
 
         return $this->render('user/change_password.html.twig', ['form' => $form]);
+    }
+
+    #[Route('/my-account/profile', name: 'app_user_profile', methods: ['GET', 'POST'])]
+    public function profile(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if (!$user) {
+            throw $this->createAccessDeniedException('Vous devez être connecté.');
+        }
+
+        $form = $this->createForm(UserType::class, $user, [
+            'is_profile' => true,
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+            $this->addFlash('success', 'Profil mis à jour avec succès.');
+            return $this->redirectToRoute('app_user_profile');
+        }
+
+        return $this->render('user/profile.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+        ]);
     }
 }

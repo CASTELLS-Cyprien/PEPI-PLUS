@@ -15,7 +15,6 @@
 						<p class="mt-1 text-sm text-gray-500">Bienvenue sur votre espace d'administration</p>
 					</div>
 					<div class="flex items-center space-x-3">
-						<span class="text-sm text-gray-600">{{ "now"|date("d/m/Y à H:i") }}</span>
 						<div class="h-8 w-8 rounded-full bg-green-600 flex items-center justify-center text-white font-medium">
 							{{ app.user ? app.user.email|slice(0, 1)|upper : 'A' }}
 						</div>

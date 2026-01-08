@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form;
 
 use App\Entity\User;
@@ -16,40 +17,56 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class)
-            ->add('firstName', TextType::class, ['label' => 'Prénom'])
-            ->add('lastName', TextType::class, ['label' => 'Nom'])
-            ->add('roles', ChoiceType::class, [
-                'choices' => [
-                    'Administrateur' => 'ROLE_ADMIN',
-                    'Partenaire' => 'ROLE_PARTNER',
-                    'Collaborateur' => 'ROLE_COLLAB',
+            ->add('email', EmailType::class, [
+                'label' => 'Adresse e-mail',
+                'attr' => [
+                    'readonly' => $options['is_profile'], // L'utilisateur peut voir mais pas modifier
+                    'class' => $options['is_profile'] ? 'bg-gray-100 cursor-not-allowed' : '',
                 ],
-                'multiple' => true,
-                'expanded' => true,
             ])
-            ->add('isActive', CheckboxType::class, [
-                'required' => false,
+            ->add('firstName', TextType::class, [
+                'label' => 'Prénom'
             ])
-            // Champ mot de passe manuel (non lié à l'entité directement pour l'edit)
-            ->add('password', PasswordType::class, [
-                'required' => false,
-                'mapped' => false,
-                'attr' => ['placeholder' => 'Laisser vide pour ne pas modifier']
-            ])
-            // La case à cocher pour la réinitialisation
-            ->add('resetPassword', CheckboxType::class, [
-                'label' => 'Réinitialiser le mot de passe',
-                'required' => false,
-                'mapped' => false,
-            ])
-        ;
+            ->add('lastName', TextType::class, [
+                'label' => 'Nom'
+            ]);
+
+        // On affiche ces champs UNIQUEMENT si on n'est PAS sur le profil personnel
+        if (!$options['is_profile']) {
+            $builder
+                ->add('roles', ChoiceType::class, [
+                    'label' => 'Rôles / Permissions',
+                    'choices' => [
+                        'Administrateur' => 'ROLE_ADMIN',
+                        'Partenaire' => 'ROLE_PARTNER',
+                        'Collaborateur' => 'ROLE_COLLAB',
+                    ],
+                    'multiple' => true,
+                    'expanded' => true,
+                ])
+                ->add('isActive', CheckboxType::class, [
+                    'label' => 'Compte actif',
+                    'required' => false,
+                ])
+                ->add('password', PasswordType::class, [
+                    'label' => 'Définir un mot de passe',
+                    'required' => false,
+                    'mapped' => false,
+                    'attr' => ['placeholder' => 'Laisser vide pour ne pas modifier']
+                ])
+                ->add('resetPassword', CheckboxType::class, [
+                    'label' => 'Forcer la réinitialisation (Password123!)',
+                    'required' => false,
+                    'mapped' => false,
+                ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'is_profile' => false, // Par défaut, on considère que c'est pour l'admin
         ]);
     }
 }
