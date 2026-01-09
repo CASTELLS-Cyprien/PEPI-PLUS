@@ -1,23 +1,22 @@
 <aside class="fixed inset-y-0 left-0 w-72 bg-white border-r border-slate-200 flex flex-col hidden lg:flex z-50">
 	<div class="h-16 flex items-center px-6 border-b border-slate-100">
-		<h1 class="text-xl font-bold tracking-tight text-slate-800 flex items-center">
-			<span class="bg-forest text-white rounded-md px-1.5 py-0.5 mr-2 text-sm">P</span>
-			Pépi<span class="text-forest">+</span>
-		</h1>
+		<img src="{{ asset('img/logoPepiPlusSF.png') }}" alt="Logo Pépi+" style="width: 100px !important; height: auto !important;">
 	</div>
 
-	<nav class="flex-1 overflow-y-auto p-3 space-y-0.5">
-		<a href="{{ path('app_dashboard') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') == 'app_dashboard' ? 'bg-forest/10 text-forest' : 'text-slate-600 hover:bg-slate-50 hover:text-forest' }}">
-			<svg class="w-5 h-5 mr-3 {{ app.request.get('_route') == 'app_dashboard' ? 'text-forest' : 'text-slate-400 group-hover:text-forest' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+	<nav
+		class="flex-1 overflow-y-auto p-3 space-y-0.5">
+		{# Tableau de bord #}
+		<a href="{{ path('app_dashboard') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') == 'app_dashboard' ? 'bg-green-600/10 text-green-600' : 'text-slate-600 hover:bg-slate-50 hover:text-green-600' }}">
+			<svg class="w-5 h-5 mr-3 {{ app.request.get('_route') == 'app_dashboard' ? 'text-green-600' : 'text-slate-400 group-hover:text-green-600' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor">
 				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
 			</svg>
 			Tableau de bord
 		</a>
 
 		{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_COLABO') %}
-			<a href="{{ path('app_stock_index') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors
-																														   {{ app.request.get('_route') == 'app_stock_index' ? 'bg-forest/10 text-forest font-bold' : 'text-slate-600 hover:bg-slate-50 hover:text-forest' }}">
-				<svg class="w-5 h-5 mr-3 {{ app.request.get('_route') == 'app_stock_index' ? 'text-forest' : 'text-slate-400 group-hover:text-forest' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+			{# Stock Global #}
+			<a href="{{ path('app_stock_index') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') == 'app_stock_index' ? 'bg-green-600/10 text-green-600 font-bold' : 'text-slate-600 hover:bg-slate-50 hover:text-green-600' }}">
+				<svg class="w-5 h-5 mr-3 {{ app.request.get('_route') == 'app_stock_index' ? 'text-green-600' : 'text-slate-400 group-hover:text-green-600' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
 				</svg>
 				Stock Global
@@ -27,49 +26,57 @@
 		<div class="pt-5 pb-1">
 			<p class="px-3 text-[11px] uppercase font-bold tracking-wider text-slate-400">Gestion</p>
 		</div>
+
 		{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_COLABO') %}
-			<a href="{{ path('app_plant_index') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') starts with 'app_plant' ? 'bg-forest/10 text-forest' : 'text-slate-600 hover:bg-slate-50 hover:text-forest' }}">
-				<svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-forest" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+			{# Commandes #}
+			<a href="{{ path('app_order_index') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') starts with 'app_order' ? 'bg-green-600/10 text-green-600' : 'text-slate-600 hover:bg-slate-50 hover:text-green-600' }}">
+				<svg class="w-5 h-5 mr-3 {{ app.request.get('_route') starts with 'app_order' ? 'text-green-600' : 'text-slate-400 group-hover:text-green-600' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2l4-4"/>
+				</svg>
+				Commandes des plants
+			</a>
+
+			{# Catalogue Plants #}
+			<a href="{{ path('app_plant_index') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') starts with 'app_plant' ? 'bg-green-600/10 text-green-600' : 'text-slate-600 hover:bg-slate-50 hover:text-green-600' }}">
+				<svg class="w-5 h-5 mr-3 {{ app.request.get('_route') starts with 'app_plant' ? 'text-green-600' : 'text-slate-400 group-hover:text-green-600' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
 				</svg>
 				Catalogue des plants
 			</a>
 
-			<a href="{{ path('app_packaging_index') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') starts with 'app_packaging' ? 'bg-forest/10 text-forest' : 'text-slate-600 hover:bg-slate-50 hover:text-forest' }}">
-				<svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-forest" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+			{# Catalogue Conditionnements #}
+			<a href="{{ path('app_packaging_index') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') starts with 'app_packaging' ? 'bg-green-600/10 text-green-600' : 'text-slate-600 hover:bg-slate-50 hover:text-green-600' }}">
+				<svg class="w-5 h-5 mr-3 {{ app.request.get('_route') starts with 'app_packaging' ? 'text-green-600' : 'text-slate-400 group-hover:text-green-600' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
 				</svg>
 				Catalogue des conditionnements
 			</a>
 
-			<a href="{{ path('app_stock_gestion_index') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors
-																									       {{ app.request.get('_route') == 'app_stock_gestion_index' ? 'bg-forest/10 text-forest font-bold' : 'text-slate-600 hover:bg-slate-50 hover:text-forest' }}">
-				<svg class="w-5 h-5 mr-3 {{ app.request.get('_route') == 'app_stock_gestion_index' ? 'text-forest' : 'text-slate-400 group-hover:text-forest' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+			{# Inventaire Interne #}
+			<a href="{{ path('app_stock_gestion_index') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') == 'app_stock_gestion_index' ? 'bg-green-600/10 text-green-600 font-bold' : 'text-slate-600 hover:bg-slate-50 hover:text-green-600' }}">
+				<svg class="w-5 h-5 mr-3 {{ app.request.get('_route') == 'app_stock_gestion_index' ? 'text-green-600' : 'text-slate-400 group-hover:text-green-600' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
 				</svg>
 				Inventaire Interne
 			</a>
 		{% endif %}
 
-		{# Dans sidebar.html.twig #}
 		{% if is_granted('ROLE_ADMIN') %}
-
-			<a href="{{ path('app_season_index') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors
-										       {{ app.request.get('_route') starts with 'app_season' ? 'bg-slate-100 text-slate-900 font-bold' : 'text-slate-600 hover:bg-slate-50' }}">
-				<svg class="w-5 h-5 mr-3" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+			{# Saisons #}
+			<a href="{{ path('app_season_index') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') starts with 'app_season' ? 'bg-green-600/10 text-green-600' : 'text-slate-600 hover:bg-slate-50 hover:text-green-600' }}">
+				<svg class="w-5 h-5 mr-3 {{ app.request.get('_route') starts with 'app_season' ? 'text-green-600' : 'text-slate-400 group-hover:text-green-600' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
 				</svg>
 				Gestion des Saisons
 			</a>
 
-			<a href="{{ path('app_season_index') }}"/>
-		{% endif %}
-		{% if is_granted('ROLE_ADMIN') %}
 			<div class="pt-5 pb-1">
 				<p class="px-3 text-[11px] uppercase font-bold tracking-wider text-slate-400">Administration</p>
 			</div>
-			<a href="{{ path('app_user_index') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') starts with 'app_user' ? 'bg-forest/10 text-forest' : 'text-slate-600 hover:bg-slate-50 hover:text-forest' }}">
-				<svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-forest" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+
+			{# Utilisateurs #}
+			<a href="{{ path('app_user_index') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') starts with 'app_user' ? 'bg-green-600/10 text-green-600' : 'text-slate-600 hover:bg-slate-50 hover:text-green-600' }}">
+				<svg class="w-5 h-5 mr-3 {{ app.request.get('_route') starts with 'app_user' ? 'text-green-600' : 'text-slate-400 group-hover:text-green-600' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
 				</svg>
 				Utilisateurs
@@ -77,9 +84,7 @@
 		{% endif %}
 	</nav>
 
-	<div
-		class="p-4 border-t border-slate-100 bg-slate-50/50">
-		{# On entoure les infos utilisateur par un lien vers le profil #}
+	<div class="p-4 border-t border-slate-100 bg-slate-50/50">
 		<div class="flex items-center justify-between group">
 			<a href="{{ path('app_user_profile') }}" class="flex items-center space-x-3 overflow-hidden flex-1 hover:bg-slate-100 p-1 rounded-lg transition-colors mr-2">
 				<div class="h-8 w-8 rounded-full bg-green-600 flex items-center justify-center text-white font-medium">
@@ -87,11 +92,10 @@
 				</div>
 				<div class="flex flex-col truncate">
 					<span class="text-xs font-semibold text-slate-700 truncate">{{ app.user.email }}</span>
-					<span class="text-[10px] text-slate-400 uppercase tracking-tighter group-hover:text-forest">Voir mon profil</span>
+					<span class="text-[10px] text-slate-400 uppercase tracking-tighter group-hover:text-green-600">Voir mon profil</span>
 				</div>
 			</a>
 
-			{# Bouton de déconnexion #}
 			<a href="{{ path('app_logout') }}" class="p-1.5 rounded-md text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors" title="Déconnexion">
 				<svg class="w-5 h-5" fill="none" viewbox="0 0 24 24" stroke="currentColor">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
