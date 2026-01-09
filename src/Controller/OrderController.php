@@ -31,6 +31,7 @@ final class OrderController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($order);
+            $order->setCreatedAt(new \DateTime());
             $entityManager->flush();
 
             return $this->redirectToRoute('app_order_index', [], Response::HTTP_SEE_OTHER);
@@ -57,8 +58,10 @@ final class OrderController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            $order->setUpdatedBy($this->getUser());
+            $order->setUpdatedAt(new \DateTime());
 
+            $entityManager->flush();
             return $this->redirectToRoute('app_order_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -71,7 +74,7 @@ final class OrderController extends AbstractController
     #[Route('/{id}', name: 'app_order_delete', methods: ['POST'])]
     public function delete(Request $request, Order $order, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$order->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $order->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($order);
             $entityManager->flush();
         }

@@ -61,16 +61,17 @@
 									</td>
 
 									<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-semibold">
-										{{ stock.plant ? stock.plant.commonName : 'N/A' }}
+										<div class="text-sm font-medium text-gray-900">{{ stock.plant.latinName }}</div>
+										<div class="text-sm text-gray-500 italic">{{ stock.plant.commonName }}</div>
 									</td>
 
 									<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-										{{ stock.packaging ? stock.packaging.label : 'N/A' }}
+										{{ stock.packaging ? stock.packaging.label}}
 									</td>
 
 									<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
 										<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-											{{ stock.season ? stock.season.year : 'N/A' }}
+											{{ stock.season ? stock.season.year }}
 										</span>
 									</td>
 

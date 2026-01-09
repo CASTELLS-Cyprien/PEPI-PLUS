@@ -37,6 +37,10 @@ class Order
     #[ORM\Column]
     private ?\DateTimeImmutable $updated_at = null;
 
+    #[ORM\ManyToOne(inversedBy: 'userOrders')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $updated_by = null;
+
     public function __construct()
     {
         $this->orderLines = new ArrayCollection();
@@ -133,6 +137,18 @@ class Order
     public function setUpdatedAt(\DateTimeImmutable $updated_at): static
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function getUpdatedBy(): ?User
+    {
+        return $this->updated_by;
+    }
+
+    public function setUpdatedBy(?User $updated_by): static
+    {
+        $this->updated_by = $updated_by;
 
         return $this;
     }

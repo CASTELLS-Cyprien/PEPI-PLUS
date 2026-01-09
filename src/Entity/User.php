@@ -61,6 +61,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->orders = new ArrayCollection();
         $this->stocks = new ArrayCollection();
+        $this->userOrders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -245,6 +246,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private bool $mustChangePassword = false;
 
+    /**
+     * @var Collection<int, Order>
+     */
+    #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'updated_by')]
+    private Collection $userOrders;
+
     public function isMustChangePassword(): ?bool
     {
         return $this->mustChangePassword;
@@ -253,6 +260,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setMustChangePassword(bool $mustChangePassword): static
     {
         $this->mustChangePassword = $mustChangePassword;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Order>
+     */
+    public function getUserOrders(): Collection
+    {
+        return $this->userOrders;
+    }
+
+    public function addUserOrder(Order $userOrder): static
+    {
+        if (!$this->userOrders->contains($userOrder)) {
+            $this->userOrders->add($userOrder);
+            $userOrder->setUpdatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserOrder(Order $userOrder): static
+    {
+        if ($this->userOrders->removeElement($userOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($userOrder->getUpdatedBy() === $this) {
+                $userOrder->setUpdatedBy(null);
+            }
+        }
+
         return $this;
     }
 }

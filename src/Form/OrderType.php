@@ -14,7 +14,9 @@ class OrderType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('orderNumber')
+            ->add('orderNumber', null, [
+                'label' => 'Numéro de commande'
+            ])
             ->add('status')
             ->add('createdAt', null, [
                 'widget' => 'single_text'
@@ -23,6 +25,10 @@ class OrderType extends AbstractType
                 'widget' => 'single_text'
             ])
             ->add('collaborator', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'id',
+            ])
+            ->add('updatedBy', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'id',
             ])

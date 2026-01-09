@@ -35,7 +35,6 @@ class StockType extends AbstractType
             ->add('quantity', NumberType::class, [
                 'label' => 'Quantité',
             ])
-            // Partner et UpdatedBy sont supprimés pour être gérés par le contrôleur
         ;
     }
 
