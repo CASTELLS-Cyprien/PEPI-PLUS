@@ -24,10 +24,24 @@
 		{% endif %}
 
 		<div class="pt-5 pb-1">
-			<p class="px-3 text-[11px] uppercase font-bold tracking-wider text-slate-400">Gestion</p>
+			<p class="px-3 text-[11px] uppercase font-bold tracking-wider text-slate-400">GESTION</p>
 		</div>
+		{% if is_granted('ROLE_PARTNER') %}
+			<a href="{{ path('app_stock_myReservetion') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') starts with 'app_order' ? 'bg-green-600/10 text-green-600' : 'text-slate-600 hover:bg-slate-50 hover:text-green-600' }}">
+				<svg class="w-5 h-5 mr-3 {{ app.request.get('_route') starts with 'app_order' ? 'text-green-600' : 'text-slate-400 group-hover:text-green-600' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2l4-4"/>
+				</svg>
+				Mes réservations
+			</a>
 
-		{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_COLABO') %}
+			<a href="{{ path('app_stock_myStock') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') starts with 'app_order' ? 'bg-green-600/10 text-green-600' : 'text-slate-600 hover:bg-slate-50 hover:text-green-600' }}">
+				<svg class="w-5 h-5 mr-3 {{ app.request.get('_route') starts with 'app_order' ? 'text-green-600' : 'text-slate-400 group-hover:text-green-600' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2l4-4"/>
+				</svg>
+				Mon stock personnel
+			</a>
+		{% endif %}
+		{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_COLLABORATOR') %}
 			{# Commandes #}
 			<a href="{{ path('app_order_index') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') starts with 'app_order' ? 'bg-green-600/10 text-green-600' : 'text-slate-600 hover:bg-slate-50 hover:text-green-600' }}">
 				<svg class="w-5 h-5 mr-3 {{ app.request.get('_route') starts with 'app_order' ? 'text-green-600' : 'text-slate-400 group-hover:text-green-600' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor">
@@ -59,9 +73,7 @@
 				</svg>
 				Inventaire Interne
 			</a>
-		{% endif %}
 
-		{% if is_granted('ROLE_ADMIN') %}
 			{# Saisons #}
 			<a href="{{ path('app_season_index') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') starts with 'app_season' ? 'bg-green-600/10 text-green-600' : 'text-slate-600 hover:bg-slate-50 hover:text-green-600' }}">
 				<svg class="w-5 h-5 mr-3 {{ app.request.get('_route') starts with 'app_season' ? 'text-green-600' : 'text-slate-400 group-hover:text-green-600' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor">
@@ -69,7 +81,9 @@
 				</svg>
 				Gestion des Saisons
 			</a>
+		{% endif %}
 
+		{% if is_granted('ROLE_ADMIN') %}
 			<div class="pt-5 pb-1">
 				<p class="px-3 text-[11px] uppercase font-bold tracking-wider text-slate-400">Administration</p>
 			</div>

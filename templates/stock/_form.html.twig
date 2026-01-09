@@ -13,6 +13,11 @@
 					{% if child.vars.help %}
 						<p class="text-gray-500 text-xs mt-1">{{ child.vars.help }}</p>
 					{% endif %}
+					{% if child.vars.name == 'plants' %}
+						<a href="{{ path('app_plant_new') }}" class="text-sm text-green-600 hover:underline mt-1 block">
+							Modifier les plants
+						</a>
+					{% endif %}
 				</div>
 			{% endif %}
 		{% endfor %}

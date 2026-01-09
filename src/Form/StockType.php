@@ -20,7 +20,7 @@ class StockType extends AbstractType
             ->add('plant', EntityType::class, [
                 'class' => Plant::class,
                 'choice_label' => 'commonName', // Affiche le nom commun
-                'label' => 'Plante',
+                'label' => 'Plants',
             ])
             ->add('packaging', EntityType::class, [
                 'class' => Packaging::class,

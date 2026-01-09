@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Entity\User;
 use App\Entity\Plant;
 use App\Entity\Season;
 use App\Entity\Packaging;
@@ -22,6 +23,10 @@ final class StockController extends AbstractController
     #[Route('/global', name: 'app_stock_index', methods: ['GET'])]
     public function index(StockRepository $stockRepository): Response
     {
+        if ($this->isGranted('ROLE_PARTNER')) {
+            throw $this->createAccessDeniedException('Accès refusé.');
+        }
+
         return $this->render('stock/indexGlobal.html.twig', [
             'stocks' => $stockRepository->findAll(),
         ]);
@@ -30,8 +35,44 @@ final class StockController extends AbstractController
     #[Route('/gestion', name: 'app_stock_gestion_index', methods: ['GET'])]
     public function Gestionindex(StockRepository $stockRepository): Response
     {
+        if ($this->isGranted('ROLE_PARTNER')) {
+            throw $this->createAccessDeniedException('Accès refusé.');
+        }
+
         return $this->render('stock/indexGestion.html.twig', [
             'stocks' => $stockRepository->findBy(['partner' => null]),
+        ]);
+    }
+
+
+    #[Route('/my-reservation', name: 'app_stock_myReservetion', methods: ['GET'])]
+    public function myReservetionindex(StockRepository $stockRepository): Response
+    {
+        if ($this->isGranted(['ROLE_ADMIN', 'ROLE_COLLABORATOR'])) {
+            throw $this->createAccessDeniedException('Accès refusé.');
+        }
+
+        return $this->render('stock/indexMyReservetion.html.twig', [
+        ]);
+    }
+
+    #[Route('/my-stock', name: 'app_stock_myStock', methods: ['GET'])]
+    public function MyStockindex(StockRepository $stockRepository): Response
+    {
+        if ($this->isGranted(['ROLE_ADMIN', 'ROLE_COLLABORATOR'])) {
+            throw $this->createAccessDeniedException('Accès refusé.');
+        }
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $partner = $user->getPartner();
+
+        if (!$partner) {
+            throw $this->createAccessDeniedException('Aucun profil partenaire associé à ce compte.');
+        }
+
+        return $this->render('stock/indexMyStock.html.twig', [
+            'stocks' => $stockRepository->findBy(['partner' => $partner]),
         ]);
     }
 
@@ -66,6 +107,10 @@ final class StockController extends AbstractController
     #[Route('/{id}/gestion', name: 'app_stock_gestion_show', methods: ['GET'])]
     public function gestionShow(Stock $stock): Response
     {
+        if ($this->isGranted('ROLE_PARTNER')) {
+            throw $this->createAccessDeniedException('Accès refusé.');
+        }
+
         return $this->render('stock/showGestion.html.twig', [
             'stock' => $stock,
         ]);
@@ -101,5 +146,5 @@ final class StockController extends AbstractController
         return $this->redirectToRoute('app_stock_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    
+
 }
