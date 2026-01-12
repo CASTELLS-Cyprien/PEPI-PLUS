@@ -34,7 +34,6 @@
 		</div>
 
 		{# Réinitialisation rapide #}
-		{% if user.id is not null %}
 			<div class="p-4 bg-amber-50 border border-amber-200 rounded-lg flex items-start">
 				<div class="flex items-center h-5">
 					{{ form_widget(form.resetPassword, {'attr': {'class': 'h-4 w-4 text-amber-600 border-gray-300 rounded'}}) }}
@@ -44,8 +43,7 @@
 					<p class="text-amber-700 text-xs">L'utilisateur devra obligatoirement changer son mot de passe à sa prochaine connexion.</p>
 				</div>
 			</div>
-		{% endif %}
-
+			
 		{# Rôles et Statut #}
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 			<div>

@@ -45,14 +45,23 @@ final class StockController extends AbstractController
     }
 
 
-    #[Route('/my-reservation', name: 'app_stock_myReservetion', methods: ['GET'])]
-    public function myReservetionindex(StockRepository $stockRepository): Response
+    #[Route('/my-reservation', name: 'app_stock_myReservation', methods: ['GET'])]
+    public function myReservationindex(StockRepository $stockRepository): Response
     {
         if ($this->isGranted(['ROLE_ADMIN', 'ROLE_COLLABORATOR'])) {
             throw $this->createAccessDeniedException('Accès refusé.');
         }
 
-        return $this->render('stock/indexMyReservetion.html.twig', [
+        /** @var User $user */
+        $user = $this->getUser();
+        $partner = $user->getPartner();
+
+        if (!$partner) {
+            throw $this->createAccessDeniedException('Aucun profil partenaire associé à ce compte.');
+        }
+
+        return $this->render('stock/indexMyReservation.html.twig', [
+            'stocks' => $stockRepository->findBy(['partner' => $partner]),
         ]);
     }
 
@@ -96,10 +105,51 @@ final class StockController extends AbstractController
         ]);
     }
 
+
+    #[Route('/my-stock/new', name: 'app_stock_newMyStock', methods: ['GET', 'POST'])]
+    public function newMyStock(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $stock = new Stock();
+        $form = $this->createForm(StockType::class, $stock);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($stock);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_stock_myStock', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('stock/newMyStock.html.twig', [
+            'stock' => $stock,
+            'form' => $form,
+        ]);
+    }
+
     #[Route('/{id}', name: 'app_stock_show', methods: ['GET'])]
     public function show(Stock $stock): Response
     {
         return $this->render('stock/show.html.twig', [
+            'stock' => $stock,
+        ]);
+    }
+
+    #[Route('/my-stock/{id}/show', name: 'app_stock_showPartner', methods: ['GET'])]
+    public function showPartner(Stock $stock): Response
+    {
+        //Limiter l'accès aux partenaires seulement si ce n'est pas leur stock
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if (
+            $this->isGranted('ROLE_PARTNER') &&
+            $stock->getPartner() !== $user->getPartner()
+        ) {
+            return $this->redirectToRoute('app_stock_myStock', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('stock/showPartner.html.twig', [
             'stock' => $stock,
         ]);
     }
@@ -130,6 +180,24 @@ final class StockController extends AbstractController
         }
 
         return $this->render('stock/edit.html.twig', [
+            'stock' => $stock,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/my-stock/{id}/edit', name: 'app_stock_editMyStock', methods: ['GET', 'POST'])]
+    public function editMyStock(Request $request, Stock $stock, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(StockType::class, $stock);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_stock_myStock', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('stock/editMyStock.html.twig', [
             'stock' => $stock,
             'form' => $form,
         ]);

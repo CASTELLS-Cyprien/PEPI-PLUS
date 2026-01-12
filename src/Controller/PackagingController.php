@@ -42,6 +42,26 @@ final class PackagingController extends AbstractController
         ]);
     }
 
+    #[Route('/my-stock/new', name: 'app_packaging_newPartner', methods: ['GET', 'POST'])]
+    public function newPartner(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $packaging = new Packaging();
+        $form = $this->createForm(PackagingType::class, $packaging);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($packaging);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_stock_newMyStock', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('packaging/newPartner.html.twig', [
+            'packaging' => $packaging,
+            'form' => $form,
+        ]);
+    }
+
     #[Route('/{id}', name: 'app_packaging_show', methods: ['GET'])]
     public function show(Packaging $packaging): Response
     {
@@ -71,7 +91,7 @@ final class PackagingController extends AbstractController
     #[Route('/{id}', name: 'app_packaging_delete', methods: ['POST'])]
     public function delete(Request $request, Packaging $packaging, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$packaging->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $packaging->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($packaging);
             $entityManager->flush();
         }

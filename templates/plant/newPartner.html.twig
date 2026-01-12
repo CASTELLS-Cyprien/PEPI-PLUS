@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier l'élément
+{% block title %}Créer un nouvel élément
 {% endblock %}
 
 {% block body %}
@@ -43,8 +43,8 @@
 				</div>
 			{% endfor %}
 
-			{{ include('stock/_form.html.twig', {
-            button_label: 'Mettre à jour',
+			{{ include('plant/_formMyStock.html.twig', {
+            button_label: 'Créer',
         }) }}
 		</div>
 	</div>

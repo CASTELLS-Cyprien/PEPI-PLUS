@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier l'élément
+{% block title %}Créer un nouvel conditionnements
 {% endblock %}
 
 {% block body %}
@@ -10,7 +10,7 @@
 		<div class="bg-white shadow-sm border-b border-gray-200">
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 				<div class="flex items-center space-x-3">
-					<a href="{{ path('app_stock_myStock') }}" class="text-gray-400 hover:text-gray-600">
+					<a href="{{ path('app_stock_newMyStock') }}" class="text-gray-400 hover:text-gray-600">
 						<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
 						</svg>
@@ -43,8 +43,8 @@
 				</div>
 			{% endfor %}
 
-			{{ include('stock/_form.html.twig', {
-            button_label: 'Mettre à jour',
+			{{ include('packaging/_formPartner.html.twig', {
+            button_label: 'Créer',
         }) }}
 		</div>
 	</div>

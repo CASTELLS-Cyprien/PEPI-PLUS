@@ -42,6 +42,26 @@ final class SeasonController extends AbstractController
         ]);
     }
 
+    #[Route('/my-stock/new', name: 'app_season_newPartner', methods: ['GET', 'POST'])]
+    public function newPartner(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $season = new Season();
+        $form = $this->createForm(SeasonType::class, $season);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($season);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_stock_newMyStock', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('season/newPartner.html.twig', [
+            'season' => $season,
+            'form' => $form,
+        ]);
+    }
+
     #[Route('/{id}', name: 'app_season_show', methods: ['GET'])]
     public function show(Season $season): Response
     {
@@ -71,7 +91,7 @@ final class SeasonController extends AbstractController
     #[Route('/{id}', name: 'app_season_delete', methods: ['POST'])]
     public function delete(Request $request, Season $season, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$season->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $season->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($season);
             $entityManager->flush();
         }

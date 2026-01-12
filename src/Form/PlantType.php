@@ -12,9 +12,15 @@ class PlantType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('latinName')
-            ->add('commonName')
-            ->add('type')
+            ->add('latinName', null, [
+                'label'=> 'Nom Latin',
+            ])
+            ->add('commonName', null, [
+                'label'=> 'Nom commun',
+            ])
+            ->add('type', null, [
+                'label'=> 'Type',
+            ])
         ;
     }
 

@@ -60,6 +60,26 @@ final class PlantController extends AbstractController
         ]);
     }
 
+    #[Route('/my-stock/new', name: 'app_plant_newPartner', methods: ['GET', 'POST'])]
+    public function newPartner(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $plant = new Plant();
+        $form = $this->createForm(PlantType::class, $plant);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($plant);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_stock_myStock', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('plant/newPartner.html.twig', [
+            'plant' => $plant,
+            'form' => $form,
+        ]);
+    }
+
     #[Route('/{id}', name: 'app_plant_show', methods: ['GET'])]
     public function show(Plant $plant): Response
     {
