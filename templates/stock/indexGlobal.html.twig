@@ -1,89 +1,114 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Inventaire des Stocks Global
+{% block title %}
+	Inventaire des Stocks Global
 {% endblock %}
 
 {% block body %}
-	<div
-		class="min-h-screen bg-gray-100">
+	<div	class="min-h-screen bg-gray-100">
 		{# Header #}
-		<div class="bg-white shadow-sm border-b border-gray-200">
-			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-				<div class="flex items-center justify-between">
+		<div	class="bg-white shadow-sm border-b border-gray-200">
+			<div	class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+				<div	class="flex items-center justify-between">
 					<div>
-						<h1 class="text-2xl font-bold text-gray-900">État du Stock Global</h1>
-						<p class="mt-1 text-sm text-gray-500">Vue consolidée : Production interne et Partenaires</p>
+						<h1	class="text-2xl font-bold text-gray-900">
+							État du Stock Global
+						</h1>
+						<p	class="mt-1 text-sm text-gray-500">
+							Vue consolidée : Production interne et Partenaires
+						</p>
 					</div>
 				</div>
 			</div>
 		</div>
 
 		{# Content #}
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-			<div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200">
-				<div class="overflow-x-auto">
-					<table class="min-w-full divide-y divide-gray-200">
-						<thead class="bg-gray-50">
+		<div	class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+			<div	class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200">
+				<div	class="overflow-x-auto">
+					<table	class="min-w-full divide-y divide-gray-200">
+						<thead	class="bg-gray-50">
 							<tr>
-								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Id</th>
-								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Plant (Nom Latin / Commun)</th>
-								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Origine</th>
-								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Saison</th>
-								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Conditionnement</th>
-								<th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Quantité</th>
-								<th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+								<th	class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+									Id
+								</th>
+								<th	class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+									Plant (Nom Latin / Commun)
+								</th>
+								<th	class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+									Origine
+								</th>
+								<th	class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+									Saison
+								</th>
+								<th	class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+									Conditionnement
+								</th>
+								<th	class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+									Quantité
+								</th>
+								<th	class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+									Actions
+								</th>
 							</tr>
 						</thead>
-						<tbody class="bg-white divide-y divide-gray-200">
+						<tbody	class="bg-white divide-y divide-gray-200">
 							{% for stock in stocks %}
-								<tr class="hover:bg-gray-50 transition-colors">
-									<td class="px-6 py-4 whitespace-nowrap">
-										<div class="text-sm font-medium text-gray-900">{{ stock.id }}</div>
+								<tr	class="hover:bg-gray-50 transition-colors">
+									<td	class="px-6 py-4 whitespace-nowrap">
+										<div	class="text-sm font-medium text-gray-900">
+											{{ stock.id }}
+										</div>
 									</td>
-									<td class="px-6 py-4 whitespace-nowrap">
-										<div class="text-sm font-medium text-gray-900">{{ stock.plant.latinName }}</div>
-										<div class="text-sm text-gray-500 italic">{{ stock.plant.commonName }}</div>
+									<td	class="px-6 py-4 whitespace-nowrap">
+										<div	class="text-sm font-medium text-gray-900">
+											{{ stock.plant.latinName }}
+										</div>
+										<div	class="text-sm text-gray-500 italic">
+											{{ stock.plant.commonName }}
+										</div>
 									</td>
-									<td class="px-6 py-4 whitespace-nowrap">
+									<td	class="px-6 py-4 whitespace-nowrap">
 										{% if stock.partner is null %}
-											<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+											<span	class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
 												Stock Réel (Pépi+)
 											</span>
 										{% else %}
-											<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
+											<span	class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
 												{{ stock.partner.companyName }}
 											</span>
 										{% endif %}
 									</td>
-									<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+									<td	class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
 										{{ stock.season.year }}
 									</td>
-									<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+									<td	class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
 										{{ stock.packaging.label|default('N/A') }}
 									</td>
-									<td class="px-6 py-4 whitespace-nowrap text-center">
-										<span class="text-sm font-bold {% if stock.quantity < 10 %}text-red-600{% else %}text-gray-900{% endif %}">
+									<td	class="px-6 py-4 whitespace-nowrap text-center">
+										<span	class="text-sm font-bold {% if stock.quantity < 10 %}text-red-600{% else %}text-gray-900{% endif %}">
 											{{ stock.quantity }}
 										</span>
 									</td>
-									<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-										<div class="flex justify-end space-x-3">
-											<a href="{{ path('app_stock_show', {'id': stock.id}) }}" class="text-green-600 hover:text-green-900">
-												<svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-													<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-													<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-												</svg>
+									<td	class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+										<div	class="flex justify-end space-x-3">
+											<a	href="{{ path('app_stock_show', {'id': stock.id}) }}"	class="text-green-600 hover:text-green-900">
+												<twig:ux:icon	name="mingcute:eye-line"	class="w-5 h-5" />
 											</a>
 											{% if is_granted('ROLE_COLLABORATOR') and stock.partner is null %}
-												<a href="{{ path('app_stock_edit', {'id': stock.id}) }}" class="text-green-600 hover:text-green-900">Éditer</a>
+												<a	href="{{ path('app_stock_edit', {'id': stock.id}) }}"	class="text-green-600 hover:text-green-900">
+													Éditer
+												</a>
 											{% endif %}
 										</div>
 									</td>
 								</tr>
 							{% else %}
 								<tr>
-									<td colspan="6" class="px-6 py-10 text-center text-gray-500">
-										<p class="mt-2">Aucun stock répertorié (Réel ou Virtuel)</p>
+									<td	colspan="6"	class="px-6 py-10 text-center text-gray-500">
+										<p	class="mt-2">
+											Aucun stock répertorié (Réel ou Virtuel)
+										</p>
 									</td>
 								</tr>
 							{% endfor %}

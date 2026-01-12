@@ -24,7 +24,7 @@
 		</div>
 		{% if is_granted('ROLE_PARTNER') %}
 			<a href="{{ path('app_stock_myReservation') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') == 'app_stock_myReservation' ? 'bg-green-600/10 text-green-600' : 'text-slate-600 hover:bg-slate-50 hover:text-green-600' }}">
-				<twig:ux:icon name="iconoir:box" class="w-5 h-5 mr-3 {{ app.request.get('_route') == 'app_stock_myReservation' ? 'text-green-600' : 'text-slate-400 group-hover:text-green-600' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor"/>
+				<twig:ux:icon name="iconoir:delivery-truck" class="w-5 h-5 mr-3 {{ app.request.get('_route') == 'app_stock_myReservation' ? 'text-green-600' : 'text-slate-400 group-hover:text-green-600' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor"/>
 				Mes réservations
 			</a>
 
@@ -72,7 +72,7 @@
 
 			{# Utilisateurs #}
 			<a href="{{ path('app_user_index') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') starts with 'app_user' ? 'bg-green-600/10 text-green-600' : 'text-slate-600 hover:bg-slate-50 hover:text-green-600' }}">
-				<twig:ux:icon name="iconoir:user" class="w-5 h-5 mr-3 {{ app.request.get('_route') == 'app_order_index' ? 'text-green-600' : 'text-slate-400 group-hover:text-green-600' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor"/>
+				<twig:ux:icon name="iconoir:user" class="w-5 h-5 mr-3 {{ app.request.get('_route') == 'app_user_index' ? 'text-green-600' : 'text-slate-400 group-hover:text-green-600' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor"/>
 				Utilisateurs
 			</a>
 		{% endif %}
@@ -91,9 +91,7 @@
 			</a>
 
 			<a href="{{ path('app_logout') }}" class="p-1.5 rounded-md text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors" title="Déconnexion">
-				<svg class="w-5 h-5" fill="none" viewbox="0 0 24 24" stroke="currentColor">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-				</svg>
+				<twig:ux:icon name="si:sign-out-line" class="w-5 h-5" />
 			</a>
 		</div>
 	</div>

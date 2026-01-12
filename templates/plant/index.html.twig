@@ -1,23 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des éléments
+{% block title %}
+	Liste des éléments
 {% endblock %}
 
 {% block body %}
-	<div
-		class="min-h-screen bg-gray-100">
+	<div	class="min-h-screen bg-gray-100">
 		{# Header #}
-		<div class="bg-white shadow-sm border-b border-gray-200">
-			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-				<div class="flex items-center justify-between">
+		<div	class="bg-white shadow-sm border-b border-gray-200">
+			<div	class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+				<div	class="flex items-center justify-between">
 					<div>
-						<h1 class="text-2xl font-bold text-gray-900">Liste des éléments</h1>
-						<p class="mt-1 text-sm text-gray-500">Gérez vos éléments ici</p>
+						<h1	class="text-2xl font-bold text-gray-900">
+							Liste des éléments
+						</h1>
+						<p	class="mt-1 text-sm text-gray-500">
+							Gérez vos éléments ici
+						</p>
 					</div>
-					<a href="{{ path('app_plant_new') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">
-						<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-						</svg>
+					<a	href="{{ path('app_plant_new') }}"	class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">
+						<twig:ux:icon	name="formkit:add"	class="w-5 h-5 inline mr-2" />
 						Créer un nouveau plant
 					</a>
 				</div>
@@ -25,68 +27,67 @@
 		</div>
 
 		{# Content #}
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-			<div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+		<div	class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+			<div	class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
 				{# Table #}
-				<div class="overflow-x-auto">
-					<table class="min-w-full divide-y divide-gray-200">
-						<thead class="bg-gray-50">
+				<div	class="overflow-x-auto">
+					<table	class="min-w-full divide-y divide-gray-200">
+						<thead	class="bg-gray-50">
 							<tr>
-								<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+								<th	scope="col"	class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
 									ID
 								</th>
-								<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+								<th	scope="col"	class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
 									Nom Latin
 								</th>
-								<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+								<th	scope="col"	class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
 									Nom Commun
 								</th>
-								<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+								<th	scope="col"	class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
 									Type
 								</th>
-								<th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+								<th	scope="col"	class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
 									Actions
 								</th>
 							</tr>
 						</thead>
-						<tbody class="bg-white divide-y divide-gray-200">
+						<tbody	class="bg-white divide-y divide-gray-200">
 							{% for item in plants %}
-								<tr class="hover:bg-gray-50 transition-colors">
-									<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+								<tr	class="hover:bg-gray-50 transition-colors">
+									<td	class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
 										{{ item.id }}
 									</td>
-									<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+									<td	class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
 										{{ item.latinName }}
 									</td>
-									<td class="px-6 py-4 text-sm text-gray-500">
+									<td	class="px-6 py-4 text-sm text-gray-500">
 										{{ item.commonName }}
 									</td>
-									<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+									<td	class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
 										{{ item.type }}
 									</td>
-									<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-										<a href="{{ path('app_plant_show', {'id': item.id}) }}" class="inline-flex items-center text-green-600 hover:text-green-900">
-											<svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-											</svg>
+									<td	class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+										<a	href="{{ path('app_plant_show', {'id': item.id}) }}"	class="inline-flex items-center text-green-600 hover:text-green-900">
+											<twig:ux:icon	name="mingcute:eye-line"	class="w-5 h-5 inline" />
 										</a>
-										<a href="{{ path('app_plant_edit', {'id': item.id}) }}" class="inline-flex items-center text-blue-600 hover:text-green-800 transition-colors">
-											<svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-											</svg>
+										<a	href="{{ path('app_plant_edit', {'id': item.id}) }}"	class="inline-flex items-center text-blue-600 hover:text-green-800 transition-colors">
+											<twig:ux:icon	name="cuida:edit-outline"	class="w-5 h-5 inline" />
 										</a>
 									</td>
 								</tr>
 							{% else %}
 								<tr>
-									<td colspan="5" class="px-6 py-12 text-center text-sm text-gray-500">
-										<svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+									<td	colspan="5"	class="px-6 py-12 text-center text-sm text-gray-500">
+										<svg	class="mx-auto h-12 w-12 text-gray-400"	fill="none"	stroke="currentColor"	viewbox="0 0 24 24">
+											<path	stroke-linecap="round"	stroke-linejoin="round"	stroke-width="2"	d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
 										</svg>
-										<p class="mt-2">Aucun élément trouvé</p>
-										<p class="mt-1">
-											<a href="{{ path('app_plant_new') }}" class="text-green-600 hover:text-green-500">Créez votre premier élément</a>
+										<p	class="mt-2">
+											Aucun élément trouvé
+										</p>
+										<p	class="mt-1">
+											<a	href="{{ path('app_plant_new') }}"	class="text-green-600 hover:text-green-500">
+												Créez votre premier élément
+											</a>
 										</p>
 									</td>
 								</tr>

@@ -170,6 +170,12 @@ final class StockController extends AbstractController
     #[Route('/{id}/edit', name: 'app_stock_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Stock $stock, EntityManagerInterface $entityManager): Response
     {
+
+        //Si le stock appartient à un partenaire, on interdit l'édition
+        if ($stock->getPartner() !== null) {
+            return $this->redirectToRoute('app_stock_index', [], Response::HTTP_SEE_OTHER);
+        }
+
         $form = $this->createForm(StockType::class, $stock);
         $form->handleRequest($request);
 
