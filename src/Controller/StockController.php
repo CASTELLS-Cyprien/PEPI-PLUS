@@ -44,27 +44,6 @@ final class StockController extends AbstractController
         ]);
     }
 
-
-    #[Route('/my-reservation', name: 'app_stock_myReservation', methods: ['GET'])]
-    public function myReservationindex(StockRepository $stockRepository): Response
-    {
-        if ($this->isGranted(['ROLE_ADMIN', 'ROLE_COLLABORATOR'])) {
-            throw $this->createAccessDeniedException('Accès refusé.');
-        }
-
-        /** @var User $user */
-        $user = $this->getUser();
-        $partner = $user->getPartner();
-
-        if (!$partner) {
-            throw $this->createAccessDeniedException('Aucun profil partenaire associé à ce compte.');
-        }
-
-        return $this->render('stock/indexMyReservation.html.twig', [
-            'stocks' => $stockRepository->findBy(['partner' => $partner]),
-        ]);
-    }
-
     #[Route('/my-stock', name: 'app_stock_myStock', methods: ['GET'])]
     public function MyStockindex(StockRepository $stockRepository): Response
     {

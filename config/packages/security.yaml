@@ -47,7 +47,6 @@ security:
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: [ROLE_USER, ROLE_ADMIN] }
         - { path: ^/stock/my-stock, roles: ROLE_PARTNER }
-        - { path: ^/stock/my-reservation, roles: ROLE_PARTNER }
 
 when@test:
     security:

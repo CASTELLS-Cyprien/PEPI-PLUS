@@ -23,8 +23,8 @@
 			<p class="px-3 text-[11px] uppercase font-bold tracking-wider text-slate-400">GESTION</p>
 		</div>
 		{% if is_granted('ROLE_PARTNER') %}
-			<a href="{{ path('app_stock_myReservation') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') == 'app_stock_myReservation' ? 'bg-green-600/10 text-green-600' : 'text-slate-600 hover:bg-slate-50 hover:text-green-600' }}">
-				<twig:ux:icon name="iconoir:delivery-truck" class="w-5 h-5 mr-3 {{ app.request.get('_route') == 'app_stock_myReservation' ? 'text-green-600' : 'text-slate-400 group-hover:text-green-600' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor"/>
+			<a href="{{ path('app_partner_reservations') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') == 'app_partner_reservations' ? 'bg-green-600/10 text-green-600' : 'text-slate-600 hover:bg-slate-50 hover:text-green-600' }}">
+				<twig:ux:icon name="iconoir:delivery-truck" class="w-5 h-5 mr-3 {{ app.request.get('_route') == 'app_partner_reservations' ? 'text-green-600' : 'text-slate-400 group-hover:text-green-600' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor"/>
 				Mes réservations
 			</a>
 
