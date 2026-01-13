@@ -1,29 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Fiche Descriptive - {{ plant.latinName }}
+{% block title %}Fiche Descriptive -
+	{{ plant.latinName }}
 {% endblock %}
 
 {% block body %}
-	<div class="min-h-screen bg-gray-100">
+	<div
+		class="min-h-screen bg-gray-100">
 		{# Header #}
 		<div class="bg-white shadow-sm border-b border-gray-200">
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 				<div class="flex items-center justify-between">
 					<div class="flex items-center space-x-3">
 						<a href="{{ path('app_stock_index') }}" class="text-gray-400 hover:text-gray-600">
-							<twig:ux:icon	name="iconoir:arrow-left"	class="w-6 h-6" />
+							<twig:ux:icon name="iconoir:arrow-left" class="w-6 h-6"/>
 						</a>
 						<div>
 							<h1 class="text-2xl font-bold text-gray-900">Fiche Descriptive</h1>
-							<p class="mt-1 text-sm text-gray-500">ID: {{ plant.id }} | {{ plant.latinName }} | {{ plant.commonName }}</p>
+							<p class="mt-1 text-sm text-gray-500">ID:
+								{{ plant.id }}
+								|
+								{{ plant.latinName }}
+								|
+								{{ plant.commonName }}</p>
 						</div>
 					</div>
 
 					<div class="flex items-center space-x-3">
-							<a href="{{ path('app_plant_edit', {'id': plant.id}) }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700">
-								<twig:ux:icon	name="cuida:edit-outline"	class="w-4 h-4 mr-2" />
-								Modifier
-							</a>
+						<a href="{{ path('app_plant_edit', {'id': plant.id}) }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700">
+							<twig:ux:icon name="cuida:edit-outline" class="w-4 h-4 mr-2"/>
+							Modifier
+						</a>
 						{% include('plant/_delete_form.html.twig') %}
 					</div>
 				</div>
@@ -37,7 +44,8 @@
 					<h3 class="text-lg leading-6 font-medium text-gray-900">Informations Botaniques</h3>
 				</div>
 				<div class="px-4 py-5 sm:p-0">
-					<dl class="sm:divide-y sm:divide-gray-200">
+					<dl
+						class="sm:divide-y sm:divide-gray-200">
 						{# Nom Latin #}
 						<div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
 							<dt class="text-sm font-medium text-gray-500">Nom scientifique (Latin)</dt>
@@ -67,7 +75,7 @@
 
 			<div class="mt-6">
 				<a href="{{ path('app_plant_index') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-500 flex items-center">
-					<twig:ux:icon	name="iconoir:arrow-left"	class="w-4 h-4 mr-2" />
+					<twig:ux:icon name="iconoir:arrow-left" class="w-4 h-4 mr-2"/>
 					Retour au catalogue des plants
 				</a>
 			</div>

@@ -1,39 +1,40 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Partner index{% endblock %}
+{% block title %}Partner index
+{% endblock %}
 
 {% block body %}
-    <h1>Partner index</h1>
+	<h1>Partner index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>CompanyName</th>
-                <th>ContactDetails</th>
-                <th>Created_at</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for partner in partners %}
-            <tr>
-                <td>{{ partner.id }}</td>
-                <td>{{ partner.companyName }}</td>
-                <td>{{ partner.contactDetails }}</td>
-                <td>{{ partner.createdAt ? partner.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_partner_show', {'id': partner.id}) }}">show</a>
-                    <a href="{{ path('app_partner_edit', {'id': partner.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>CompanyName</th>
+				<th>ContactDetails</th>
+				<th>Created_at</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for partner in partners %}
+				<tr>
+					<td>{{ partner.id }}</td>
+					<td>{{ partner.companyName }}</td>
+					<td>{{ partner.contactDetails }}</td>
+					<td>{{ partner.createdAt ? partner.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+					<td>
+						<a href="{{ path('app_partner_show', {'id': partner.id}) }}">show</a>
+						<a href="{{ path('app_partner_edit', {'id': partner.id}) }}">edit</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="5">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 
-    <a href="{{ path('app_partner_new') }}">Create new</a>
+	<a href="{{ path('app_partner_new') }}">Create new</a>
 {% endblock %}

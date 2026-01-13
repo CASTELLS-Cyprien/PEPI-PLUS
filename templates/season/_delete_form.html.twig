@@ -1,7 +1,7 @@
 <form method="post" action="{{ path('app_season_delete', {'id': season.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?');" class="inline-block">
 	<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ season.id) }}">
 	<button type="submit" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors">
-		<twig:ux:icon	name="iconoir:trash"	class="w-5 h-5 mr-2" />
+		<twig:ux:icon name="iconoir:trash" class="w-5 h-5 mr-2"/>
 		Supprimer
 	</button>
 </form>

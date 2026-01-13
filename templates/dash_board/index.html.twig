@@ -20,7 +20,7 @@
 						{{ "now"|date("d/m/Y") }}</p>
 				</div>
 				<a href="{{ path('app_stock_newMyStock') }}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium shadow-sm flex items-center transition-colors">
-					<twig:ux:icon	name="formkit:add"	class="w-5 h-5 inline mr-2" />
+					<twig:ux:icon name="formkit:add" class="w-5 h-5 inline mr-2"/>
 					Ajouter un stock
 				</a>
 			</div>
@@ -73,10 +73,7 @@
 									<th class="px-6 py-3 text-right">Quantité</th>
 								</tr>
 							</thead>
-							<tbody class="divide-y divide-gray-100">
-								
-							
-							</tbody>
+							<tbody class="divide-y divide-gray-100"></tbody>
 						</table>
 					</div>
 				</div>
@@ -87,18 +84,18 @@
 					<div class="space-y-4">
 						<a href="{{ path('app_plant_newPartner') }}" class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-green-50 group transition-colors">
 							<div class="p-2 bg-white rounded shadow-sm group-hover:text-green-600">
-								<twig:ux:icon	name="formkit:add"	class="w-5 h-5 inline mr-2" />
-							<span class="ml-3 text-sm font-medium text-gray-700">Créer un nouveau plant</span>
-						</a>
-						<a href="{{ path('app_stock_myStock') }}" class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-green-50 group transition-colors">
-							<div class="p-2 bg-white rounded shadow-sm group-hover:text-green-600">
-								<twig:ux:icon	name="formkit:add"	class="w-5 h-5 inline mr-2" />
-							</div>
-							<span class="ml-3 text-sm font-medium text-gray-700">Voir tout mon stock</span>
-						</a>
+								<twig:ux:icon name="formkit:add" class="w-5 h-5 inline mr-2"/>
+								<span class="ml-3 text-sm font-medium text-gray-700">Créer un nouveau plant</span>
+							</a>
+							<a href="{{ path('app_stock_myStock') }}" class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-green-50 group transition-colors">
+								<div class="p-2 bg-white rounded shadow-sm group-hover:text-green-600">
+									<twig:ux:icon name="formkit:add" class="w-5 h-5 inline mr-2"/>
+								</div>
+								<span class="ml-3 text-sm font-medium text-gray-700">Voir tout mon stock</span>
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-{% endblock %}
+	{% endblock %}

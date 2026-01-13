@@ -34,16 +34,16 @@
 		</div>
 
 		{# Réinitialisation rapide #}
-			<div class="p-4 bg-amber-50 border border-amber-200 rounded-lg flex items-start">
-				<div class="flex items-center h-5">
-					{{ form_widget(form.resetPassword, {'attr': {'class': 'h-4 w-4 text-amber-600 border-gray-300 rounded'}}) }}
-				</div>
-				<div class="ml-3 text-sm">
-					{{ form_label(form.resetPassword, 'Réinitialiser le mot de passe (Password123!)', {'label_attr': {'class': 'font-bold text-amber-900'}}) }}
-					<p class="text-amber-700 text-xs">L'utilisateur devra obligatoirement changer son mot de passe à sa prochaine connexion.</p>
-				</div>
+		<div class="p-4 bg-amber-50 border border-amber-200 rounded-lg flex items-start">
+			<div class="flex items-center h-5">
+				{{ form_widget(form.resetPassword, {'attr': {'class': 'h-4 w-4 text-amber-600 border-gray-300 rounded'}}) }}
 			</div>
-			
+			<div class="ml-3 text-sm">
+				{{ form_label(form.resetPassword, 'Réinitialiser le mot de passe (Password123!)', {'label_attr': {'class': 'font-bold text-amber-900'}}) }}
+				<p class="text-amber-700 text-xs">L'utilisateur devra obligatoirement changer son mot de passe à sa prochaine connexion.</p>
+			</div>
+		</div>
+
 		{# Rôles et Statut #}
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 			<div>
@@ -73,7 +73,7 @@
 	<div class="bg-gray-50 px-8 py-4 border-t border-gray-200 flex items-center justify-between">
 		<a href="{{ path('app_user_index') }}" class="text-sm text-gray-500 hover:text-gray-700 font-medium">Annuler</a>
 		<button type="submit" class="inline-flex justify-center py-2 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-			<twig:ux:icon	name="bi:check-lg"	class="w-5 h-5 mr-2" />
+			<twig:ux:icon name="bi:check-lg" class="w-5 h-5 mr-2"/>
 			{{ button_label|default('Enregistrer les modifications') }}
 		</button>
 	</div>
