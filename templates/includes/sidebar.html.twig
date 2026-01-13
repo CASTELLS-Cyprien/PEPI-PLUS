@@ -11,7 +11,7 @@
 			Tableau de bord
 		</a>
 
-		{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_COLABO') %}
+		{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_COLLABORATOR') %}
 			{# Stock Global #}
 			<a href="{{ path('app_stock_index') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') == 'app_stock_index' ? 'bg-green-600/10 text-green-600 font-bold' : 'text-slate-600 hover:bg-slate-50 hover:text-green-600' }}">
 				<twig:ux:icon name="iconoir:globe" class="w-5 h-5 mr-3 {{ app.request.get('_route') == 'app_stock_index' ? 'text-green-600' : 'text-slate-400 group-hover:text-green-600' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor"/>

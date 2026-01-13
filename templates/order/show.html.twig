@@ -1,114 +1,164 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	Détails des commandes -
+	Détails de la commande -
 	{{ order.orderNumber }}
 {% endblock %}
 
 {% block body %}
 	<div
-		class="min-h-screen bg-gray-100">
+		class="min-h-screen bg-gray-100 pb-12">
 		{# Header #}
 		<div class="bg-white shadow-sm border-b border-gray-200">
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 				<div class="flex items-center justify-between">
 					<div class="flex items-center space-x-3">
-						<a href="{{ path('app_order_index') }}" class="text-gray-400 hover:text-gray-600">
-							<twig:ux:icon name="iconoir:arrow-left" class="w-6 h-6 inline"/>
+						<a href="{{ path('app_order_index') }}" class="text-gray-400 hover:text-gray-600 transition-colors">
+							<twig:ux:icon name="iconoir:arrow-left" class="w-6 h-6"/>
 						</a>
 						<div>
-							<h1 class="text-2xl font-bold text-gray-900">
-								Détails de la commande
-							</h1>
+							<h1 class="text-2xl font-bold text-gray-900">Détails de la commande</h1>
 							<p class="mt-1 text-sm text-gray-500">
-								ID:
-								{{ order.id }}
-								|
-								{{ order.orderNumber }}
+								Référence :
+								<span class="font-mono font-bold text-gray-700">{{ order.orderNumber }}</span>
 							</p>
 						</div>
+					</div>
+
+					{# Badge de Statut Dynamique #}
+					<div>
+						{% if order.status == 'Réservation' %}
+							<span class="px-4 py-2 inline-flex text-sm leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+								{{ order.status }}
+							</span>
+						{% elseif order.status == 'Livrée' %}
+							<span class="px-4 py-2 inline-flex text-sm leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+								{{ order.status }}
+							</span>
+						{% else %}
+							<span class="px-4 py-2 inline-flex text-sm leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+								{{ order.status }}
+							</span>
+						{% endif %}
 					</div>
 				</div>
 			</div>
 		</div>
 
-		{# Content #}
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-			<div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200">
-				<div class="px-4 py-5 sm:px-6 bg-gray-50 border-b border-gray-200">
-					<h3 class="text-lg leading-6 font-medium text-gray-900">
-						Informations sur la commande
-					</h3>
-				</div>
-				<div class="px-4 py-5 sm:p-0">
-					<dl
-						class="sm:divide-y sm:divide-gray-200">
-						{# Numero de commande #}
-						<div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-							<dt class="text-sm font-medium text-gray-500">
-								Numero de commande
-							</dt>
-							<dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-								<div class="font-medium text-gray-900">
-									{{ order.orderNumber }}
+			<div
+				class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+				{# Colonne Gauche : Infos Générales #}
+				<div class="lg:col-span-1 space-y-6">
+					<div class="bg-white shadow rounded-lg border border-gray-200 overflow-hidden">
+						<div class="px-4 py-5 sm:px-6 bg-gray-50 border-b border-gray-200">
+							<h3 class="text-sm font-bold uppercase tracking-wider text-gray-600">Informations</h3>
+						</div>
+						<div class="px-4 py-5">
+							<dl class="space-y-4">
+								<div>
+									<dt class="text-xs font-medium text-gray-500 uppercase">Collaborateur</dt>
+									<dd class="mt-1 text-sm text-gray-900 font-semibold italic">
+										{{ order.collaborator ? order.collaborator.firstName ~ ' ' ~ order.collaborator.lastName : 'N/A' }}
+									</dd>
 								</div>
-							</dd>
+								<div>
+									<dt class="text-xs font-medium text-gray-500 uppercase">Date de création</dt>
+									<dd class="mt-1 text-sm text-gray-900">
+										{{ order.createdAt|date('d/m/Y H:i') }}
+									</dd>
+								</div>
+								<div>
+									<dt class="text-xs font-medium text-gray-500 uppercase">Dernière modification</dt>
+									<dd class="mt-1 text-sm text-gray-900">
+										{{ order.updatedAt|date('d/m/Y H:i') }}
+										par
+										<strong>{{ order.updatedBy.firstName }}</strong>
+									</dd>
+								</div>
+							</dl>
 						</div>
+					</div>
 
-						{# Status #}
-						<div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-							<dt class="text-sm font-medium text-gray-500">
-								Status
-							</dt>
-							<dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-								{% if order.status == 'Réservation' %}
-									<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-										{{ order.status }}
-									</span>
-								{% elseif order.status == 'Validée' %}
-									<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-										{{ order.status }}
-									</span>
-								{% elseif order.status == 'Annulée' %}
-									<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-										{{ order.status }}
-									</span>
-								{% else %}
-									<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-										{{ order.status }}
-									{% endif %}
-								</dd>
-							</dd>
+					{# Actions contextuelles #}
+					{% if order.status == 'Réservation' %}
+						<div class="bg-green-50 p-4 rounded-lg border border-green-200">
+							<h4 class="text-green-800 font-bold text-sm mb-3">Action requise</h4>
+							<form action="{{ path('app_order_deliver', {'id': order.id}) }}" method="POST" onsubmit="return confirm('Confirmer la réception ? Les plantes seront ajoutées au stock interne de Pépi+.');">
+								<button type="submit" class="w-full flex justify-center items-center px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-md font-bold shadow transition-all">
+									<twig:ux:icon name="iconoir:delivery-truck" class="w-5 h-5 mr-2"/>
+									Valider la Livraison
+								</button>
+							</form>
+							<p class="mt-2 text-xs text-green-700 italic text-center">
+								Cette action basculera le stock partenaire vers le stock réel.
+							</p>
 						</div>
-
-						{# Créer le #}
-						<div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-							<dt class="text-sm font-medium text-gray-500">
-								Créer le
-							</dt>
-							<dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-								{{ order.createdAt | date('d-m-Y H:i') }}
-							</dd>
-						</div>
-
-						{# Mis à jour le #}
-						<div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-							<dt class="text-sm font-medium text-gray-500">
-								Mis à jour le
-							</dt>
-							<dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-								{{ order.updatedAt | date('d-m-Y H:i') }}
-							</dd>
-						</div>
-					</dl>
+					{% endif %}
 				</div>
-			</div>
 
-			<div class="mt-6">
-				<a href="{{ path('app_order_index') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-500 flex items-center">
-					<twig:ux:icon name="iconoir:arrow-left" class="w-6 h-6 inline"/>
-					Retour à l'inventaire interne
-				</a>
+				{# Colonne Droite : Liste des produits (OrderLines) #}
+				<div class="lg:col-span-2">
+					<div class="bg-white shadow rounded-lg border border-gray-200 overflow-hidden">
+						<div class="px-4 py-5 sm:px-6 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
+							<h3 class="text-lg font-bold text-gray-900">Articles réservés</h3>
+							<span class="bg-gray-200 text-gray-700 text-xs font-bold px-2.5 py-1 rounded">
+								{{ order.orderLines|length }}
+								ligne(s)
+							</span>
+						</div>
+
+						<table class="min-w-full divide-y divide-gray-200">
+							<thead class="bg-gray-50">
+								<tr>
+									<th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Plante</th>
+									<th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Conditionnement</th>
+									<th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Saison</th>
+									<th class="px-6 py-3 text-center text-xs font-bold text-gray-500 uppercase">Quantité</th>
+									<th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Source</th>
+								</tr>
+							</thead>
+							<tbody class="bg-white divide-y divide-gray-200">
+								{% for line in order.orderLines %}
+									<tr class="hover:bg-gray-50">
+										<td class="px-6 py-4 whitespace-nowrap">
+											<div class="text-sm font-bold text-gray-900">{{ line.stock.plant.LatinName }}</div>
+										</td>
+										<td class="px-6 py-4 whitespace-nowrap">
+											<div class="text-sm text-gray-600">{{ line.stock.packaging.label }}</div>
+										</td>
+										<td class="px-6 py-4 whitespace-nowrap">
+											<div class="text-xs text-gray-400">{{ line.stock.season.year }}</div>
+										</td>
+										<td class="px-6 py-4 whitespace-nowrap text-center text-sm font-extrabold text-indigo-600">
+											{{ line.quantity }}
+										</td>
+										<td class="px-6 py-4 whitespace-nowrap">
+											{% if line.stock.partner %}
+												<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">
+													Partenaire :
+													{{ line.stock.partner.companyName }}
+												</span>
+											{% else %}
+												<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+													Stock Interne
+												</span>
+											{% endif %}
+										</td>
+									</tr>
+								{% else %}
+									<tr>
+										<td colspan="4" class="px-6 py-10 text-center text-gray-500 italic">
+											Aucun article associé à cette commande.
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+
 			</div>
 		</div>
 	</div>
