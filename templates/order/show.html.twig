@@ -130,14 +130,15 @@
 									<tr class="hover:bg-gray-50">
 										<td class="px-6 py-4 whitespace-nowrap">
 											<div class="text-sm font-bold text-gray-900">{{ line.stock.plant.LatinName }}</div>
+											<div class="text-sm text-gray-400">{{ line.stock.plant.CommonName }}</div>
 										</td>
 										<td class="px-6 py-4 whitespace-nowrap">
 											<div class="text-sm text-gray-600">{{ line.stock.packaging.label }}</div>
 										</td>
 										<td class="px-6 py-4 whitespace-nowrap">
-											<div class="text-xs text-gray-400">{{ line.stock.season.year }}</div>
+											<div class="text-xs text-gray-600">{{ line.stock.season.year }}</div>
 										</td>
-										<td class="px-6 py-4 whitespace-nowrap text-center text-sm font-extrabold text-indigo-600">
+										<td class="px-6 py-4 whitespace-nowrap text-center text-sm font-extrabold">
 											{{ line.quantity }}
 										</td>
 										<td class="px-6 py-4 whitespace-nowrap">
