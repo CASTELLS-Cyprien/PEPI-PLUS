@@ -3,15 +3,14 @@
 		<img src="{{ asset('img/logoPepiPlusSF.png') }}" alt="Logo Pépi+" style="width: 100px !important; height: auto !important;">
 	</div>
 
-	<nav
-		class="flex-1 overflow-y-auto p-3 space-y-0.5">
-		{# Tableau de bord #}
-		<a href="{{ path('app_dashboard') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') == 'app_dashboard' ? 'bg-green-600/10 text-green-600' : 'text-slate-600 hover:bg-slate-50 hover:text-green-600' }}">
-			<twig:ux:icon name="iconoir:home" class="w-5 h-5 mr-3 {{ app.request.get('_route') == 'app_dashboard' ? 'text-green-600' : 'text-slate-400 group-hover:text-green-600' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor"/>
-			Tableau de bord
-		</a>
+	<nav class="flex-1 overflow-y-auto p-3 space-y-0.5">
+		{% if is_granted('ROLE_ADMIN', 'ROLE_COLLABORATOR') %}
 
-		{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_COLLABORATOR') %}
+			{# Tableau de bord #}
+			<a href="{{ path('app_dashboard') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') == 'app_dashboard' ? 'bg-green-600/10 text-green-600' : 'text-slate-600 hover:bg-slate-50 hover:text-green-600' }}">
+				<twig:ux:icon name="iconoir:home" class="w-5 h-5 mr-3 {{ app.request.get('_route') == 'app_dashboard' ? 'text-green-600' : 'text-slate-400 group-hover:text-green-600' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor"/>
+				Tableau de bord
+			</a>
 			{# Stock Global #}
 			<a href="{{ path('app_stock_index') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') == 'app_stock_index' ? 'bg-green-600/10 text-green-600 font-bold' : 'text-slate-600 hover:bg-slate-50 hover:text-green-600' }}">
 				<twig:ux:icon name="iconoir:globe" class="w-5 h-5 mr-3 {{ app.request.get('_route') == 'app_stock_index' ? 'text-green-600' : 'text-slate-400 group-hover:text-green-600' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor"/>
@@ -28,12 +27,12 @@
 				Mes réservations
 			</a>
 
-			<a href="{{ path('app_stock_myStock') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') == 'app_stock_myStock' ? 'bg-green-600/10 text-green-600' : 'text-slate-600 hover:bg-slate-50 hover:text-green-600' }}">
-				<twig:ux:icon name="iconoir:package" class="w-5 h-5 mr-3 {{ app.request.get('_route') == 'app_stock_myStock' ? 'text-green-600' : 'text-slate-400 group-hover:text-green-600' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor"/>
+			<a href="{{ path('app_partner_myStock') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') == 'app_partner_myStock' ? 'bg-green-600/10 text-green-600' : 'text-slate-600 hover:bg-slate-50 hover:text-green-600' }}">
+				<twig:ux:icon name="iconoir:package" class="w-5 h-5 mr-3 {{ app.request.get('_route') == 'app_partner_myStock' ? 'text-green-600' : 'text-slate-400 group-hover:text-green-600' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor"/>
 				Mon stock personnel
 			</a>
 		{% endif %}
-		{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_COLLABORATOR') %}
+		{% if is_granted('ROLE_ADMIN', 'ROLE_COLLABORATOR') %}
 			{# Commandes #}
 			<a href="{{ path('app_order_index') }}" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors {{ app.request.get('_route') starts with 'app_order' ? 'bg-green-600/10 text-green-600' : 'text-slate-600 hover:bg-slate-50 hover:text-green-600' }}">
 				<twig:ux:icon name="iconoir:cart" class="w-5 h-5 mr-3 {{ app.request.get('_route') == 'app_order_index' ? 'text-green-600' : 'text-slate-400 group-hover:text-green-600' }}" fill="none" viewbox="0 0 24 24" stroke="currentColor"/>

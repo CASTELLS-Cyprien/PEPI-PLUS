@@ -44,25 +44,7 @@ final class StockController extends AbstractController
         ]);
     }
 
-    #[Route('/my-stock', name: 'app_stock_myStock', methods: ['GET'])]
-    public function MyStockindex(StockRepository $stockRepository): Response
-    {
-        if ($this->isGranted(['ROLE_ADMIN', 'ROLE_COLLABORATOR'])) {
-            throw $this->createAccessDeniedException('Accès refusé.');
-        }
-
-        /** @var User $user */
-        $user = $this->getUser();
-        $partner = $user->getPartner();
-
-        if (!$partner) {
-            throw $this->createAccessDeniedException('Aucun profil partenaire associé à ce compte.');
-        }
-
-        return $this->render('stock/indexMyStock.html.twig', [
-            'stocks' => $stockRepository->findBy(['partner' => $partner]),
-        ]);
-    }
+    
 
     #[Route('/new', name: 'app_stock_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -79,27 +61,6 @@ final class StockController extends AbstractController
         }
 
         return $this->render('stock/new.html.twig', [
-            'stock' => $stock,
-            'form' => $form,
-        ]);
-    }
-
-
-    #[Route('/my-stock/new', name: 'app_stock_newMyStock', methods: ['GET', 'POST'])]
-    public function newMyStock(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $stock = new Stock();
-        $form = $this->createForm(StockType::class, $stock);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($stock);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_stock_myStock', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('stock/newMyStock.html.twig', [
             'stock' => $stock,
             'form' => $form,
         ]);
@@ -165,24 +126,6 @@ final class StockController extends AbstractController
         }
 
         return $this->render('stock/edit.html.twig', [
-            'stock' => $stock,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/my-stock/{id}/edit', name: 'app_stock_editMyStock', methods: ['GET', 'POST'])]
-    public function editMyStock(Request $request, Stock $stock, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(StockType::class, $stock);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_stock_myStock', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('stock/editMyStock.html.twig', [
             'stock' => $stock,
             'form' => $form,
         ]);

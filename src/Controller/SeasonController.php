@@ -29,13 +29,24 @@ final class SeasonController extends AbstractController
         $form = $this->createForm(SeasonType::class, $season);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($season);
-            $entityManager->flush();
+        //Si l'utilisateur est un partenaire, on le redirige vers la page de création de son stock 
+        if ($this->isGranted('ROLE_PARTNER')) {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager->persist($season);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('app_season_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('app_partner_newMyStock', [], Response::HTTP_SEE_OTHER);
+            }
+        } //sinon si c'est un collaborateur, on le redirige vers la page de gestion des plantes
+        else if ($this->isGranted('ROLE_ADMIN', 'ROLE_COLLABORATOR')) {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager->persist($season);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('app_season_index', [], Response::HTTP_SEE_OTHER);
+            }
         }
-
+        
         return $this->render('season/new.html.twig', [
             'season' => $season,
             'form' => $form,

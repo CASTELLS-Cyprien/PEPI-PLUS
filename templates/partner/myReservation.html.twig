@@ -17,7 +17,7 @@
 							Gérez vos quantités et emplacements
 						</p>
 					</div>
-					<a href="{{ path('app_stock_newMyStock') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700">
+					<a href="{{ path('app_partner_newMyStock') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700">
 						<twig:ux:icon name="formkit:add" class="w-5 h-5 inline mr-2"/>
 						Ajouter un stock
 					</a>
@@ -34,19 +34,16 @@
 						<thead class="bg-gray-50">
 							<tr>
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-									Plante
+									Date & Commande
 								</th>
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-									Conditionnement
+									Plant
 								</th>
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-									Saison
+									Quantité Réservée
 								</th>
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-									Quantité
-								</th>
-								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-									Dernière mise à jour le
+									Statut
 								</th>
 								<th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
 									Actions
@@ -54,41 +51,52 @@
 							</tr>
 						</thead>
 						<tbody class="bg-white divide-y divide-gray-200">
-							{% for stock in stocks %}
+							{% for line in orderLines %}
 								<tr class="hover:bg-gray-50 transition-colors">
 									<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-semibold">
 										<div class="text-sm font-medium text-gray-900">
-											{{ stock.plant.latinName }}
+											{{ line.PurchaseOrder.createdAt|date('d/m/Y')}}
+
+										</div>
+										<div class="text-sm font-medium text-gray-900">
+											{{ line.PurchaseOrder.orderNumber }}
+										</div>
+									</td>
+									<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-semibold">
+										<div class="text-sm font-medium text-gray-900">
+											{{ line.stock.plant.latinName }}
 										</div>
 										<div class="text-sm text-gray-500 italic">
-											{{ stock.plant.commonName }}
+											{{ line.stock.plant.commonName }}
 										</div>
-									</td>
-									<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-										{{ stock.packaging ? stock.packaging.label }}
-									</td>
-									<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-										<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-											{{ stock.season ? stock.season.year }}
-										</span>
 									</td>
 									<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
 										<span class="font-bold">
-											{{ stock.quantity }}
+											{{ line.quantity }}
 										</span>
 									</td>
-									<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 italic">
-										{{ stock.updatedAt ? stock.updatedAt|date('d/m/Y H:i') : 'Jamais' }}
+									<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+										{% if line.PurchaseOrder.status == 'Réservation' %}
+											<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+												{{ line.PurchaseOrder.status }}
+											</span>
+										{% elseif line.PurchaseOrder.status == 'Annulée' %}
+											<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+												{{ line.PurchaseOrder.status }}
+											</span>
+										{% else %}
+											<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+												{{ line.PurchaseOrder.status }}
+											</span>
+										{% endif %}
 									</td>
 									<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-3">
-										<a href="{{ path('app_stock_showPartner', {'id': stock.id}) }}" class="text-green-600 hover:text-green-900" title="Voir">
+										<a href="{{ path('app_order_show', {'id': line.PurchaseOrder.id}) }}" class=" text-green-600 hover:text-green-900" title=" voir">
 											<twig:ux:icon name="mingcute:eye-line" class="w-6 h-6 inline"/>
-										</a>
-										<a href="{{ path('app_stock_editMyStock', {'id': stock.id}) }}" class="text-indigo-600 hover:text-indigo-900" title="Modifier">
-											<twig:ux:icon name="cuida:edit-outline" class="w-5 h-5 inline"/>
 										</a>
 									</td>
 								</tr>
+
 							{% else %}
 								<tr>
 									<td colspan="7" class="px-6 py-12 text-center text-sm text-gray-500">
@@ -97,17 +105,17 @@
 											Aucun stock répertorié
 										</p>
 										<p class="mt-1">
-											<a href="{{ path('app_stock_new') }}" class="text-green-600 hover:text-green-500 underline">
+											<a href="{{ path('app_partner_new') }}" class="text-green-600 hover:text-green-500 underline">
 												Ajouter un premier mouvement de stock
 											</a>
 										</p>
 									</td>
 								</tr>
-							{% endfor %}
+							</tbody>
 						</tbody>
 					</table>
-				</div>
+				{% endfor %}
 			</div>
 		</div>
 	</div>
-{% endblock %}
+</div></div>{% endblock %}

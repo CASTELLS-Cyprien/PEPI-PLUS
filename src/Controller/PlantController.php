@@ -47,34 +47,25 @@ final class PlantController extends AbstractController
         $form = $this->createForm(PlantType::class, $plant);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($plant);
-            $entityManager->flush();
+        //Si l'utilisateur est un partenaire, on le redirige vers la page de création de son stock 
+        if ($this->isGranted('ROLE_PARTNER')) {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager->persist($plant);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('app_plant_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('app_partner_newMyStock', [], Response::HTTP_SEE_OTHER);
+            }
+        } //sinon si c'est un collaborateur, on le redirige vers la page de gestion des plantes
+        else if ($this->isGranted('ROLE_ADMIN', 'ROLE_COLLABORATOR')) {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager->persist($plant);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('app_plant_index', [], Response::HTTP_SEE_OTHER);
+            }
         }
 
         return $this->render('plant/new.html.twig', [
-            'plant' => $plant,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/my-stock/new', name: 'app_plant_newPartner', methods: ['GET', 'POST'])]
-    public function newPartner(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $plant = new Plant();
-        $form = $this->createForm(PlantType::class, $plant);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($plant);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_stock_myStock', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('plant/newPartner.html.twig', [
             'plant' => $plant,
             'form' => $form,
         ]);
