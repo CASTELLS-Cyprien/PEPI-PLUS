@@ -26,8 +26,7 @@
 		</div>
 		{# Content #}
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-			<div
-				class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+			<div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
 				{# Table #}
 				<div class="overflow-x-auto">
 					<table class="min-w-full divide-y divide-gray-200">
@@ -81,7 +80,7 @@
 										{{ stock.updatedAt ? stock.updatedAt|date('d/m/Y H:i') : 'Jamais' }}
 									</td>
 									<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-3">
-										<a href="{{ path('app_partner_show', {'id': stock.id}) }}" class="text-green-600 hover:text-green-900" title="Voir">
+										<a href="{{ path('app_partner_showMyStock', {'id': stock.id}) }}" class="text-green-600 hover:text-green-900" title="Voir">
 											<twig:ux:icon name="mingcute:eye-line" class="w-6 h-6 inline"/>
 										</a>
 										<a href="{{ path('app_partner_editMyStock', {'id': stock.id}) }}" class="text-indigo-600 hover:text-indigo-900" title="Modifier">
@@ -97,7 +96,7 @@
 											Aucun stock répertorié
 										</p>
 										<p class="mt-1">
-											<a href="{{ path('app_partner_new') }}" class="text-green-600 hover:text-green-500 underline">
+											<a href="{{ path('app_partner_newMyStock') }}" class="text-green-600 hover:text-green-500 underline">
 												Ajouter un premier mouvement de stock
 											</a>
 										</p>

@@ -43,6 +43,15 @@
 				<p class="text-amber-700 text-xs">L'utilisateur devra obligatoirement changer son mot de passe à sa prochaine connexion.</p>
 			</div>
 		</div>
+		{# Section Entreprise - C'est ici que l'inversion prend tout son sens #}
+		<div class="p-4 bg-blue-50 rounded-lg">
+			<div class="flex items-center mb-2">
+				<twig:ux:icon name="iconoir:community" class="w-5 h-5 text-green-600 mr-2"/>
+				<span class="font-semibold text-blue-900">Affectation Partenaire</span>
+			</div>
+			{{ form_widget(form.partner) }}
+			<p class="mt-2 text-xs text-blue-700 italic">Si cet utilisateur appartient à une entreprise partenaire, sélectionnez-la ci-dessus.</p>
+		</div>
 
 		{# Rôles et Statut #}
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -68,6 +77,7 @@
 			</div>
 		</div>
 	</div>
+
 
 	{# Footer #}
 	<div class="bg-gray-50 px-8 py-4 border-t border-gray-200 flex items-center justify-between">

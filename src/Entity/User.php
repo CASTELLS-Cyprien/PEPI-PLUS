@@ -252,7 +252,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'updated_by')]
     private Collection $userOrders;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'users')]
     private ?Partner $partner = null;
 
     public function isMustChangePassword(): ?bool
@@ -303,11 +303,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setPartner(?Partner $partner): static
     {
-
-        if ($partner !== null && $partner->getUser() !== $this) {
-            $partner->setUser($this);
-        }
-        
         $this->partner = $partner;
 
         return $this;

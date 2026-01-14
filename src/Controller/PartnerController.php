@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\OrderLine;
 use App\Repository\StockRepository;
 use App\Entity\Stock;
+use App\Entity\User;
 
 #[Route('/partner')]
 final class PartnerController extends AbstractController
@@ -26,15 +27,17 @@ final class PartnerController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_partner_new', methods: ['GET', 'POST'])]
+    #[Route('/gestion/new', name: 'app_partner_new', methods: ['GET', 'POST'])] // Ajout de POST
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $partner = new Partner();
+        $partner = new Partner(); // On crée l'objet ici
+        $partner->setCreatedAt(new \DateTimeImmutable()); // Initialise la date
+
         $form = $this->createForm(PartnerType::class, $partner);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($partner);
+            $entityManager->persist($partner); // On persiste le nouveau partenaire
             $entityManager->flush();
 
             return $this->redirectToRoute('app_partner_index', [], Response::HTTP_SEE_OTHER);
@@ -46,7 +49,7 @@ final class PartnerController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_partner_show', methods: ['GET'])]
+    #[Route('/gestion/{id}/show', name: 'app_partner_show', methods: ['GET'])]
     public function show(Partner $partner): Response
     {
         return $this->render('partner/show.html.twig', [
@@ -54,7 +57,7 @@ final class PartnerController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_partner_edit', methods: ['GET', 'POST'])]
+    #[Route('/gestion/{id}/edit', name: 'app_partner_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Partner $partner, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(PartnerType::class, $partner);
@@ -105,14 +108,14 @@ final class PartnerController extends AbstractController
             return $this->redirectToRoute('app_partner_myStock', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('partner/new.html.twig', [
+        return $this->render('partner/newMyStock.html.twig', [
             'stock' => $stock,
             'form' => $form,
         ]);
     }
 
-    #[Route('/my-stock/{id}/show', name: 'app_partner_show', methods: ['GET'])]
-    public function showPartner(Stock $stock): Response
+    #[Route('/my-stock/{id}/show', name: 'app_partner_showMyStock', methods: ['GET'])]
+    public function showMyStock(Stock $stock): Response
     {
         //Limiter l'accès aux partenaires seulement si ce n'est pas leur stock
 
@@ -126,7 +129,7 @@ final class PartnerController extends AbstractController
             return $this->redirectToRoute('app_partner_myStock', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('partner/show.html.twig', [
+        return $this->render('partner/showMyStock.html.twig', [
             'stock' => $stock,
         ]);
     }
@@ -143,21 +146,25 @@ final class PartnerController extends AbstractController
             return $this->redirectToRoute('app_partner_myStock', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('partner/edit.html.twig', [
+        return $this->render('partner/editMyStock.html.twig', [
             'stock' => $stock,
             'form' => $form,
         ]);
     }
-
-    #[Route('/{id}', name: 'app_partner_delete', methods: ['POST'])]
-    public function delete(Request $request, Stock $stock, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/delete', name: 'app_partner_delete', methods: ['POST'])]
+    public function delete(Request $request, Partner $partner, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $stock->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($stock);
+        if ($this->isCsrfTokenValid('delete' . $partner->getId(), $request->request->get('_token'))) {
+            $user = $partner->getUsers();
+
+
+
+            $entityManager->remove($partner);
             $entityManager->flush();
+            $this->addFlash('success', 'Partenaire supprimé et compte utilisateur désactivé.');
         }
 
-        return $this->redirectToRoute('app_partner_myStock', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_partner_index');
     }
 
     #[Route('/my-reservations/liste', name: 'app_partner_reservations', methods: ['GET'])]
@@ -166,12 +173,13 @@ final class PartnerController extends AbstractController
         // On récupère l'utilisateur connecté (celui qui a le ROLE_PARTNER)
         $user = $this->getUser();
 
-        // On cherche le partenaire lié à cet utilisateur
-        // Note : Votre entité Partner a une propriété $user
-        $partner = $entityManager->getRepository(Partner::class)->findOneBy(['user' => $user]);
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+        $partner = $user->getPartner(); // On récupère l'entreprise de l'utilisateur
 
         if (!$partner) {
-            throw $this->createNotFoundException('Aucun profil partenaire trouvé.');
+            $this->addFlash('error', 'Vous n\'êtes rattaché à aucune entreprise.');
+            return $this->redirectToRoute('app_dashboard');
         }
 
         // On récupère les lignes de commande via un QueryBuilder directement

@@ -11,6 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use App\Entity\Partner;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class UserType extends AbstractType
 {
@@ -58,6 +60,14 @@ class UserType extends AbstractType
                     'label' => 'Forcer la réinitialisation (Password123!)',
                     'required' => false,
                     'mapped' => false,
+                ])
+                ->add('partner', EntityType::class, [
+                    'class' => Partner::class,
+                    'choice_label' => 'companyName',
+                    'label' => 'Entreprise associée',
+                    'placeholder' => 'Aucune entreprise (Personnel interne)',
+                    'required' => false,
+                    'attr' => ['class' => 'w-full px-3 py-2 border border-gray-300 rounded-md']
                 ]);
         }
     }
