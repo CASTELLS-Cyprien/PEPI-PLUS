@@ -29,61 +29,88 @@
 
 		{# Content #}
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-			<div
-				class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
-				{# Table #}
-				<div class="overflow-x-auto">
-					<table class="min-w-full divide-y divide-gray-200">
-						<thead class="bg-gray-50">
-							<tr>
-								<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-									ID
-								</th>
-								<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-									Label
-								</th>
-								<th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-									Actions
-								</th>
-							</tr>
-						</thead>
-						<tbody class="bg-white divide-y divide-gray-200">
-							{% for item in packagings %}
-								<tr class="hover:bg-gray-50 transition-colors">
-									<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-										{{ item.id }}
-									</td>
-									<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-										{{ item.label }}
-									</td>
-									<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-										<a href="{{ path('app_packaging_show', {'id': item.id}) }}" class="inline-flex items-center text-green-600 hover:text-green-900">
-											<twig:ux:icon name="mingcute:eye-line" class="w-5 h-5 inline"/>
-										</a>
-										<a href="{{ path('app_packaging_edit', {'id': item.id}) }}" class="inline-flex items-center text-blue-600 hover:text-green-800 transition-colors">
-											<twig:ux:icon name="cuida:edit-outline" class="w-5 h-5 inline"/>
-										</a>
-									</td>
-								</tr>
-							{% else %}
+			<div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+				<div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+					<div class="flex justify-end p-4">
+						{{ form_start(searchForm, {'attr': {'class': 'relative w-full max-w-sm'}}) }}
+						<div
+							class="relative flex items-center">
+							{# Input de recherche #}
+							{{ form_widget(searchForm.query, {
+							'attr': {
+								'class': 'block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-all shadow-sm',
+								'placeholder': 'Rechercher...'
+								}
+							}) }}
+
+							<button type="submit" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-green-600 transition-colors">
+								<twig:ux:icon name="mingcute:search-line" class="h-5 w-5 ml-2"/>
+							</button>
+						</div>
+
+						{% if app.request.query.get('query') %}
+							<div class="absolute right-0 pt-5">
+								<a href="{{ path('app_order_index') }}" class="text-xs uppercase text-gray-400 hover:text-red-500 flex items-center transition-colors">
+									<twig:ux:icon name="iconoir:cancel" class="w-3 h-3 mr-1"/>
+									Effacer la recherche
+								</a>
+							</div>
+						{% endif %}
+						{{ form_end(searchForm) }}
+					</div>
+					{# Table #}
+					<div class="overflow-x-auto">
+						<table class="min-w-full divide-y divide-gray-200">
+							<thead class="bg-gray-50">
 								<tr>
-									<td colspan="5" class="px-6 py-12 text-center text-sm text-gray-500">
-										<twig:ux:icon name="iconoir:warning-circle" class="w-6 h-6"/>
-										<p class="mt-2">
-											Aucun élément trouvé
-										</p>
-										<p class="mt-1">
-											<a href="{{ path('app_packaging_new') }}" class="text-green-600 hover:text-green-500">
-												Créez votre premier élément
-											</a>
-										</p>
-									</td>
+									<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+										ID
+									</th>
+									<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+										Label
+									</th>
+									<th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+										Actions
+									</th>
 								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
+							</thead>
+							<tbody class="bg-white divide-y divide-gray-200">
+								{% for item in packagings %}
+									<tr class="hover:bg-gray-50 transition-colors">
+										<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+											{{ item.id }}
+										</td>
+										<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+											{{ item.label }}
+										</td>
+										<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+											<a href="{{ path('app_packaging_show', {'id': item.id}) }}" class="inline-flex items-center text-green-600 hover:text-green-900">
+												<twig:ux:icon name="mingcute:eye-line" class="w-5 h-5 inline"/>
+											</a>
+											<a href="{{ path('app_packaging_edit', {'id': item.id}) }}" class="inline-flex items-center text-blue-600 hover:text-green-800 transition-colors">
+												<twig:ux:icon name="cuida:edit-outline" class="w-5 h-5 inline"/>
+											</a>
+										</td>
+									</tr>
+								{% else %}
+									<tr>
+										<td colspan="5" class="px-6 py-12 text-center text-sm text-gray-500">
+											<twig:ux:icon name="iconoir:warning-circle" class="w-6 h-6"/>
+											<p class="mt-2">
+												Aucun élément trouvé
+											</p>
+											<p class="mt-1">
+												<a href="{{ path('app_packaging_new') }}" class="text-green-600 hover:text-green-500">
+													Créez votre premier élément
+												</a>
+											</p>
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-{% endblock %}
+	{% endblock %}

@@ -12,15 +12,22 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Form\ChangePasswordType;
+use App\Form\SearchType;
 
 #[Route('/user')]
 final class UserController extends AbstractController
 {
     #[Route(name: 'app_user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
+    public function index(Request $request, UserRepository $userRepository): Response
     {
+        $form = $this->createForm(SearchType::class);
+        $form->handleRequest($request);
+
+        // On récupère le terme directement depuis l'URL via 'query'
+        $searchTerm = $request->query->get('query');
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $userRepository->searchByTerm($searchTerm),
+            'searchForm' => $form->createView(),
         ]);
     }
 

@@ -11,40 +11,52 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\User;
-use App\Entity\Plant;
-use App\Entity\Season;
-use App\Entity\Packaging;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Form\SearchType;
 
 #[Route('/stock')]
 final class StockController extends AbstractController
 {
 
     #[Route('/global', name: 'app_stock_index', methods: ['GET'])]
-    public function index(StockRepository $stockRepository): Response
+    public function index(Request $request, StockRepository $stockRepository): Response
     {
+        $form = $this->createForm(SearchType::class);
+        $form->handleRequest($request);
+
+        // On récupère le terme directement depuis l'URL via 'query'
+        $searchTerm = $request->query->get('query');
+
         if ($this->isGranted('ROLE_PARTNER')) {
             throw $this->createAccessDeniedException('Accès refusé.');
         }
 
         return $this->render('stock/indexGlobal.html.twig', [
-            'stocks' => $stockRepository->findAll(),
+            'stocks' => $stockRepository->searchByTerm($searchTerm),
+            'searchForm' => $form->createView(),
         ]);
     }
 
     #[Route('/gestion', name: 'app_stock_gestion_index', methods: ['GET'])]
-    public function Gestionindex(StockRepository $stockRepository): Response
+    public function Gestionindex(Request $request, StockRepository $stockRepository): Response
     {
+        $form = $this->createForm(SearchType::class);
+        $form->handleRequest($request);
+
+        // On récupère le terme directement depuis l'URL via 'query'
+        $searchTerm = $request->query->get('query');
+        
         if ($this->isGranted('ROLE_PARTNER')) {
             throw $this->createAccessDeniedException('Accès refusé.');
         }
 
         return $this->render('stock/indexGestion.html.twig', [
             'stocks' => $stockRepository->findBy(['partner' => null]),
+            'stocks' => $stockRepository->searchByTerm($searchTerm),
+            'searchForm' => $form->createView(),
         ]);
     }
 
-    
+
 
     #[Route('/new', name: 'app_stock_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -141,6 +153,4 @@ final class StockController extends AbstractController
 
         return $this->redirectToRoute('app_stock_index', [], Response::HTTP_SEE_OTHER);
     }
-
-
 }

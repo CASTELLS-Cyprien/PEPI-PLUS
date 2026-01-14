@@ -16,6 +16,20 @@ class SeasonRepository extends ServiceEntityRepository
         parent::__construct($registry, Season::class);
     }
 
+    public function searchByTerm(?string $term): array
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        if ($term) {
+            $qb->andWhere('p.year LIKE :term')
+                ->setParameter('term', '%' . $term . '%');
+        }
+
+        return $qb->orderBy('p.year', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Season[] Returns an array of Season objects
 //     */

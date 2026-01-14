@@ -109,7 +109,7 @@
 				</a>
 
 				{# Optionnel : Bouton pour voir directement ses stocks #}
-				<a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 shadow-sm">
+				<a href="{{ path('app_stock_index', {'partner': partner.id}) }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 shadow-sm">
 					<twig:ux:icon name="mingcute:eye-line" class="w-4 h-4 inline mr-2"/>
 					Consulter l'inventaire de ce partenaire
 				</a>

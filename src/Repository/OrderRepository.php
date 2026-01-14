@@ -16,6 +16,20 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
+    public function searchByTerm(?string $term): array
+    {
+        $qd = $this->createQueryBuilder('p');
+
+        if ($term) {
+            $qd
+                ->andWhere('p.orderNumber LIKE :term OR p.status LIKE :term')
+                ->setParameter('term', "%$term%");
+        }
+
+        return $qd-> orderBy('p.orderNumber', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 //    /**
 //     * @return Order[] Returns an array of Order objects
 //     */

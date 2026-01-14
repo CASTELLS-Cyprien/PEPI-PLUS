@@ -11,17 +11,25 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use App\Entity\Stock;
+use App\Form\SearchType;
 use App\Entity\OrderLine;
+use App\Entity\Stock;
 
 #[Route('/order')]
 final class OrderController extends AbstractController
 {
     #[Route(name: 'app_order_index', methods: ['GET'])]
-    public function index(OrderRepository $orderRepository): Response
+    public function index(Request $request, OrderRepository $orderRepository): Response
     {
+        $form = $this->createForm(SearchType::class);
+        $form->handleRequest($request);
+
+        // On récupère le terme directement depuis l'URL via 'query'
+        $searchTerm = $request->query->get('query');
+
         return $this->render('order/index.html.twig', [
-            'orders' => $orderRepository->findAll(),
+            'orders' => $orderRepository->searchByTerm($searchTerm),
+            'searchForm' => $form->createView(),
         ]);
     }
 

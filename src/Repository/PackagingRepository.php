@@ -16,6 +16,19 @@ class PackagingRepository extends ServiceEntityRepository
         parent::__construct($registry, Packaging::class);
     }
 
+    public function searchByTerm(?string $term): array
+    {
+        $qd = $this->createQueryBuilder('p');
+
+        if ($term) {
+            $qd
+                ->andWhere('p.label LIKE :term')
+                ->setParameter('term', "%$term%");
+        }
+
+        return $qd->orderBy('p.label', 'ASC')->getQuery()->getResult();
+    }
+
 //    /**
 //     * @return Packaging[] Returns an array of Packaging objects
 //     */

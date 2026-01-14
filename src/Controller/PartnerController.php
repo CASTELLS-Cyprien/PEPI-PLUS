@@ -15,15 +15,21 @@ use App\Entity\OrderLine;
 use App\Repository\StockRepository;
 use App\Entity\Stock;
 use App\Entity\User;
+use App\Form\SearchType;
 
 #[Route('/partner')]
 final class PartnerController extends AbstractController
 {
     #[Route(name: 'app_partner_index', methods: ['GET'])]
-    public function index(PartnerRepository $partnerRepository): Response
+    public function index(Request $request, PartnerRepository $partnerRepository): Response
     {
+        $form = $this->createForm(SearchType::class, null);
+        $form->handleRequest($request);
+
+        $searchTerm = $request->query->get('query');
         return $this->render('partner/index.html.twig', [
-            'partners' => $partnerRepository->findAll(),
+            'partners' => $partnerRepository->searchByTerm($searchTerm),
+            'searchForm' => $form->createView(),
         ]);
     }
 

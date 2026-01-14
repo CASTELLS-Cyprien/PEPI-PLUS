@@ -15,64 +15,41 @@ class PlantRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Plant::class);
     }
-
-    /**
-     * Récupère les plantes filtrées avec pagination
-     */
-    public function findPlantsPaginated(int $page, int $limit, ?string $search): array
+    public function searchByTerm(?string $term): array
     {
         $qb = $this->createQueryBuilder('p');
 
-        if ($search) {
-            $qb->andWhere('p.latinName LIKE :search OR p.commonName LIKE :search')
-                ->setParameter('search', '%' . $search . '%');
+        if ($term) {
+            $qb->andWhere('p.latinName LIKE :term OR p.commonName LIKE :term OR p.type LIKE :term')
+                ->setParameter('term', '%' . $term . '%');
         }
 
         return $qb->orderBy('p.id', 'ASC')
-            ->setFirstResult(($page - 1) * $limit)
-            ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
     }
-
-    /**
-     * Compte le total pour la pagination
-     */
-    public function countTotalPlants(?string $search): int
-    {
-        $qb = $this->createQueryBuilder('p')
-            ->select('count(p.id)');
-
-        if ($search) {
-            $qb->andWhere('p.latinName LIKE :search OR p.commonName LIKE :search')
-                ->setParameter('search', '%' . $search . '%');
-        }
-
-        return (int) $qb->getQuery()->getSingleScalarResult();
-    }
-
     //    /**
-//     * @return Plant[] Returns an array of Plant objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //     * @return Plant[] Returns an array of Plant objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('p.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
     //    public function findOneBySomeField($value): ?Plant
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    {
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

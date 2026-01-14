@@ -16,6 +16,20 @@ class PartnerRepository extends ServiceEntityRepository
         parent::__construct($registry, Partner::class);
     }
 
+    public function searchByTerm(?string $term): array
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        if ($term) {
+            $qb->andWhere('p.companyName LIKE :term')
+                ->setParameter('term', '%' . $term . '%');
+        }
+
+        return $qb->orderBy('p.companyName', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Partner[] Returns an array of Partner objects
 //     */

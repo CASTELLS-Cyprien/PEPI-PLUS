@@ -10,35 +10,30 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Form\SearchType;
 
 #[Route('/plant')]
 final class PlantController extends AbstractController
 {
-    /**
-     * Cette fonction gère maintenant la recherche ET la pagination
-     */
     #[Route(name: 'app_plant_index', methods: ['GET'])]
     public function index(Request $request, PlantRepository $plantRepository): Response
-    {
-        // 1. Gestion de la Recherche (récupère le paramètre 'q' dans l'URL)
-        $searchTerm = $request->query->get('q');
+{
+    // On crée le formulaire sans protection CSRF car c'est une recherche GET publique
+    $form = $this->createForm(SearchType::class, null, [
+        'method' => 'GET',
+        'csrf_protection' => false
+    ]);
+    
+    $form->handleRequest($request);
 
-        // 2. Gestion de la Pagination (page 1 par défaut, limite de 25)
-        $page = $request->query->getInt('page', 1);
-        $limit = 25;
+    // On récupère la valeur du champ 'query'
+    $searchTerm = $form->get('query')->getData();
 
-        $plants = $plantRepository->findPlantsPaginated($page, $limit, $searchTerm);
-        $totalItems = $plantRepository->countTotalPlants($searchTerm);
-        $totalPages = ceil($totalItems / $limit);
-
-        return $this->render('plant/index.html.twig', [
-            'plants' => $plants,
-            'searchTerm' => $searchTerm,
-            'currentPage' => $page,
-            'totalPages' => $totalPages,
-            'totalItems' => $totalItems
-        ]);
-    }
+    return $this->render('plant/index.html.twig', [
+        'plants' => $plantRepository->searchByTerm($searchTerm),
+        'searchForm' => $form->createView(),
+    ]);
+}
 
     #[Route('/new', name: 'app_plant_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response

@@ -10,15 +10,23 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Form\SearchType;
 
 #[Route('/packaging')]
 final class PackagingController extends AbstractController
 {
     #[Route(name: 'app_packaging_index', methods: ['GET'])]
-    public function index(PackagingRepository $packagingRepository): Response
+    public function index(Request $request, PackagingRepository $packagingRepository): Response
     {
+        $form = $this->createForm(SearchType::class);
+        $form->handleRequest($request);
+
+        // On récupère le terme directement depuis l'URL via 'query'
+        $searchTerm = $request->query->get('query');
+
         return $this->render('packaging/index.html.twig', [
-            'packagings' => $packagingRepository->findAll(),
+            'packagings' => $packagingRepository->searchByTerm($searchTerm),
+            'searchForm' => $form->createView(),
         ]);
     }
 
