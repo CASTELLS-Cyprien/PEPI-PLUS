@@ -24,12 +24,32 @@
 			{% include 'includes/sidebar.html.twig' %}
 		{% endif %}
 
-		{# Ce conteneur "main" va maintenant gérer la marge à gauche #}
-		<main class="flex-1 {% if app.user %}lg:ml-72{% endif %} min-h-screen"> {% block body %}{% endblock %}
-			</main>
+		{# templates/base.html.twig #}
+		<main
+			class="flex-1 {% if app.user %}lg:ml-72{% endif %} min-h-screen">
 
-			{% block javascripts %}
-				{{ encore_entry_script_tags('app') }}
-			{% endblock %}
-		</body>
-	</html>
+			{# Section des Messages Flash #}
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+				{% for message in app.flashes('success') %}
+					<div class="mb-4 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg flex items-center">
+						<twig:ux:icon name="bi:check-lg" class="w-5 h-5 mr-2"/>
+						<span>{{ message }}</span>
+					</div>
+				{% endfor %}
+
+				{% for message in app.flashes('error') %}
+					<div class="mb-4 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg flex items-center">
+						<twig:ux:icon name="iconoir:warning-circle" class="w-5 h-5 mr-2"/>
+						<span>{{ message }}</span>
+					</div>
+				{% endfor %}
+			</div>
+
+			{% block body %}{% endblock %}
+		</main>
+
+		{% block javascripts %}
+			{{ encore_entry_script_tags('app') }}
+		{% endblock %}
+	</body>
+</html>

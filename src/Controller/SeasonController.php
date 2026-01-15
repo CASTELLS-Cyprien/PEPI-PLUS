@@ -40,18 +40,32 @@ final class SeasonController extends AbstractController
         //Si l'utilisateur est un partenaire, on le redirige vers la page de création de son stock 
         if ($this->isGranted('ROLE_PARTNER')) {
             if ($form->isSubmitted() && $form->isValid()) {
-                $entityManager->persist($season);
-                $entityManager->flush();
+                try {
+                    $entityManager->persist($season);
+                    $entityManager->flush();
+
+                    $this->addFlash('success', 'Saison ajoutée avec succès !');
+
+                    return $this->redirectToRoute('app_partner_newMyStock', [], Response::HTTP_SEE_OTHER);
+                } catch (\Exception $e) {
+                    $this->addFlash('error', 'Impossible d\'ajouter la saison : ' . $e->getMessage());
+                }
 
                 return $this->redirectToRoute('app_partner_newMyStock', [], Response::HTTP_SEE_OTHER);
             }
         } //sinon si c'est un collaborateur, on le redirige vers la page de gestion des plantes
         else if ($this->isGranted('ROLE_ADMIN', 'ROLE_COLLABORATOR')) {
             if ($form->isSubmitted() && $form->isValid()) {
-                $entityManager->persist($season);
-                $entityManager->flush();
+                try {
+                    $entityManager->persist($season);
+                    $entityManager->flush();
 
-                return $this->redirectToRoute('app_season_index', [], Response::HTTP_SEE_OTHER);
+                    $this->addFlash('success', 'Saison ajoutée avec succès !');
+
+                    return $this->redirectToRoute('app_season_index', [], Response::HTTP_SEE_OTHER);
+                } catch (\Exception $e) {
+                    $this->addFlash('error', 'Impossible d\'ajouter la saison : ' . $e->getMessage());
+                }
             }
         }
 
@@ -96,9 +110,15 @@ final class SeasonController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            try {
+                $entityManager->flush();
 
-            return $this->redirectToRoute('app_season_index', [], Response::HTTP_SEE_OTHER);
+                $this->addFlash('success', 'Saison mise à jour avec succès !');
+
+                return $this->redirectToRoute('app_season_index', [], Response::HTTP_SEE_OTHER);
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Impossible de mettre à jour la saison : ' . $e->getMessage());
+            }
         }
 
         return $this->render('season/edit.html.twig', [
@@ -111,8 +131,16 @@ final class SeasonController extends AbstractController
     public function delete(Request $request, Season $season, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $season->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($season);
-            $entityManager->flush();
+            try {
+                $entityManager->remove($season);
+                $entityManager->flush();
+
+                $this->addFlash('success', 'Saison supprimée avec succès !');
+
+                return $this->redirectToRoute('app_season_index', [], Response::HTTP_SEE_OTHER);
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Impossible de supprimer la saison : ' . $e->getMessage());
+            }
         }
 
         return $this->redirectToRoute('app_season_index', [], Response::HTTP_SEE_OTHER);

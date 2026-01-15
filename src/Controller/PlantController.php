@@ -17,23 +17,23 @@ final class PlantController extends AbstractController
 {
     #[Route(name: 'app_plant_index', methods: ['GET'])]
     public function index(Request $request, PlantRepository $plantRepository): Response
-{
-    // On crée le formulaire sans protection CSRF car c'est une recherche GET publique
-    $form = $this->createForm(SearchType::class, null, [
-        'method' => 'GET',
-        'csrf_protection' => false
-    ]);
-    
-    $form->handleRequest($request);
+    {
+        // On crée le formulaire sans protection CSRF car c'est une recherche GET publique
+        $form = $this->createForm(SearchType::class, null, [
+            'method' => 'GET',
+            'csrf_protection' => false
+        ]);
 
-    // On récupère la valeur du champ 'query'
-    $searchTerm = $form->get('query')->getData();
+        $form->handleRequest($request);
 
-    return $this->render('plant/index.html.twig', [
-        'plants' => $plantRepository->searchByTerm($searchTerm),
-        'searchForm' => $form->createView(),
-    ]);
-}
+        // On récupère la valeur du champ 'query'
+        $searchTerm = $form->get('query')->getData();
+
+        return $this->render('plant/index.html.twig', [
+            'plants' => $plantRepository->searchByTerm($searchTerm),
+            'searchForm' => $form->createView(),
+        ]);
+    }
 
     #[Route('/new', name: 'app_plant_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -45,18 +45,32 @@ final class PlantController extends AbstractController
         //Si l'utilisateur est un partenaire, on le redirige vers la page de création de son stock 
         if ($this->isGranted('ROLE_PARTNER')) {
             if ($form->isSubmitted() && $form->isValid()) {
-                $entityManager->persist($plant);
-                $entityManager->flush();
+                try {
+                    $entityManager->persist($plant);
+                    $entityManager->flush();
+
+                    $this->addFlash('success', 'Plant ajoutée avec succès !');
+
+                    return $this->redirectToRoute('app_partner_newMyStock', [], Response::HTTP_SEE_OTHER);
+                } catch (\Exception $e) {
+                    $this->addFlash('error', 'Impossible d\'ajouter le plant : ' . $e->getMessage());
+                }
 
                 return $this->redirectToRoute('app_partner_newMyStock', [], Response::HTTP_SEE_OTHER);
             }
         } //sinon si c'est un collaborateur, on le redirige vers la page de gestion des plantes
         else if ($this->isGranted('ROLE_ADMIN', 'ROLE_COLLABORATOR')) {
             if ($form->isSubmitted() && $form->isValid()) {
-                $entityManager->persist($plant);
-                $entityManager->flush();
+                try {
+                    $entityManager->persist($plant);
+                    $entityManager->flush();
 
-                return $this->redirectToRoute('app_plant_index', [], Response::HTTP_SEE_OTHER);
+                    $this->addFlash('success', 'Plant ajoutée avec succès !');
+
+                    return $this->redirectToRoute('app_plant_index', [], Response::HTTP_SEE_OTHER);
+                } catch (\Exception $e) {
+                    $this->addFlash('error', 'Impossible d\'ajouter le plant : ' . $e->getMessage());
+                }
             }
         }
 
@@ -81,11 +95,17 @@ final class PlantController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            try {
+                $entityManager->persist($plant);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('app_plant_index', [], Response::HTTP_SEE_OTHER);
+                $this->addFlash('success', 'Plant mis à jour avec succès !');
+
+                return $this->redirectToRoute('app_plant_index', [], Response::HTTP_SEE_OTHER);
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Impossible de mettre à jour le plant : ' . $e->getMessage());
+            }
         }
-
         return $this->render('plant/edit.html.twig', [
             'plant' => $plant,
             'form' => $form,
@@ -96,8 +116,15 @@ final class PlantController extends AbstractController
     public function delete(Request $request, Plant $plant, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $plant->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($plant);
-            $entityManager->flush();
+            try {
+                $entityManager->remove($plant);
+                $entityManager->flush();
+                $this->addFlash('success', 'Plant supprimée avec succès !');
+
+                return $this->redirectToRoute('app_plant_index', [], Response::HTTP_SEE_OTHER);
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Impossible de supprimer le plant : ' . $e->getMessage());
+            }
         }
 
         return $this->redirectToRoute('app_plant_index', [], Response::HTTP_SEE_OTHER);

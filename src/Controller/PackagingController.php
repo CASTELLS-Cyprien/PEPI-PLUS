@@ -40,18 +40,30 @@ final class PackagingController extends AbstractController
         //Si l'utilisateur est un partenaire, on le redirige vers la page de création de son stock 
         if ($this->isGranted('ROLE_PARTNER')) {
             if ($form->isSubmitted() && $form->isValid()) {
-                $entityManager->persist($packaging);
-                $entityManager->flush();
+                try {
+                    $entityManager->persist($packaging);
+                    $entityManager->flush();
 
-                return $this->redirectToRoute('app_partner_newMyStock', [], Response::HTTP_SEE_OTHER);
+                    $this->addFlash('success', 'Conditionnement ajoutée avec succès !');
+
+                    return $this->redirectToRoute('app_partner_newMyStock', [], Response::HTTP_SEE_OTHER);
+                } catch (\Exception $e) {
+                    $this->addFlash('error', 'Impossible d\'ajouter le conditionnement : ' . $e->getMessage());
+                }
             }
         } //sinon si c'est un collaborateur, on le redirige vers la page de gestion des plantes
         else if ($this->isGranted('ROLE_ADMIN', 'ROLE_COLLABORATOR')) {
             if ($form->isSubmitted() && $form->isValid()) {
-                $entityManager->persist($packaging);
-                $entityManager->flush();
+                try {
+                    $entityManager->persist($packaging);
+                    $entityManager->flush();
 
-                return $this->redirectToRoute('app_packaging_index', [], Response::HTTP_SEE_OTHER);
+                    $this->addFlash('success', 'Conditionnement ajoutée avec succès !');
+
+                    return $this->redirectToRoute('app_packaging_index', [], Response::HTTP_SEE_OTHER);
+                } catch (\Exception $e) {
+                    $this->addFlash('error', 'Impossible d\'ajouter le conditionnement : ' . $e->getMessage());
+                }
             }
         }
 
@@ -76,9 +88,16 @@ final class PackagingController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            try {
+                $entityManager->persist($packaging);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('app_packaging_index', [], Response::HTTP_SEE_OTHER);
+                $this->addFlash('success', 'Conditionnement ajoutée avec succès !');
+
+                return $this->redirectToRoute('app_packaging_index', [], Response::HTTP_SEE_OTHER);
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Impossible d\'ajouter le conditionnement : ' . $e->getMessage());
+            }
         }
 
         return $this->render('packaging/edit.html.twig', [
@@ -91,9 +110,19 @@ final class PackagingController extends AbstractController
     public function delete(Request $request, Packaging $packaging, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $packaging->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($packaging);
-            $entityManager->flush();
+
+            try {
+                $entityManager->remove($packaging);
+                $entityManager->flush();
+
+                $this->addFlash('success', 'Conditionnement supprimée avec succès !');
+
+                return $this->redirectToRoute('app_packaging_index', [], Response::HTTP_SEE_OTHER);
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Impossible de supprimer le conditionnement : ' . $e->getMessage());
+            }
         }
+
 
         return $this->redirectToRoute('app_packaging_index', [], Response::HTTP_SEE_OTHER);
     }

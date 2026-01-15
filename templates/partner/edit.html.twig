@@ -33,8 +33,6 @@
 							<twig:ux:icon name="mingcute:eye-line" class="w-5 h-5 inline mr-2"/>
 							Voir la fiche
 						</a>
-						{# Formulaire de suppression (option de désactivation gérée en controller) #}
-						{{ include('partner/_delete_form.html.twig') }}
 					</div>
 				</div>
 			</div>
@@ -43,21 +41,6 @@
 		{# Content #}
 		<div
 			class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-			{# Alertes Flash #}
-			{% for message in app.flashes('success') %}
-				<div class="mb-4 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg flex items-center">
-					<twig:ux:icon name="mdi:check-circle-outline" class="w-5 h-5 inline mr-2"/>
-					<span>{{ message }}</span>
-				</div>
-			{% endfor %}
-
-			{% for message in app.flashes('error') %}
-				<div class="mb-4 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg flex items-center">
-					<twig:ux:icon name="iconoir:warning-circle" class="w-5 h-5 inline mr-2"/>
-					<span>{{ message }}</span>
-				</div>
-			{% endfor %}
-
 			{# Inclusion du formulaire global #}
 			<div class="bg-white shadow-sm rounded-lg border border-gray-200 p-6">
 				{{ include('partner/_form.html.twig', {

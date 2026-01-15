@@ -44,8 +44,17 @@ final class PartnerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($partner); // On persiste le nouveau partenaire
-            $entityManager->flush();
+
+            try {
+                $entityManager->persist($partner);
+                $entityManager->flush();
+
+                $this->addFlash('success', 'Partenaire ajouté avec succès !');
+
+                return $this->redirectToRoute('app_partner_index', [], Response::HTTP_SEE_OTHER);
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Impossible d\'ajouter le partenaire : ' . $e->getMessage());
+            }
 
             return $this->redirectToRoute('app_partner_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -56,7 +65,7 @@ final class PartnerController extends AbstractController
         ]);
     }
 
-    #[Route('/gestion/{id}/show', name: 'app_partner_show', methods: ['GET'])]
+    #[Route('/{id}/show', name: 'app_partner_show', methods: ['GET'])]
     public function show(Partner $partner): Response
     {
         return $this->render('partner/show.html.twig', [
@@ -64,15 +73,23 @@ final class PartnerController extends AbstractController
         ]);
     }
 
-    #[Route('/gestion/{id}/edit', name: 'app_partner_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_partner_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Partner $partner, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(PartnerType::class, $partner);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                try {
+                    $entityManager->flush();
+                    $this->addFlash('success', 'Partenaire mis à jour avec succès !');
 
+                    return $this->redirectToRoute('app_partner_index', [], Response::HTTP_SEE_OTHER);
+                } catch (\Exception $e) {
+                    $this->addFlash('error', 'Impossible de mettre à jour le partenaire : ' . $e->getMessage());
+                }
+            }
             return $this->redirectToRoute('app_partner_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -117,10 +134,16 @@ final class PartnerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($stock);
-            $entityManager->flush();
+            try {
+                $entityManager->persist($stock);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('app_partner_myStock', [], Response::HTTP_SEE_OTHER);
+                $this->addFlash('success', 'Nouveau stock ajouté avec succès !');
+
+                return $this->redirectToRoute('app_partner_myStock', [], Response::HTTP_SEE_OTHER);
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Impossible d\'ajouter le stock : ' . $e->getMessage());
+            }
         }
 
         return $this->render('partner/newMyStock.html.twig', [
@@ -138,7 +161,7 @@ final class PartnerController extends AbstractController
         $user = $this->getUser();
 
         if (
-            $this->isGranted('ROLE_PARTNER') &&
+            $this->isGranted('ROLE_ADMIN', 'ROLE_COLLABORATOR') &&
             $stock->getPartner() !== $user->getPartner()
         ) {
             return $this->redirectToRoute('app_partner_myStock', [], Response::HTTP_SEE_OTHER);
@@ -156,9 +179,16 @@ final class PartnerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            try {
+                $entityManager->persist($stock);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('app_partner_myStock', [], Response::HTTP_SEE_OTHER);
+                $this->addFlash('success', 'Stock mis à jour avec succès !');
+
+                return $this->redirectToRoute('app_partner_myStock', [], Response::HTTP_SEE_OTHER);
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Impossible de mettre à jour le stock : ' . $e->getMessage());
+            }
         }
 
         return $this->render('partner/editMyStock.html.twig', [
@@ -166,22 +196,6 @@ final class PartnerController extends AbstractController
             'form' => $form,
         ]);
     }
-    #[Route('/{id}/delete', name: 'app_partner_delete', methods: ['POST'])]
-    public function delete(Request $request, Partner $partner, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete' . $partner->getId(), $request->request->get('_token'))) {
-            $user = $partner->getUsers();
-
-
-
-            $entityManager->remove($partner);
-            $entityManager->flush();
-            $this->addFlash('success', 'Partenaire supprimé et compte utilisateur désactivé.');
-        }
-
-        return $this->redirectToRoute('app_partner_index');
-    }
-
     #[Route('/my-reservations/liste', name: 'app_partner_reservations', methods: ['GET'])]
     public function reservations(Request $request, OrderLineRepository $orderLineRepo): Response
     {

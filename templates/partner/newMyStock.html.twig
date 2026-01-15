@@ -28,24 +28,6 @@
 
 		{# Content #}
 		<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-			{% for message in app.flashes('success') %}
-				<div class="mb-4 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg flex items-start">
-					<twig:ux:icon name="bi:check-lg" class="w-6 h-6 inline mr-2"/>
-					<span>
-						{{ message }}
-					</span>
-				</div>
-			{% endfor %}
-
-			{% for message in app.flashes('error') %}
-				<div class="mb-4 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg flex items-start">
-					<twig:ux:icon name="iconoir:warning-circle" class="w-4 h-4 inline mr-2"/>
-					<span>
-						{{ message }}
-					</span>
-				</div>
-			{% endfor %}
-
 			{{ include('partner/_formMyStock.html.twig', {
             button_label: 'Mettre à jour',
         }) }}

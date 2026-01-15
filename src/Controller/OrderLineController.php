@@ -30,10 +30,16 @@ final class OrderLineController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($orderLine);
-            $entityManager->flush();
+            try {
+                $entityManager->persist($orderLine);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('app_order_line_index', [], Response::HTTP_SEE_OTHER);
+                $this->addFlash('success', 'Ligne de commande ajoutée avec succès !');
+
+                return $this->redirectToRoute('app_order_line_index', [], Response::HTTP_SEE_OTHER);
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Impossible d\'ajouter la ligne de commande : ' . $e->getMessage());
+            }
         }
 
         return $this->render('order_line/new.html.twig', [
@@ -57,9 +63,16 @@ final class OrderLineController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            try {
+                $entityManager->persist($orderLine);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('app_order_line_index', [], Response::HTTP_SEE_OTHER);
+                $this->addFlash('success', 'Ligne de commande mise à jour avec succès !');
+
+                return $this->redirectToRoute('app_order_line_index', [], Response::HTTP_SEE_OTHER);
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Impossible de mettre à jour la ligne de commande : ' . $e->getMessage());
+            }
         }
 
         return $this->render('order_line/edit.html.twig', [
@@ -71,9 +84,17 @@ final class OrderLineController extends AbstractController
     #[Route('/{id}', name: 'app_order_line_delete', methods: ['POST'])]
     public function delete(Request $request, OrderLine $orderLine, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$orderLine->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $orderLine->getId(), $request->getPayload()->getString('_token'))) {
+        }
+        try {
             $entityManager->remove($orderLine);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Ligne de commande supprimée avec succès !');
+
+            return $this->redirectToRoute('app_order_line_index', [], Response::HTTP_SEE_OTHER);
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Impossible de supprimer la ligne de commande : ' . $e->getMessage());
         }
 
         return $this->redirectToRoute('app_order_line_index', [], Response::HTTP_SEE_OTHER);

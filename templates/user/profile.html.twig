@@ -27,14 +27,6 @@
 					</div>
 				</div>
 			</div>
-			{% for message in app.flashes('success') %}
-				<div class="mb-6 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg flex items-center shadow-sm">
-					<twig:ux:icon name="bi:check-lg" class="w-5 h-5 inline mr-2"/>
-					<span class="text-sm font-bold">
-						{{ message }}
-					</span>
-				</div>
-			{% endfor %}
 			<div
 				class="space-y-6">
 				{# SECTION 1 : IDENTITÉ #}

@@ -41,10 +41,17 @@ final class OrderController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($order);
-            $order->setCreatedAt(new \DateTimeImmutable());
-            $entityManager->flush();
+            try {
+                $entityManager->persist($order);
+                $order->setCreatedAt(new \DateTimeImmutable());
+                $entityManager->flush();
 
+                $this->addFlash('success', 'Commande enregistrée avec succès !');
+
+                return $this->redirectToRoute('app_order_index', [], Response::HTTP_SEE_OTHER);
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Impossible d\'enregistrer la commande : ' . $e->getMessage());
+            }
             return $this->redirectToRoute('app_order_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -68,31 +75,22 @@ final class OrderController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // On met à jour la trace de modification
-            $order->setUpdatedBy($this->getUser());
-            $order->setUpdatedAt(new \DateTimeImmutable());
+            try {
+                $order->setUpdatedBy($this->getUser());
+                $order->setUpdatedAt(new \DateTimeImmutable());
+                $entityManager->flush();
 
-            $entityManager->flush();
-
-            $this->addFlash('success', 'Le statut de la commande a été mis à jour.');
-            return $this->redirectToRoute('app_order_show', ['id' => $order->getId()]);
+                $this->addFlash('success', 'Commande mise à jour avec succès !');
+                return $this->redirectToRoute('app_order_show', ['id' => $order->getId()]);
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Impossible de mettre à jour la commande : ' . $e->getMessage());
+            }
         }
 
         return $this->render('order/edit.html.twig', [
             'order' => $order,
             'form' => $form,
         ]);
-    }
-
-    #[Route('/{id}', name: 'app_order_delete', methods: ['POST'])]
-    public function delete(Request $request, Order $order, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete' . $order->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($order);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('app_order_index', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/{id}/deliver', name: 'app_order_deliver', methods: ['POST'])]
