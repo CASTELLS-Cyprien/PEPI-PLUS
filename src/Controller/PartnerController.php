@@ -16,6 +16,7 @@ use App\Repository\StockRepository;
 use App\Entity\Stock;
 use App\Entity\User;
 use App\Form\SearchType;
+use App\Repository\OrderLineRepository;
 
 #[Route('/partner')]
 final class PartnerController extends AbstractController
@@ -81,7 +82,7 @@ final class PartnerController extends AbstractController
         ]);
     }
     #[Route('/my-stock/liste', name: 'app_partner_myStock', methods: ['GET'])]
-    public function MyStockindex(StockRepository $stockRepository): Response
+    public function MyStockIndex(Request $request, StockRepository $stockRepository): Response
     {
         if ($this->isGranted(['ROLE_ADMIN', 'ROLE_COLLABORATOR'])) {
             throw $this->createAccessDeniedException('Accès refusé.');
@@ -91,12 +92,20 @@ final class PartnerController extends AbstractController
         $user = $this->getUser();
         $partner = $user->getPartner();
 
+        $form = $this->createForm(SearchType::class);
+        $form->handleRequest($request);
+
+        // On récupère le terme directement depuis l'URL via 'query'
+        $searchTerm = $request->query->get('query');
+
         if (!$partner) {
             throw $this->createAccessDeniedException('Aucun profil partenaire associé à ce compte.');
         }
 
         return $this->render('partner/myStock.html.twig', [
             'stocks' => $stockRepository->findBy(['partner' => $partner]),
+            'stocks' => $stockRepository->searchByTerm($searchTerm),
+            'searchForm' => $form->createView(),
         ]);
     }
 
@@ -174,32 +183,27 @@ final class PartnerController extends AbstractController
     }
 
     #[Route('/my-reservations/liste', name: 'app_partner_reservations', methods: ['GET'])]
-    public function reservations(EntityManagerInterface $entityManager): Response
+    public function reservations(Request $request, OrderLineRepository $orderLineRepo): Response
     {
-        // On récupère l'utilisateur connecté (celui qui a le ROLE_PARTNER)
-        $user = $this->getUser();
-
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
-        $partner = $user->getPartner(); // On récupère l'entreprise de l'utilisateur
+        $partner = $user->getPartner();
 
         if (!$partner) {
-            $this->addFlash('error', 'Vous n\'êtes rattaché à aucune entreprise.');
+            $this->addFlash('error', 'Aucune entreprise rattachée.');
             return $this->redirectToRoute('app_dashboard');
         }
 
-        // On récupère les lignes de commande via un QueryBuilder directement
-        // (Puisque vous n'avez rien dans le Repository OrderLine)
-        $orderLines = $entityManager->getRepository(OrderLine::class)
-            ->createQueryBuilder('ol')
-            ->join('ol.stock', 's')
-            ->where('s.partner = :partner')
-            ->setParameter('partner', $partner)
-            ->getQuery()
-            ->getResult();
+        $form = $this->createForm(SearchType::class);
+        $form->handleRequest($request);
+
+        $searchTerm = $request->query->get('query');
+
+        $orderLines = $orderLineRepo->searchReservations($partner, $searchTerm);
 
         return $this->render('partner/myReservation.html.twig', [
             'orderLines' => $orderLines,
+            'searchForm' => $form->createView(),
         ]);
     }
 }

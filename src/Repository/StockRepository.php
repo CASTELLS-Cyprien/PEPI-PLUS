@@ -35,7 +35,8 @@ class StockRepository extends ServiceEntityRepository
                     'plant.latinName LIKE :term',
                     'plant.commonName LIKE :term',
                     'season.year LIKE :term',
-                    'packaging.label LIKE :term'
+                    'packaging.label LIKE :term',
+                    's.quantity LIKE :term'
                 )
             )
                 ->setParameter('term', '%' . $term . '%');
