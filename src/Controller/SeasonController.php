@@ -11,22 +11,30 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Form\SearchType;
-
+use Knp\Component\Pager\PaginatorInterface;
 #[Route('/season')]
 final class SeasonController extends AbstractController
 {
     #[Route(name: 'app_season_index', methods: ['GET'])]
-    public function index(Request $request, SeasonRepository $seasonRepository): Response
+    public function index(Request $request, SeasonRepository $seasonRepository, PaginatorInterface $paginator): Response
     {
         $form = $this->createForm(SearchType::class);
         $form->handleRequest($request);
 
         // On récupère le terme directement depuis l'URL via 'query'
         $searchTerm = $request->query->get('query');
+        $allStocks = $seasonRepository->searchByTerm($searchTerm);
+
+        $pagination = $paginator->paginate(
+            $allStocks,
+            $request->query->getInt('page', 1),
+            8
+        );
 
         return $this->render('season/index.html.twig', [
             'seasons' => $seasonRepository->searchByTerm($searchTerm),
             'searchForm' => $form->createView(),
+            'seasons'     => $pagination,
         ]);
     }
 

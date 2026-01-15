@@ -17,20 +17,28 @@ use App\Entity\Stock;
 use App\Entity\User;
 use App\Form\SearchType;
 use App\Repository\OrderLineRepository;
-
+use Knp\Component\Pager\PaginatorInterface;
 #[Route('/partner')]
 final class PartnerController extends AbstractController
 {
     #[Route(name: 'app_partner_index', methods: ['GET'])]
-    public function index(Request $request, PartnerRepository $partnerRepository): Response
+    public function index(Request $request, PartnerRepository $partnerRepository, PaginatorInterface $paginator): Response
     {
         $form = $this->createForm(SearchType::class, null);
         $form->handleRequest($request);
 
         $searchTerm = $request->query->get('query');
+        $allStocks = $partnerRepository->searchByTerm($searchTerm);
+
+        $pagination = $paginator->paginate(
+            $allStocks,
+            $request->query->getInt('page', 1),
+            8
+        );
         return $this->render('partner/index.html.twig', [
             'partners' => $partnerRepository->searchByTerm($searchTerm),
             'searchForm' => $form->createView(),
+            'partners'     => $pagination,
         ]);
     }
 
@@ -99,7 +107,7 @@ final class PartnerController extends AbstractController
         ]);
     }
     #[Route('/my-stock/liste', name: 'app_partner_myStock', methods: ['GET'])]
-    public function MyStockIndex(Request $request, StockRepository $stockRepository): Response
+    public function MyStockIndex(Request $request, StockRepository $stockRepository, PaginatorInterface $paginator): Response
     {
         if ($this->isGranted(['ROLE_ADMIN', 'ROLE_COLLABORATOR'])) {
             throw $this->createAccessDeniedException('Accès refusé.');
@@ -114,6 +122,13 @@ final class PartnerController extends AbstractController
 
         // On récupère le terme directement depuis l'URL via 'query'
         $searchTerm = $request->query->get('query');
+        $allStocks = $stockRepository->searchByTerm($searchTerm);
+
+        $pagination = $paginator->paginate(
+            $allStocks,
+            $request->query->getInt('page', 1),
+            8
+        );
 
         if (!$partner) {
             throw $this->createAccessDeniedException('Aucun profil partenaire associé à ce compte.');
@@ -123,6 +138,7 @@ final class PartnerController extends AbstractController
             'stocks' => $stockRepository->findBy(['partner' => $partner]),
             'stocks' => $stockRepository->searchByTerm($searchTerm),
             'searchForm' => $form->createView(),
+            'stocks'     => $pagination,
         ]);
     }
 
@@ -197,7 +213,7 @@ final class PartnerController extends AbstractController
         ]);
     }
     #[Route('/my-reservations/liste', name: 'app_partner_reservations', methods: ['GET'])]
-    public function reservations(Request $request, OrderLineRepository $orderLineRepo): Response
+    public function reservations(Request $request, OrderLineRepository $orderLineRepo , PartnerRepository $partnerRepository, PaginatorInterface $paginator): Response
     {
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
@@ -212,12 +228,20 @@ final class PartnerController extends AbstractController
         $form->handleRequest($request);
 
         $searchTerm = $request->query->get('query');
+        $allStocks = $partnerRepository->searchByTerm($searchTerm);
+
+        $pagination = $paginator->paginate(
+            $allStocks,
+            $request->query->getInt('page', 1),
+            8
+        );
 
         $orderLines = $orderLineRepo->searchReservations($partner, $searchTerm);
 
         return $this->render('partner/myReservation.html.twig', [
             'orderLines' => $orderLines,
             'searchForm' => $form->createView(),
+            'stocks'     => $pagination,
         ]);
     }
 }

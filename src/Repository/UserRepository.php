@@ -42,7 +42,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
                 ->setParameter('term', '%' . $term . '%');
         }
 
-        return $qb->orderBy('p.isActive', 'ASC')
+        return $qb->orderBy('p.isActive', 'DESC')
             ->getQuery()
             ->getResult();
     }

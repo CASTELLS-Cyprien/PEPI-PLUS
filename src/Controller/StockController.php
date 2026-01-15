@@ -12,47 +12,71 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\User;
 use App\Form\SearchType;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/stock')]
 final class StockController extends AbstractController
 {
 
     #[Route('/global', name: 'app_stock_index', methods: ['GET'])]
-    public function index(Request $request, StockRepository $stockRepository): Response
+    public function index(Request $request, StockRepository $stockRepository, PaginatorInterface $paginator): Response
     {
-        $form = $this->createForm(SearchType::class);
-        $form->handleRequest($request);
-
-        // On récupère le terme directement depuis l'URL via 'query'
-        $searchTerm = $request->query->get('query');
-
         if ($this->isGranted('ROLE_PARTNER')) {
             throw $this->createAccessDeniedException('Accès refusé.');
         }
 
+        $form = $this->createForm(SearchType::class);
+        $form->handleRequest($request);
+
+        $searchTerm = $request->query->get('query');
+        $allStocks = $stockRepository->searchByTerm($searchTerm);
+
+        $pagination = $paginator->paginate(
+            $allStocks,
+            $request->query->getInt('page', 1),
+            8
+        );
+        $allStocks = $stockRepository->searchByTerm($searchTerm);
+
+        $pagination = $paginator->paginate(
+            $allStocks,
+            $request->query->getInt('page', 1),
+            8
+        );
+
+        // 5. Rendu de la vue
         return $this->render('stock/indexGlobal.html.twig', [
-            'stocks' => $stockRepository->searchByTerm($searchTerm),
             'searchForm' => $form->createView(),
+            'stocks'     => $pagination,
+            'stocks'     => $pagination,
         ]);
     }
 
     #[Route('/gestion', name: 'app_stock_gestion_index', methods: ['GET'])]
-    public function Gestionindex(Request $request, StockRepository $stockRepository): Response
+    public function Gestionindex(Request $request, StockRepository $stockRepository, PaginatorInterface $paginator): Response
     {
-        $form = $this->createForm(SearchType::class);
-        $form->handleRequest($request);
-
-        // On récupère le terme directement depuis l'URL via 'query'
-        $searchTerm = $request->query->get('query');
-        
         if ($this->isGranted('ROLE_PARTNER')) {
             throw $this->createAccessDeniedException('Accès refusé.');
         }
+
+        $form = $this->createForm(SearchType::class);
+        $form->handleRequest($request);
+
+        $searchTerm = $request->query->get('query');
+        $allStocks = $stockRepository->searchByTerm($searchTerm);
+
+        $pagination = $paginator->paginate(
+            $allStocks,
+            $request->query->getInt('page', 1),
+            8
+        );
+
 
         return $this->render('stock/indexGestion.html.twig', [
             'stocks' => $stockRepository->findBy(['partner' => null]),
             'stocks' => $stockRepository->searchByTerm($searchTerm),
             'searchForm' => $form->createView(),
+            'stocks'     => $pagination,
         ]);
     }
 

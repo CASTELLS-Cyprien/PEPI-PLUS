@@ -13,21 +13,29 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Form\ChangePasswordType;
 use App\Form\SearchType;
-
+use Knp\Component\Pager\PaginatorInterface;
 #[Route('/user')]
 final class UserController extends AbstractController
 {
     #[Route(name: 'app_user_index', methods: ['GET'])]
-    public function index(Request $request, UserRepository $userRepository): Response
+    public function index(Request $request, UserRepository $userRepository, PaginatorInterface $paginator): Response
     {
         $form = $this->createForm(SearchType::class);
         $form->handleRequest($request);
 
         // On récupère le terme directement depuis l'URL via 'query'
         $searchTerm = $request->query->get('query');
+        $allStocks = $userRepository->searchByTerm($searchTerm);
+
+        $pagination = $paginator->paginate(
+            $allStocks,
+            $request->query->getInt('page', 1),
+            8
+        );
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->searchByTerm($searchTerm),
             'searchForm' => $form->createView(),
+            'users'     => $pagination,
         ]);
     }
 

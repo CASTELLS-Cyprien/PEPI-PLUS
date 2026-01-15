@@ -58,9 +58,6 @@
 						<thead class="bg-gray-50">
 							<tr>
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-									Id
-								</th>
-								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
 									Plant (Nom Latin / Commun)
 								</th>
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -83,11 +80,6 @@
 						<tbody class="bg-white divide-y divide-gray-200">
 							{% for stock in stocks %}
 								<tr class="hover:bg-gray-50 transition-colors">
-									<td class="px-6 py-4 whitespace-nowrap">
-										<div class="text-sm font-medium text-gray-900">
-											{{ stock.id }}
-										</div>
-									</td>
 									<td class="px-6 py-4 whitespace-nowrap">
 										<div class="text-sm font-medium text-gray-900">
 											{{ stock.plant.latinName }}
@@ -150,6 +142,9 @@
 							{% endfor %}
 						</tbody>
 					</table>
+				</div>
+				<div class="mt-4 px-4">
+					{{ knp_pagination_render(stocks) }}
 				</div>
 			</div>
 		</div>

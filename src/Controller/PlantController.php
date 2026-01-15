@@ -11,12 +11,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Form\SearchType;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/plant')]
 final class PlantController extends AbstractController
 {
     #[Route(name: 'app_plant_index', methods: ['GET'])]
-    public function index(Request $request, PlantRepository $plantRepository): Response
+    public function index(Request $request, PlantRepository $plantRepository, PaginatorInterface $paginator): Response
     {
         // On crée le formulaire sans protection CSRF car c'est une recherche GET publique
         $form = $this->createForm(SearchType::class, null, [
@@ -28,10 +29,17 @@ final class PlantController extends AbstractController
 
         // On récupère la valeur du champ 'query'
         $searchTerm = $form->get('query')->getData();
+        $allStocks = $plantRepository->searchByTerm($searchTerm);
 
+        $pagination = $paginator->paginate(
+            $allStocks,
+            $request->query->getInt('page', 1),
+            8
+        );
         return $this->render('plant/index.html.twig', [
             'plants' => $plantRepository->searchByTerm($searchTerm),
             'searchForm' => $form->createView(),
+            'plants'     => $pagination,
         ]);
     }
 

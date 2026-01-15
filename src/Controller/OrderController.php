@@ -14,22 +14,30 @@ use Symfony\Component\Routing\Attribute\Route;
 use App\Form\SearchType;
 use App\Entity\OrderLine;
 use App\Entity\Stock;
-
+use Knp\Component\Pager\PaginatorInterface;
 #[Route('/order')]
 final class OrderController extends AbstractController
 {
     #[Route(name: 'app_order_index', methods: ['GET'])]
-    public function index(Request $request, OrderRepository $orderRepository): Response
+    public function index(Request $request, OrderRepository $orderRepository, PaginatorInterface $paginator): Response
     {
         $form = $this->createForm(SearchType::class);
         $form->handleRequest($request);
 
         // On récupère le terme directement depuis l'URL via 'query'
         $searchTerm = $request->query->get('query');
+        $allStocks = $orderRepository->searchByTerm($searchTerm);
+
+        $pagination = $paginator->paginate(
+            $allStocks,
+            $request->query->getInt('page', 1),
+            8
+        );
 
         return $this->render('order/index.html.twig', [
             'orders' => $orderRepository->searchByTerm($searchTerm),
             'searchForm' => $form->createView(),
+            'orders'     => $pagination,
         ]);
     }
 
