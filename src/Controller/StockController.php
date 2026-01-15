@@ -151,6 +151,6 @@ final class StockController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_stock_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_partner_myStock', [], Response::HTTP_SEE_OTHER);
     }
 }

@@ -10,7 +10,7 @@
 		<div class="bg-white shadow-sm border-b border-gray-200">
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 				<div class="flex items-center space-x-3">
-					{% if is_granted('ROLE_ADMIN', 'ROLE_COLLABORATOR') %}
+					{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_COLLABORATOR') %}
 						<a href="{{ path('app_season_index') }}" class="text-gray-400 hover:text-gray-600">
 							<twig:ux:icon name="iconoir:arrow-left" class="w-6 h-6"/>
 						</a>

@@ -17,6 +17,7 @@ class OrderLine
     private ?int $quantity = null;
 
     #[ORM\ManyToOne(inversedBy: 'orderLines')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private ?Stock $stock = null;
 
     #[ORM\ManyToOne(inversedBy: 'orderLines')]
@@ -62,5 +63,4 @@ class OrderLine
 
         return $this;
     }
-
 }

@@ -120,12 +120,12 @@
 									</td>
 									<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
 										<div class="flex justify-end space-x-3">
-											{% if is_granted('ROLE_COLLABORATOR', 'ROLE_ADMIN') and stock.partner is null %}
+											{% if (is_granted('ROLE_COLLABORATOR') or is_granted('ROLE_ADMIN')) and stock.partner is null %}
 												<a href="{{ path('app_stock_edit', {'id': stock.id}) }}" class="text-blue-600 hover:text-blue-900">
 													<twig:ux:icon name="cuida:edit-outline" class="w-5 h-5"/>
 												</a>
 											{% endif %}
-											{% if is_granted('ROLE_COLLABORATOR', 'ROLE_ADMIN') and stock.partner is not null %}
+											{% if (is_granted('ROLE_COLLABORATOR') or is_granted('ROLE_ADMIN')) and stock.partner is not null %}
 												<form action="{{ path('app_order_reserve', {'id': stock.id}) }}" method="POST" class="flex items-center space-x-2 justify-end">
 													<input type="number" name="quantity" min="1" max="{{ stock.quantity }}" class="w-16 border border-gray-300 rounded-md px-2 py-1 text-sm" placeholder="Qté" required/>
 													<button type="submit" class="text-blue-600 hover:text-blue-900">

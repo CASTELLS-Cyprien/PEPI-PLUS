@@ -41,7 +41,7 @@ class UserType extends AbstractType
                     'choices' => [
                         'Administrateur' => 'ROLE_ADMIN',
                         'Partenaire' => 'ROLE_PARTNER',
-                        'Collaborateur' => 'ROLE_COLLAB',
+                        'Collaborateur' => 'ROLE_COLLABORATOR',
                     ],
                     'multiple' => true,
                     'expanded' => true,
