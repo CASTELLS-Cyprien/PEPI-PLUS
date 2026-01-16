@@ -37,7 +37,6 @@ final class StockController extends AbstractController
         return $this->render('stock/indexGlobal.html.twig', [
             'searchForm' => $form->createView(),
             'stocks'     => $pagination,
-            'stocks'     => $pagination,
         ]);
     }
 
@@ -47,21 +46,15 @@ final class StockController extends AbstractController
         $form = $this->createForm(SearchType::class);
         $form->handleRequest($request);
 
+        // Récupération du terme de recherche
         $searchTerm = $request->query->get('query');
 
-        // On récupère uniquement les stocks où partner est NULL
-        // Vous pouvez créer une méthode spécifique dans votre StockRepository pour cela
-        $queryBuilder = $stockRepository->createQueryBuilder('s')
-            ->where('s.partner IS NULL');
+        // On récupère le QueryBuilder préparé par le repository
+        $queryBuilder = $stockRepository->getGestionQueryBuilder($searchTerm);
 
-        if ($searchTerm) {
-            // Logique de recherche à adapter selon votre StockRepository
-            $queryBuilder->andWhere('s.plant.latinName LIKE :term')
-                ->setParameter('term', '%' . $searchTerm . '%');
-        }
-
+        // On passe ce QueryBuilder au paginateur
         $pagination = $paginator->paginate(
-            $queryBuilder, // Passez le QueryBuilder au paginateur
+            $queryBuilder,
             $request->query->getInt('page', 1),
             8
         );
@@ -71,8 +64,6 @@ final class StockController extends AbstractController
             'stocks'     => $pagination,
         ]);
     }
-
-
 
     #[Route('/new', name: 'app_stock_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response

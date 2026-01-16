@@ -6,6 +6,7 @@ use App\Entity\Stock;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Partner;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @extends ServiceEntityRepository<Stock>
@@ -74,6 +75,32 @@ class StockRepository extends ServiceEntityRepository
             ->orderBy('s.quantity', 'ASC')
             ->getQuery()
             ->getResult();
+    }
+
+    public function getGestionQueryBuilder(?string $term): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->leftJoin('s.plant', 'plant')
+            ->leftJoin('s.season', 'season')
+            ->leftJoin('s.packaging', 'packaging')
+            ->addSelect('plant', 'season', 'packaging')
+            // Filtre obligatoire pour la gestion
+            ->where('s.partner IS NULL');
+
+        if ($term) {
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    'plant.latinName LIKE :term',
+                    'plant.commonName LIKE :term',
+                    'season.year LIKE :term',
+                    'packaging.label LIKE :term',
+                    's.quantity LIKE :term'
+                )
+            )
+                ->setParameter('term', '%' . $term . '%');
+        }
+
+        return $qb->orderBy('s.quantity', 'DESC');
     }
     //    /**
     //     * @return Stock[] Returns an array of Stock objects
