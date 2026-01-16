@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vérifiez vos e-mails - Pépi+
+{% endblock %}
+
+{% block body %}
+	<div class="min-h-screen bg-[#D9EDd4] flex items-center justify-center p-6 font-['Open_Sans'] text-[#333D33]">
+		<div
+			class="w-full max-w-md text-center">
+
+			{# Logo #}
+			<div class="mb-8">
+				<img src="{{ asset('img/logoPepiPlusSF.png') }}" alt="Logo Pépi+" style="width: 280px; height: auto; margin: auto; margin-bottom: 16px;">
+				<p class="text-gray-600 text-sm italic">Gestion de stock & Pépinière</p>
+			</div>
+
+			<div
+				class="bg-white rounded-[0.75rem] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)] p-8 border border-[#95B49A]/30">
+
+				{# Icône d'enveloppe stylisée #}
+				<div class="w-20 h-20 bg-[#2D6A4F]/10 text-[#2D6A4F] rounded-full flex items-center justify-center mx-auto mb-6">
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+					</svg>
+				</div>
+
+				<h2 class="text-2xl font-['Montserrat'] font-semibold text-[#2D6A4F] mb-4">
+					Vérifiez votre boîte mail
+				</h2>
+
+				<div class="text-sm text-gray-600 space-y-4 mb-8 leading-relaxed text-left">
+					<p>
+						Si un compte correspond à l'adresse renseignée, un e-mail vient d'être envoyé.
+					</p>
+					<p>
+						Cet e-mail contient un lien sécurisé qui expirera dans
+						<span class="font-semibold text-[#2D6A4F]">
+							{{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}
+						</span>.
+					</p>
+					<p class="text-xs bg-gray-50 p-3 rounded border border-gray-100 italic">
+						Si vous ne recevez rien d'ici 5 minutes, pensez à vérifier vos courriers indésirables (spams).
+					</p>
+				</div>
+
+				{# Bouton de retour #}
+				<a href="{{ path('app_login') }}" class="block w-full bg-[#2D6A4F] text-white py-3 px-4 rounded-lg font-medium hover:bg-[#2D6A4F]/90 transition shadow-md hover:shadow-lg active:transform active:scale-[0.98]">
+					Retour à la page de connexion
+				</a>
+
+			</div>
+
+			{# Footer #}
+			<div class="text-center mt-8 text-sm text-gray-500">
+				<p>Pépi+ © 2026 - Système de Récupération Sécurisé</p>
+			</div>
+		</div>
+	</div>
+{% endblock %}

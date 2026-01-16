@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mot de passe oublié - Pépi+{% endblock %}
+
+{% block body %}
+    <div class="min-h-screen bg-[#D9EDd4] flex items-center justify-center p-6 font-['Open_Sans'] text-[#333D33]">
+        <div class="w-full max-w-md">
+
+            {# Logo et Entête #}
+            <div class="text-center mb-8">
+                <img src="{{ asset('img/logoPepiPlusSF.png') }}" alt="Logo Pépi+" style="width: 300px !important; height: auto !important; align:center; margin:auto; margin-bottom:16px;">
+                <p class="text-gray-600 text-sm">Gestion de stock - Récupération</p>
+            </div>
+
+            <div class="bg-white rounded-[0.75rem] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1),0_2px_4px_-1px_rgba(0,0,0,0.06)] p-8 border border-[#95B49A]/30">
+                
+                <h2 class="text-2xl font-['Montserrat'] font-semibold text-[#2D6A4F] mb-4">
+                    Mot de passe oublié
+                </h2>
+                
+                <p class="text-sm text-gray-600 mb-6 leading-relaxed">
+                    Saisissez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe.
+                </p>
+
+                {# Affichage des erreurs éventuelles du bundle #}
+                {% for flash_error in app.flashes('reset_password_error') %}
+                    <div class="bg-red-600/10 border border-red-600 text-red-600 px-4 py-3 rounded-lg mb-6 text-sm" role="alert">
+                        {{ flash_error }}
+                    </div>
+                {% endfor %}
+
+                {{ form_start(requestForm) }}
+                    <div class="mb-6">
+                        <label for="{{ requestForm.email.vars.id }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Votre adresse email
+                        </label>
+                        {{ form_widget(requestForm.email, {
+                            'attr': {
+                                'class': 'w-full px-4 py-3 border border-[#95B49A]/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] focus:border-transparent transition placeholder:text-gray-400',
+                                'placeholder': 'votre@email.fr',
+                                'autofocus': 'autofocus'
+                            }
+                        }) }}
+                        {# Erreur spécifique au champ email #}
+                        <div class="text-red-600 text-xs mt-1">
+                            {{ form_errors(requestForm.email) }}
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-[#2D6A4F] text-white py-3 px-4 rounded-lg font-medium hover:bg-[#2D6A4F]/90 transition shadow-md hover:shadow-lg active:transform active:scale-[0.98]">
+                        Envoyer le lien de récupération
+                    </button>
+                {{ form_end(requestForm) }}
+
+                <div class="mt-6 pt-6 border-t border-gray-100 text-center">
+                    <a href="{{ path('app_login') }}" class="text-sm text-[#2D6A4F] font-medium hover:underline flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        Retour à la connexion
+                    </a>
+                </div>
+            </div>
+
+            <div class="text-center mt-6 text-sm text-gray-600">
+                <p>Pépi+ © 2026 - Gestion professionnelle de pépinière</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -45,6 +45,7 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/reset-password, roles: PUBLIC_ACCESS }
         - { path: ^/partner/(my-stock/|my-reservations), roles: ROLE_PARTNER }
         - { path: ^/order/show, roles: [ROLE_PARTNER, ROLE_COLLABORATOR, ROLE_ADMIN] }
         - { path: ^/(plant/new|season/new|packaging/new), roles: [ROLE_PARTNER, ROLE_COLLABORATOR, ROLE_ADMIN] }
