@@ -1,2 +1,11 @@
 @import "tailwindcss";
 @source not "../../public";
+
+/* Désactive l'icône de nettoyage par défaut des navigateurs (le X bleu) */
+input::-webkit-search-decoration,
+input::-webkit-search-cancel-button,
+input::-webkit-search-results-button,
+input::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+    display: none;
+}

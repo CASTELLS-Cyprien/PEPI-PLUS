@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page non trouvée - Pépi+{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-[#D9EDd4] flex items-center justify-center p-6 font-['Open_Sans'] text-[#333D33]">
+    <div class="w-full max-w-md text-center">
+        <div class="mb-8">
+            <img src="{{ asset('img/logoPepiPlusSF.png') }}" alt="Logo Pépi+" class="mx-auto w-[250px] mb-4">
+            <span class="text-[#2D6A4F] font-['Montserrat'] font-bold text-6xl">404</span>
+        </div>
+
+        <div class="bg-white rounded-[0.75rem] shadow-lg p-8 border border-[#95B49A]/30">
+            <h1 class="text-2xl font-['Montserrat'] font-semibold text-[#2D6A4F] mb-4">Plante introuvable !</h1>
+            <p class="text-gray-600 mb-8">Désolé, la page que vous recherchez semble avoir été déplacée ou n'existe plus dans notre inventaire.</p>
+            
+            <a href="{{ path('app_dashboard') }}" class="inline-block w-full bg-[#2D6A4F] text-white py-3 px-4 rounded-lg font-medium hover:bg-[#2D6A4F]/90 transition shadow-md">
+                Retour au tableau de bord
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

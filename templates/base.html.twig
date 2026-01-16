@@ -29,7 +29,7 @@
 			class="flex-1 {% if app.user %}lg:ml-72{% endif %} min-h-screen">
 
 			{# Section des Messages Flash #}
-			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				{% for message in app.flashes('success') %}
 					<div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg flex items-center p-4">
 						<twig:ux:icon name="bi:check-lg" class="w-5 h-5 mr-2"/>

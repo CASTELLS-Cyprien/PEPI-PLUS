@@ -1,20 +1,68 @@
 {# templates/includes/pagination.html.twig #}
 {% if pageCount > 1 %}
-	<nav class="flex items-center justify-between border-t border-gray-200 px-4 py-3 sm:px-6 mt-4">
+	<nav
+		class="flex items-center justify-between border-t border-gray-200 px-4 py-3 sm:px-6 mt-4">
+
+		{# --- MOBILE --- #}
 		<div class="flex flex-1 justify-between sm:hidden">
 			{% if previous is defined %}
-				<a href="{{ path(route, query|merge({(pageParameterName): previous})) }}" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+				<a href="{{ path(route, query|merge({(pageParameterName): previous})) }}" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
 					Précédent
 				</a>
 			{% else %}
 				<div></div>
+				{# Espace vide pour maintenir le bouton Suivant à droite #}
 			{% endif %}
 
 			{% if next is defined %}
-				<a href="{{ path(route, query|merge({(pageParameterName): next})) }}" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+				<a href="{{ path(route, query|merge({(pageParameterName): next})) }}" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
 					Suivant
 				</a>
 			{% endif %}
+		</div>
+
+		{# --- DESKTOP --- #}
+		<div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+			<div>
+				<p class="text-sm text-gray-700">
+					Page
+					<span class="font-semibold">{{ current }}</span>
+					sur
+					<span class="font-semibold">{{ pageCount }}</span>
+				</p>
+			</div>
+
+			<div>
+				<ul
+					class="isolate inline-flex -space-x-px rounded-md shadow-sm">
+					{# Bouton Précédent #}
+					{% if previous is defined %}
+						<li>
+							<a href="{{ path(route, query|merge({(pageParameterName): previous})) }}" class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 transition-colors">
+								<twig:ux:icon name="mingcute:left-line" class="h-5 w-5"/>
+							</a>
+						</li>
+					{% endif %}
+
+					{# Pages #}
+					{% for page in pagesInRange %}
+						<li>
+							<a href="{{ path(route, query|merge({(pageParameterName): page})) }}" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold {{ page == current ? 'z-10 bg-green-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600' : 'text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 transition-colors' }}">
+								{{ page }}
+							</a>
+						</li>
+					{% endfor %}
+
+					{# Bouton Suivant #}
+					{% if next is defined %}
+						<li>
+							<a href="{{ path(route, query|merge({(pageParameterName): next})) }}" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 transition-colors">
+								<twig:ux:icon name="mingcute:right-line" class="h-5 w-5"/>
+							</a>
+						</li>
+					{% endif %}
+				</ul>
+			</div>
 		</div>
 	</nav>
 {% endif %}

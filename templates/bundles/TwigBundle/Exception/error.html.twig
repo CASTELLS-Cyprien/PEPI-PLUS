@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Erreur système - Pépi+
+{% endblock %}
+
+{% block body %}
+	<div class="min-h-screen bg-[#D9EDd4] flex items-center justify-center p-6 font-['Open_Sans'] text-[#333D33]">
+		<div class="w-full max-w-md text-center">
+			<div class="mb-8">
+				<img src="{{ asset('img/logoPepiPlusSF.png') }}" alt="Logo Pépi+" class="mx-auto w-[250px] mb-4">
+				<span class="text-red-600 font-['Montserrat'] font-bold text-6xl">500</span>
+			</div>
+
+			<div class="bg-white rounded-[0.75rem] shadow-lg p-8 border border-[#95B49A]/30">
+				<h1 class="text-2xl font-['Montserrat'] font-semibold text-[#2D6A4F] mb-4">Un pépin technique !</h1>
+				<p class="text-gray-600 mb-8">Une erreur interne est survenue. Nos jardiniers du code sont déjà sur le coup pour réparer le système.</p>
+
+				<a href="javascript:history.back()" class="inline-block w-full border-2 border-[#2D6A4F] text-[#2D6A4F] py-3 px-4 rounded-lg font-medium hover:bg-[#2D6A4F] hover:text-white transition">
+					Tenter de revenir en arrière
+				</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}
