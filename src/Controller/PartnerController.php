@@ -73,7 +73,7 @@ final class PartnerController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/show', name: 'app_partner_show', methods: ['GET'])]
+    #[Route('/show/{id}', name: 'app_partner_show', methods: ['GET'])]
     public function show(Partner $partner): Response
     {
         return $this->render('partner/show.html.twig', [
@@ -81,7 +81,7 @@ final class PartnerController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_partner_edit', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}', name: 'app_partner_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Partner $partner, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(PartnerType::class, $partner);
@@ -109,10 +109,6 @@ final class PartnerController extends AbstractController
     #[Route('/my-stock/liste', name: 'app_partner_myStock', methods: ['GET'])]
     public function MyStockIndex(Request $request, StockRepository $stockRepository, PaginatorInterface $paginator): Response
     {
-        if ($this->isGranted(['ROLE_ADMIN', 'ROLE_COLLABORATOR'])) {
-            throw $this->createAccessDeniedException('Accès refusé.');
-        }
-
         /** @var User $user */
         $user = $this->getUser();
         $partner = $user->getPartner();
@@ -168,7 +164,7 @@ final class PartnerController extends AbstractController
         ]);
     }
 
-    #[Route('/my-stock/{id}/show', name: 'app_partner_showMyStock', methods: ['GET'])]
+    #[Route('/my-stock/show/{id}', name: 'app_partner_showMyStock', methods: ['GET'])]
     public function showMyStock(Stock $stock): Response
     {
         //Limiter l'accès aux partenaires seulement si ce n'est pas leur stock
@@ -188,7 +184,7 @@ final class PartnerController extends AbstractController
         ]);
     }
 
-    #[Route('/my-stock/{id}/edit', name: 'app_partner_editMyStock', methods: ['GET', 'POST'])]
+    #[Route('/my-stock/edit/{id}', name: 'app_partner_editMyStock', methods: ['GET', 'POST'])]
     public function editMyStock(Request $request, Stock $stock, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(StockType::class, $stock);
@@ -218,11 +214,6 @@ final class PartnerController extends AbstractController
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
         $partner = $user->getPartner();
-
-        if (!$partner) {
-            $this->addFlash('error', 'Aucune entreprise rattachée.');
-            return $this->redirectToRoute('app_dashboard');
-        }
 
         $form = $this->createForm(SearchType::class);
         $form->handleRequest($request);

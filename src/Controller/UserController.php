@@ -30,7 +30,7 @@ final class UserController extends AbstractController
         $pagination = $paginator->paginate(
             $allStocks,
             $request->query->getInt('page', 1),
-            8
+            10
         );
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->searchByTerm($searchTerm),
@@ -69,7 +69,7 @@ final class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
+    #[Route('/show/{id}', name: 'app_user_show', methods: ['GET'])]
     public function show(User $user): Response
     {
         return $this->render('user/show.html.twig', [
@@ -77,7 +77,7 @@ final class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $form = $this->createForm(UserType::class, $user);

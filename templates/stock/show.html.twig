@@ -32,7 +32,7 @@
 					<div class="flex items-center space-x-3">
 						{% if is_granted('ROLE_COLLABORATOR') and stock.partner is null %}
 							<a href="{{ path('app_stock_edit', {'id': stock.id}) }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700">
-								<twig:ux:icon name="iconoir:edit" class="w-4 h-4 inline mr-2"/>
+								<twig:ux:icon name="cuida:edit-outline" class="w-4 h-4 inline mr-2"/>
 								Modifier
 							</a>
 						{% endif %}

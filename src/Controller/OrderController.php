@@ -31,7 +31,7 @@ final class OrderController extends AbstractController
         $pagination = $paginator->paginate(
             $allStocks,
             $request->query->getInt('page', 1),
-            8
+            10
         );
 
         return $this->render('order/index.html.twig', [
@@ -69,14 +69,14 @@ final class OrderController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_order_show', methods: ['GET'])]
+    #[Route('/show/{id}', name: 'app_order_show', methods: ['GET'])]
     public function show(Order $order): Response
     {
         return $this->render('order/show.html.twig', [
             'order' => $order,
         ]);
     }
-    #[Route('/{id}/edit', name: 'app_order_edit', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}', name: 'app_order_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Order $order, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(OrderType::class, $order);

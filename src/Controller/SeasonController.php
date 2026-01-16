@@ -28,7 +28,7 @@ final class SeasonController extends AbstractController
         $pagination = $paginator->paginate(
             $allStocks,
             $request->query->getInt('page', 1),
-            8
+            10
         );
 
         return $this->render('season/index.html.twig', [
@@ -103,7 +103,7 @@ final class SeasonController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_season_show', methods: ['GET'])]
+    #[Route('/show/{id}', name: 'app_season_show', methods: ['GET'])]
     public function show(Season $season): Response
     {
         return $this->render('season/show.html.twig', [
@@ -111,7 +111,7 @@ final class SeasonController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_season_edit', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}', name: 'app_season_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Season $season, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(SeasonType::class, $season);

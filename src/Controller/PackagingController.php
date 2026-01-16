@@ -28,7 +28,7 @@ final class PackagingController extends AbstractController
         $pagination = $paginator->paginate(
             $allStocks,
             $request->query->getInt('page', 1),
-            8
+            10
         );
 
         return $this->render('packaging/index.html.twig', [
@@ -81,7 +81,7 @@ final class PackagingController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_packaging_show', methods: ['GET'])]
+    #[Route('/show/{id}', name: 'app_packaging_show', methods: ['GET'])]
     public function show(Packaging $packaging): Response
     {
         return $this->render('packaging/show.html.twig', [
@@ -89,7 +89,7 @@ final class PackagingController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_packaging_edit', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}', name: 'app_packaging_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Packaging $packaging, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(PackagingType::class, $packaging);

@@ -56,7 +56,7 @@ final class OrderLineController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_order_line_edit', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}', name: 'app_order_line_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, OrderLine $orderLine, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(OrderLineType::class, $orderLine);

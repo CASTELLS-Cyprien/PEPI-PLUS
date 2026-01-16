@@ -21,10 +21,6 @@ final class StockController extends AbstractController
     #[Route('/global', name: 'app_stock_index', methods: ['GET'])]
     public function index(Request $request, StockRepository $stockRepository, PaginatorInterface $paginator): Response
     {
-        if ($this->isGranted('ROLE_PARTNER')) {
-            throw $this->createAccessDeniedException('Accès refusé.');
-        }
-
         $form = $this->createForm(SearchType::class);
         $form->handleRequest($request);
 
@@ -34,14 +30,7 @@ final class StockController extends AbstractController
         $pagination = $paginator->paginate(
             $allStocks,
             $request->query->getInt('page', 1),
-            8
-        );
-        $allStocks = $stockRepository->searchByTerm($searchTerm);
-
-        $pagination = $paginator->paginate(
-            $allStocks,
-            $request->query->getInt('page', 1),
-            8
+            7
         );
 
         // 5. Rendu de la vue
@@ -55,26 +44,29 @@ final class StockController extends AbstractController
     #[Route('/gestion', name: 'app_stock_gestion_index', methods: ['GET'])]
     public function Gestionindex(Request $request, StockRepository $stockRepository, PaginatorInterface $paginator): Response
     {
-        if ($this->isGranted('ROLE_PARTNER')) {
-            throw $this->createAccessDeniedException('Accès refusé.');
-        }
-
         $form = $this->createForm(SearchType::class);
         $form->handleRequest($request);
 
         $searchTerm = $request->query->get('query');
-        $allStocks = $stockRepository->searchByTerm($searchTerm);
+
+        // On récupère uniquement les stocks où partner est NULL
+        // Vous pouvez créer une méthode spécifique dans votre StockRepository pour cela
+        $queryBuilder = $stockRepository->createQueryBuilder('s')
+            ->where('s.partner IS NULL');
+
+        if ($searchTerm) {
+            // Logique de recherche à adapter selon votre StockRepository
+            $queryBuilder->andWhere('s.plant.latinName LIKE :term')
+                ->setParameter('term', '%' . $searchTerm . '%');
+        }
 
         $pagination = $paginator->paginate(
-            $allStocks,
+            $queryBuilder, // Passez le QueryBuilder au paginateur
             $request->query->getInt('page', 1),
             8
         );
 
-
         return $this->render('stock/indexGestion.html.twig', [
-            'stocks' => $stockRepository->findBy(['partner' => null]),
-            'stocks' => $stockRepository->searchByTerm($searchTerm),
             'searchForm' => $form->createView(),
             'stocks'     => $pagination,
         ]);
@@ -102,7 +94,7 @@ final class StockController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_stock_show', methods: ['GET'])]
+    #[Route('/show/{id}', name: 'app_stock_show', methods: ['GET'])]
     public function show(Stock $stock): Response
     {
         return $this->render('stock/show.html.twig', [
@@ -130,20 +122,16 @@ final class StockController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/gestion', name: 'app_stock_gestion_show', methods: ['GET'])]
+    #[Route('/gestion/show/{id}', name: 'app_stock_gestion_show', methods: ['GET'])]
     public function gestionShow(Stock $stock): Response
     {
-        if ($this->isGranted('ROLE_PARTNER')) {
-            throw $this->createAccessDeniedException('Accès refusé.');
-        }
-
         return $this->render('stock/showGestion.html.twig', [
             'stock' => $stock,
         ]);
     }
 
 
-    #[Route('/{id}/edit', name: 'app_stock_edit', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}', name: 'app_stock_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Stock $stock, EntityManagerInterface $entityManager): Response
     {
 

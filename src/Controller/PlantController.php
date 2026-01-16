@@ -34,7 +34,7 @@ final class PlantController extends AbstractController
         $pagination = $paginator->paginate(
             $allStocks,
             $request->query->getInt('page', 1),
-            8
+            9
         );
         return $this->render('plant/index.html.twig', [
             'plants' => $plantRepository->searchByTerm($searchTerm),
@@ -88,7 +88,7 @@ final class PlantController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_plant_show', methods: ['GET'])]
+    #[Route('/show/{id}', name: 'app_plant_show', methods: ['GET'])]
     public function show(Plant $plant): Response
     {
         return $this->render('plant/show.html.twig', [
@@ -96,7 +96,7 @@ final class PlantController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_plant_edit', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}', name: 'app_plant_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Plant $plant, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(PlantType::class, $plant);
