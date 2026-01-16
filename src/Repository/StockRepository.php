@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Stock;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\Partner;
 
 /**
  * @extends ServiceEntityRepository<Stock>
@@ -43,6 +44,34 @@ class StockRepository extends ServiceEntityRepository
         }
 
         return $qb->orderBy('s.quantity', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Pour le Dashboard Admin : Tous les stocks bas
+     */
+    public function findLowStockAlert(int $threshold = 10): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.quantity < :threshold')
+            ->setParameter('threshold', $threshold)
+            ->orderBy('s.quantity', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Pour le Dashboard Partenaire : Ses stocks bas uniquement
+     */
+    public function findLowStockAlertByPartner(Partner $partner, int $threshold = 10): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.partner = :partner')
+            ->andWhere('s.quantity < :threshold')
+            ->setParameter('partner', $partner)
+            ->setParameter('threshold', $threshold)
+            ->orderBy('s.quantity', 'ASC')
             ->getQuery()
             ->getResult();
     }

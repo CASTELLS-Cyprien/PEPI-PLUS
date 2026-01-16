@@ -26,35 +26,8 @@
 		{# Content #}
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 			<div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200">
-				<div class="flex justify-end p-4">
-					{{ form_start(searchForm, {'attr': {'class': 'relative w-full'}}) }}
-					<div
-						class="relative flex items-center">
-						{# Input de recherche #}
-						{{ form_widget(searchForm.query, {
-							'attr': {
-								'class': 'block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-all shadow-sm',
-								'placeholder': 'Rechercher...'
-							}
-						}) }}
-						{# Groupe de boutons à droite #}
-						<div
-							class="absolute inset-y-0 right-0 flex items-center pr-2 space-x-1">
-
-							{# Bouton Effacer (visible uniquement si une recherche est active) #}
-							{% if app.request.query.get('query') %}
-								<a href="{{ path(app.request.attributes.get('_route')) }}" title="Effacer la recherche" class="p-1 text-gray-400 hover:text-red-500 transition-colors border-r border-gray-200 pr-2 mr-1">
-									<twig:ux:icon name="iconoir:cancel" class="w-4 h-4"/>
-								</a>
-							{% endif %}
-
-							{# Bouton Loupe (Submit) #}
-							<button type="submit" class="p-1 text-gray-400 hover:text-green-600 transition-colors">
-								<twig:ux:icon name="mingcute:search-line" class="h-5 w-5"/>
-							</button>
-						</div>
-					</div>
-					{{ form_end(searchForm) }}
+				<div>
+					{% include 'includes/search.html.twig' with {'searchForm': searchForm} %}
 				</div>
 				<div class="overflow-x-auto">
 					<table class="min-w-full divide-y divide-gray-200">
