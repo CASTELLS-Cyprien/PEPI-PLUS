@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Partner;
 use Doctrine\ORM\QueryBuilder;
+use App\Model\StockFilterData;
 
 /**
  * @extends ServiceEntityRepository<Stock>
@@ -98,6 +99,46 @@ class StockRepository extends ServiceEntityRepository
                 )
             )
                 ->setParameter('term', '%' . $term . '%');
+        }
+
+        return $qb->orderBy('s.quantity', 'DESC');
+    }
+
+    public function findWithFilters(StockFilterData $filters)
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->leftJoin('s.plant', 'p')
+            ->addSelect('p');
+
+        if ($filters->query) {
+            // On cherche dans commonName ET latinName pour être sûr de trouver
+            $qb->andWhere('p.commonName LIKE :q OR p.latinName LIKE :q')
+                ->setParameter('q', '%' . $filters->query . '%');
+        }
+
+        if ($filters->minQuantity !== null) {
+            $qb->andWhere('s.quantity >= :minQty')
+                ->setParameter('minQty', $filters->minQuantity);
+        }
+
+        return $qb->orderBy('s.quantity', 'DESC');
+    }
+    public function findInternalStocksWithFilters(StockFilterData $filters)
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->leftJoin('s.plant', 'p')
+            ->addSelect('p')
+            // CONDITION CRUCIALE : Uniquement les stocks sans partenaire
+            ->andWhere('s.partner IS NULL');
+
+        if ($filters->query) {
+            $qb->andWhere('p.commonName LIKE :q OR p.latinName LIKE :q')
+                ->setParameter('q', '%' . $filters->query . '%');
+        }
+
+        if ($filters->minQuantity !== null) {
+            $qb->andWhere('s.quantity >= :minQty')
+                ->setParameter('minQty', $filters->minQuantity);
         }
 
         return $qb->orderBy('s.quantity', 'DESC');

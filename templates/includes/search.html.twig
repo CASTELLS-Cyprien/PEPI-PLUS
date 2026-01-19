@@ -1,30 +1,100 @@
-<div class="flex justify-end p-4">
-	{{ form_start(searchForm, {'attr': {'class': 'relative w-full'}}) }}
-	<div
-		class="relative flex items-center">
-		{# Input de recherche #}
-		{{ form_widget(searchForm.query, {
-        'attr': {
-            'class': 'block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-all shadow-sm',
-            'placeholder': 'Rechercher...'
-            }
-        }) }}
+{# templates/includes/search.html.twig #}
+<div class="flex justify-end p-4" x-data="{ open: false }">
+	{% set formToRender = filterForm is defined ? filterForm : (searchForm is defined ? searchForm : null) %}
 
+	{% if formToRender %}
+		{{ form_start(formToRender, {'method': 'GET', 'attr': {'class': 'relative w-full max-w-2xl'}}) }}
 		<div
-			class="absolute inset-y-0 right-0 flex items-center pr-3 space-x-2">
+			class="relative flex items-center">
 
-			{# Votre bouton "Effacer" personnalisé #}
-			{% if app.request.query.get('query') %}
-				<a href="{{ path(app.request.attributes.get('_route')) }}" class="flex items-center justify-center p-1.5 text-gray-400 hover:text-red-500 transition-colors border-r border-gray-200 pr-3" title="Effacer la recherche">
-					<twig:ux:icon name="iconoir:cancel" class="w-5 h-5"/>
-				</a>
+			{# 1. BARRE DE RECHERCHE PRINCIPALE #}
+			{% if formToRender.query is defined %}
+				{{ form_widget(formToRender.query, {
+                    'attr': {
+                        'class': 'block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-all shadow-sm',
+            			'placeholder': 'Rechercher...'
+                    }
+                }) }}
 			{% endif %}
 
-			{# Bouton de validation (Loupe) #}
-			<button type="submit" class="flex items-center justify-center p-1 text-gray-400 hover:text-green-600 transition-colors">
-				<twig:ux:icon name="mingcute:search-line" class="h-6 w-6"/>
-			</button>
+			<div
+				class="absolute inset-y-0 right-0 flex items-center pr-3 space-x-2">
+				{# Bouton Effacer (Reset rapide) #}
+				{% if app.request.query.all|length > 0 %}
+					<a href="{{ path(app.request.attributes.get('_route')) }}" class="flex items-center justify-center p-1.5 text-gray-400 hover:text-red-500 transition-colors border-r border-gray-200 pr-2" title="Réinitialiser">
+						<twig:ux:icon name="iconoir:cancel" class="w-5 h-5"/>
+					</a>
+				{% endif %}
+
+				{# Bouton Icône Filtres (si filterForm existe) #}
+				{% if filterForm is defined %}
+					<button type="button" @click="open = !open" class="p-1 text-gray-400 hover:text-green-600 transition-colors" :class="{ 'text-indigo-green bg-green-50 rounded': open }">
+						<twig:ux:icon name="lucide:sliders-horizontal" class="w-5 h-5"/>
+					</button>
+				{% endif %}
+
+				{# Bouton Loupe (Submit) #}
+				<button type="submit" class="p-1 text-gray-400 hover:text-green-600 transition-colors">
+					<twig:ux:icon name="mingcute:search-line" class="h-6 w-6"/>
+				</button>
+			</div>
 		</div>
-	</div>
-	{{ form_end(searchForm) }}
+
+		{# 2. DROPDOWN UNIQUE (S'adapte dynamiquement au formulaire) #}
+		{% if filterForm is defined %}
+			<div x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-1 scale-95" x-transition:enter-end="opacity-100 translate-y-0 scale-100" @click.away="open = false" class="absolute right-0 mt-3 w-80 bg-white rounded-xl shadow-2xl border border-gray-100 z-[100] overflow-hidden" style="display: none;">
+
+				<div class="p-4 border-b border-gray-50 bg-gray-50/50">
+					<h3 class="text-sm font-semibold text-gray-700">Filtres avancés</h3>
+				</div>
+
+				<div
+					class="p-4 space-y-4">
+
+					{# FILTRE : STATUT (S'affiche si présent dans le FormType) #}
+					{% if filterForm.status is defined %}
+						<div class="space-y-1.5">
+							<label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider">Statut</label>
+							{{ form_widget(filterForm.status, {'attr': {'class': 'w-full rounded-lg border-gray-300 text-sm focus:border-green-500 focus:ring-green-500'}}) }}
+						</div>
+					{% endif %}
+
+					{# FILTRE : QUANTITÉ MIN (Page Stock) #}
+					{% if filterForm.minQuantity is defined %}
+						<div class="space-y-1.5">
+							<label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider">Quantité minimum</label>
+							{{ form_widget(filterForm.minQuantity, {'attr': {'class': 'w-full rounded-lg border border-gray-300 text-sm'}}) }}
+						</div>
+					{% endif %}
+
+					{# FILTRES : DATES (Page Order) #}
+					{% if filterForm.updatedAt is defined %}
+						<div class="space-y-1.5">
+							<label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider">Mise à jour le</label>
+							{{ form_widget(filterForm.updatedAt, {'attr': {'class': 'w-full rounded-lg border-gray-200 text-sm'}}) }}
+						</div>
+					{% endif %}
+
+					{% if filterForm.createdAt is defined %}
+						<div class="space-y-1.5">
+							<label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider">Créé le</label>
+							{{ form_widget(filterForm.createdAt, {'attr': {'class': 'w-full rounded-lg border-gray-200 text-sm'}}) }}
+						</div>
+					{% endif %}
+
+					{# ACTIONS DU DROPDOWN #}
+					<div class="flex items-center justify-between pt-2">
+						<a href="{{ path(app.request.attributes.get('_route')) }}" class="text-xs text-gray-400 hover:text-red-500 font-medium transition-colors">
+							Réinitialiser
+						</a>
+						<button type="submit" class="px-5 py-2 bg-indigo-600 text-white rounded-lg text-sm font-semibold hover:bg-indigo-700 shadow-md shadow-indigo-100 transition-all">
+							Appliquer
+						</button>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+
+		{{ form_end(formToRender) }}
+	{% endif %}
 </div>

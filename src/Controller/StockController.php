@@ -21,47 +21,45 @@ final class StockController extends AbstractController
     #[Route('/global', name: 'app_stock_index', methods: ['GET'])]
     public function index(Request $request, StockRepository $stockRepository, PaginatorInterface $paginator): Response
     {
-        $form = $this->createForm(SearchType::class);
+        $filterData = new \App\Model\StockFilterData();
+        $form = $this->createForm(\App\Form\StockFilterType::class, $filterData);
         $form->handleRequest($request);
 
-        $searchTerm = $request->query->get('query');
-        $allStocks = $stockRepository->searchByTerm($searchTerm);
+        $query = $stockRepository->findWithFilters($filterData);
 
         $pagination = $paginator->paginate(
-            $allStocks,
+            $query,
             $request->query->getInt('page', 1),
             7
         );
 
-        // 5. Rendu de la vue
         return $this->render('stock/indexGlobal.html.twig', [
-            'searchForm' => $form->createView(),
-            'stocks'     => $pagination,
+            'stocks' => $pagination,
+            'filterForm' => $form->createView(),
         ]);
     }
 
     #[Route('/gestion', name: 'app_stock_gestion_index', methods: ['GET'])]
     public function Gestionindex(Request $request, StockRepository $stockRepository, PaginatorInterface $paginator): Response
     {
-        $form = $this->createForm(SearchType::class);
+        // 1. Initialisation du DTO et du Formulaire
+        $filterData = new \App\Model\StockFilterData();
+        $form = $this->createForm(\App\Form\StockFilterType::class, $filterData);
         $form->handleRequest($request);
 
-        // Récupération du terme de recherche
-        $searchTerm = $request->query->get('query');
+        // 2. Appel de la méthode spécifique "Internal" (partner IS NULL)
+        $query = $stockRepository->findInternalStocksWithFilters($filterData);
 
-        // On récupère le QueryBuilder préparé par le repository
-        $queryBuilder = $stockRepository->getGestionQueryBuilder($searchTerm);
-
-        // On passe ce QueryBuilder au paginateur
+        // 3. Pagination
         $pagination = $paginator->paginate(
-            $queryBuilder,
+            $query,
             $request->query->getInt('page', 1),
-            8
+            7
         );
 
         return $this->render('stock/indexGestion.html.twig', [
-            'searchForm' => $form->createView(),
-            'stocks'     => $pagination,
+            'stocks' => $pagination,
+            'filterForm' => $form->createView(),
         ]);
     }
 

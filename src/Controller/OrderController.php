@@ -11,12 +11,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use App\Form\SearchType;
+use App\Model\OrderFilterData;
 use App\Entity\OrderLine;
 use App\Entity\Stock;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\OrderStatusHistory;
-use App\Repository\OrderStatusHistoryRepository;
+use App\Form\OrderFilterType;
 
 #[Route('/order')]
 final class OrderController extends AbstractController
@@ -24,23 +24,18 @@ final class OrderController extends AbstractController
     #[Route(name: 'app_order_index', methods: ['GET'])]
     public function index(Request $request, OrderRepository $orderRepository, PaginatorInterface $paginator): Response
     {
-        $form = $this->createForm(SearchType::class);
+        $filterData = new OrderFilterData(); // Votre DTO
+        $form = $this->createForm(OrderFilterType::class, $filterData);
         $form->handleRequest($request);
 
-        // On récupère le terme directement depuis l'URL via 'query'
-        $searchTerm = $request->query->get('query');
-        $allStocks = $orderRepository->searchByTerm($searchTerm);
+        // On utilise la méthode de recherche globale qui prend le DTO
+        $query = $orderRepository->findWithFilters($filterData);
 
-        $pagination = $paginator->paginate(
-            $allStocks,
-            $request->query->getInt('page', 1),
-            10
-        );
+        $pagination = $paginator->paginate($query, $request->query->getInt('page', 1), 10);
 
         return $this->render('order/index.html.twig', [
-            'orders' => $orderRepository->searchByTerm($searchTerm),
-            'searchForm' => $form->createView(),
-            'orders'     => $pagination,
+            'orders' => $pagination,
+            'filterForm' => $form->createView(), // On envoie filterForm pour activer le bouton icône
         ]);
     }
 
