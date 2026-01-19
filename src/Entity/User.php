@@ -62,6 +62,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->orders = new ArrayCollection();
         $this->stocks = new ArrayCollection();
         $this->userOrders = new ArrayCollection();
+        $this->orderStatusHistories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -255,6 +256,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?Partner $partner = null;
 
+    /**
+     * @var Collection<int, OrderStatusHistory>
+     */
+    #[ORM\OneToMany(targetEntity: OrderStatusHistory::class, mappedBy: 'changedBy')]
+    private Collection $orderStatusHistories;
+
     public function isMustChangePassword(): ?bool
     {
         return $this->mustChangePassword;
@@ -304,6 +311,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPartner(?Partner $partner): static
     {
         $this->partner = $partner;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderStatusHistory>
+     */
+    public function getOrderStatusHistories(): Collection
+    {
+        return $this->orderStatusHistories;
+    }
+
+    public function addOrderStatusHistory(OrderStatusHistory $orderStatusHistory): static
+    {
+        if (!$this->orderStatusHistories->contains($orderStatusHistory)) {
+            $this->orderStatusHistories->add($orderStatusHistory);
+            $orderStatusHistory->setChangedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderStatusHistory(OrderStatusHistory $orderStatusHistory): static
+    {
+        if ($this->orderStatusHistories->removeElement($orderStatusHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($orderStatusHistory->getChangedBy() === $this) {
+                $orderStatusHistory->setChangedBy(null);
+            }
+        }
 
         return $this;
     }

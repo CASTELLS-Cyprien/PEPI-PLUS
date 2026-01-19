@@ -87,6 +87,35 @@
 						</div>
 					</div>
 
+					<div class="bg-white shadow rounded-xl mt-8 overflow-hidden">
+						<div class="px-4 py-5 sm:px-6 bg-gray-50 border-b border-gray-200">
+							<h3 class="text-sm font-bold uppercase tracking-wider text-gray-600">Historique des statuts</h3>
+						</div>
+						<ul class="divide-y divide-gray-200">
+							{% for history in order.orderStatusHistories %}
+								<li class="p-4 hover:bg-gray-50 transition-colors">
+									<div class="flex justify-between items-center">
+										<div>
+											<span class="px-2 py-1 text-xs font-semibold rounded-full {{ history.status == 'Livrée' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700' }}">
+												{{ history.status }}
+											</span>
+											<p class="text-sm text-gray-600 mt-1">
+												Par :
+												<strong>{{ history.changedBy.firstName }}
+													{{ history.changedBy.lastName }}</strong>
+											</p>
+										</div>
+										<div class="text-xs text-gray-400">
+											{{ history.createdAt|date('d/m/Y H:i') }}
+										</div>
+									</div>
+								</li>
+							{% else %}
+								<li class="p-4 text-sm text-gray-500 italic text-center">Aucun historique disponible.</li>
+							{% endfor %}
+						</ul>
+					</div>
+
 					{# Actions contextuelles #}
 					{% if order.status == 'Réservation' %}
 						<div class="bg-green-50 p-4 rounded-lg border border-green-200">
@@ -108,7 +137,7 @@
 				<div class="lg:col-span-2">
 					<div class="bg-white shadow rounded-lg border border-gray-200 overflow-hidden">
 						<div class="px-4 py-5 sm:px-6 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
-							<h3 class="text-lg font-bold text-gray-900">Articles réservés</h3>
+							<h3 class="text-sm font-bold uppercase tracking-wider text-gray-600">Articles réservés</h3>
 							<span class="bg-gray-200 text-gray-700 text-xs font-bold px-2.5 py-1 rounded">
 								{{ order.orderLines|length }}
 								ligne(s)

@@ -13,6 +13,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\Partner;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
+use Symfony\Component\Validator\Constraints\PasswordStrength;
 
 class UserType extends AbstractType
 {
@@ -54,7 +57,21 @@ class UserType extends AbstractType
                     'label' => 'Définir un mot de passe',
                     'required' => false,
                     'mapped' => false,
-                    'attr' => ['placeholder' => 'Laisser vide pour ne pas modifier']
+                    'attr' => ['placeholder' => 'Laisser vide pour ne pas modifier'],
+                    'constraints' => [
+                        new Length([
+                            'min' => 10,
+                            'minMessage' => 'Le mot de passe doit contenir au moins {{ limit }} caractères.',
+                            'max' => 4096,
+                        ]),
+                        new PasswordStrength([
+                            'minScore' => PasswordStrength::STRENGTH_MEDIUM,
+                            'message' => 'Le mot de passe est trop facile à deviner. Mélangez lettres, chiffres et symboles.'
+                        ]),
+                        new NotCompromisedPassword([
+                            'message' => 'Ce mot de passe a été trouvé dans une fuite de données, veuillez en choisir un autre.'
+                        ]),
+                    ],
                 ])
                 ->add('resetPassword', CheckboxType::class, [
                     'label' => 'Forcer la réinitialisation (Password123!)',

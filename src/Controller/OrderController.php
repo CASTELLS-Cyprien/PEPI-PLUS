@@ -15,6 +15,9 @@ use App\Form\SearchType;
 use App\Entity\OrderLine;
 use App\Entity\Stock;
 use Knp\Component\Pager\PaginatorInterface;
+use App\Entity\OrderStatusHistory;
+use App\Repository\OrderStatusHistoryRepository;
+
 #[Route('/order')]
 final class OrderController extends AbstractController
 {
@@ -79,15 +82,26 @@ final class OrderController extends AbstractController
     #[Route('/edit/{id}', name: 'app_order_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Order $order, EntityManagerInterface $entityManager): Response
     {
+        // On mémorise l'ancien statut pour comparer
+        $oldStatus = $order->getStatus();
+
         $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $order->setUpdatedBy($this->getUser());
                 $order->setUpdatedAt(new \DateTimeImmutable());
-                $entityManager->flush();
+                $order->setUpdatedBy($this->getUser());
 
+                // Si le statut a été modifié dans le formulaire
+                if ($oldStatus !== $order->getStatus()) {
+                    $history = new OrderStatusHistory();
+                    $history->setStatus($order->getStatus());
+                    $history->setChangedBy($this->getUser());
+                    $history->setCreatedAt(new \DateTimeImmutable());
+                    $order->addOrderStatusHistory($history);
+                }
+                $entityManager->flush();
                 $this->addFlash('success', 'Commande mise à jour avec succès !');
                 return $this->redirectToRoute('app_order_show', ['id' => $order->getId()]);
             } catch (\Exception $e) {
@@ -142,6 +156,14 @@ final class OrderController extends AbstractController
 
         $order->setStatus('Livrée');
         $order->setUpdatedAt(new \DateTimeImmutable());
+
+        $history = new OrderStatusHistory();
+        $history->setStatus($order->getStatus());
+        $history->setChangedBy($this->getUser());
+        $history->setCreatedAt(new \DateTimeImmutable());
+
+        $order->addOrderStatusHistory($history);
+
         $em->flush();
 
         $this->addFlash('success', 'Commande livrée : le stock a été basculé en interne.');
@@ -166,6 +188,13 @@ final class OrderController extends AbstractController
         $order->setCollaborator($this->getUser());
         $order->setUpdatedBy($this->getUser());
         $order->setUpdatedAt(new \DateTimeImmutable());
+
+        // AJOUT DE L'HISTORIQUE
+        $history = new OrderStatusHistory();
+        $history->setStatus('Réservation');
+        $history->setChangedBy($this->getUser());
+        $history->setCreatedAt(new \DateTimeImmutable());
+        $order->addOrderStatusHistory($history);
 
         $line = new OrderLine();
         $line->setStock($stock);

@@ -41,9 +41,16 @@ class Order
     #[ORM\JoinColumn(nullable: false)]
     private ?User $updated_by = null;
 
+    /**
+     * @var Collection<int, OrderStatusHistory>
+     */
+    #[ORM\OneToMany(targetEntity: OrderStatusHistory::class, mappedBy: 'purchaseOrder', cascade: ['persist'])]
+    private Collection $orderStatusHistories;
+
     public function __construct()
     {
         $this->orderLines = new ArrayCollection();
+        $this->orderStatusHistories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -149,6 +156,36 @@ class Order
     public function setUpdatedBy(?User $updated_by): static
     {
         $this->updated_by = $updated_by;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderStatusHistory>
+     */
+    public function getOrderStatusHistories(): Collection
+    {
+        return $this->orderStatusHistories;
+    }
+
+    // La méthode pour ajouter un historique
+    public function addOrderStatusHistory(OrderStatusHistory $statusHistory): static
+    {
+        if (!$this->orderStatusHistories->contains($statusHistory)) {
+            $this->orderStatusHistories->add($statusHistory);
+            $statusHistory->setPurchaseOrder($this);
+        }
+        return $this;
+    }
+
+    public function removeStatusHistory(OrderStatusHistory $statusHistory): static
+    {
+        if ($this->orderStatusHistories->removeElement($statusHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($statusHistory->getPurchaseOrder() === $this) {
+                $statusHistory->setPurchaseOrder(null);
+            }
+        }
 
         return $this;
     }

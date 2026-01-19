@@ -1,9 +1,46 @@
-<h1>Hi!</h1>
+{# templates/reset_password/email.html.twig #}
+<div style="background-color: #D9EDd4; padding: 40px 20px; font-family: 'Open Sans', Helvetica, Arial, sans-serif;">
+	<div
+		style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; border: 1px solid rgba(149, 180, 154, 0.3;">
 
-<p>To reset your password, please visit the following link</p>
+		{# Header avec couleur de la marque #}
+		<div style="padding: 30px; text-align: center; border-bottom: 1px solid #f0f0f0;">
+			<h1 style="color: #2D6A4F; font-family: 'Montserrat', sans-serif; font-size: 24px; margin: 0;">
+				Pépi+
+			</h1>
+			<p style="color: #666; font-size: 14px; margin-top: 5px;">Gestion de stock professionnelle</p>
+		</div>
 
-<a href="{{ url('app_reset_password', {token: resetToken.token}) }}">{{ url('app_reset_password', {token: resetToken.token}) }}</a>
+		{# Corps de l'email #}
+		<div style="padding: 40px 30px;">
+			<h2 style="color: #333D33; font-size: 20px; margin-bottom: 20px;">Réinitialisation de votre mot de passe</h2>
 
-<p>This link will expire in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
+			<p style="color: #4a5568; line-height: 1.6; font-size: 16px;">
+				Bonjour,
+			</p>
+			<p style="color: #4a5568; line-height: 1.6; font-size: 16px;">
+				Vous avez demandé la réinitialisation de votre mot de passe pour votre compte Pépi+. 
+				                Ce lien est valable pendant
+				<strong>{{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}</strong>.
+			</p>
 
-<p>Cheers!</p>
+			{# Bouton identique à ton bouton de connexion #}
+			<div style="text-align: center; margin: 35px 0;">
+				<a href="{{ url('app_reset_password', {token: resetToken.token}) }}" style="background-color: #2D6A4F; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; display: inline-block;">
+					Définir un nouveau mot de passe
+				</a>
+			</div>
+
+			<p style="color: #718096; font-size: 14px; line-height: 1.6;">
+				Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet e-mail. Votre mot de passe actuel restera inchangé.
+			</p>
+		</div>
+
+		{# Footer #}
+		<div style="background-color: #f8fafc; padding: 20px; text-align: center; border-top: 1px solid #f0f0f0;">
+			<p style="color: #a0aec0; font-size: 12px; margin: 0;">
+				Pépi+ © 2026 - Cet email est automatique, merci de ne pas y répondre.
+			</p>
+		</div>
+	</div>
+</div>
