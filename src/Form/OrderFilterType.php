@@ -24,6 +24,7 @@ class OrderFilterType extends AbstractType
                 'choices' => [
                     'Réservation' => 'Réservation',
                     'Livrée' => 'Livrée',
+                    'Annulée' => 'Annulée',
                 ],
                 'placeholder' => 'Tous les statuts',
                 'attr' => ['class' => 'form-select']
