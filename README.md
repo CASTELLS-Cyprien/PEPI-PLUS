@@ -144,6 +144,7 @@ DATABASE_URL="mysql://root:@127.0.0.1:3306/pepi?charset=utf8mb4"
 ```bash
 php bin/console doctrine:database:create
 php bin/console doctrine:migrations:migrate
+php bin/console doctrine:fixtures:load
 ```
 Si besoin, les exports de la base de données sont stockés dans **/var/backups/db_export_xxxx-xx-xx.sql**
 
