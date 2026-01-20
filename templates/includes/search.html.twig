@@ -67,6 +67,14 @@
 						</div>
 					{% endif %}
 
+					{# FILTRE : QUANTITÉ MAX (Page Stock) #}
+					{% if filterForm.maxQuantity is defined %}
+						<div class="space-y-1.5">
+							<label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider">Quantité maximal</label>
+							{{ form_widget(filterForm.maxQuantity, {'attr': {'class': 'w-full rounded-lg border border-gray-300 text-sm'}}) }}
+						</div>
+					{% endif %}
+
 					{# FILTRES : DATES (Page Order) #}
 					{% if filterForm.updatedAt is defined %}
 						<div class="space-y-1.5">

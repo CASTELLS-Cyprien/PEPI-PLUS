@@ -21,6 +21,10 @@ class StockFilterType extends AbstractType
             ->add('minQuantity', IntegerType::class, [
                 'required' => false,
                 'label' => 'Quantité minimum',
+            ])
+            ->add('maxQuantity', IntegerType::class, [
+                'required' => false,
+                'label' => 'Quantité maximum',
             ]);
     }
 

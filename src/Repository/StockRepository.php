@@ -6,7 +6,6 @@ use App\Entity\Stock;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Partner;
-use Doctrine\ORM\QueryBuilder;
 use App\Model\StockFilterData;
 
 /**
@@ -20,7 +19,7 @@ class StockRepository extends ServiceEntityRepository
     }
 
     /**
-     * Pour le Dashboard Admin : Tous les stocks bas
+     * Pour le Dashboard Admin et collaborateur : Tous les stocks bas
      */
     public function findLowStockAlert(int $threshold = 10): array
     {
@@ -74,8 +73,21 @@ class StockRepository extends ServiceEntityRepository
                 ->setParameter('minQty', $filters->minQuantity);
         }
 
+        if ($filters->maxQuantity !== null) {
+            $qb->andWhere('s.quantity <= :maxQty')
+                ->setParameter('maxQty', $filters->maxQuantity);
+        }
+
         return $qb->orderBy('s.quantity', 'DESC');
     }
+    /**
+     * Retourne les stocks internes (sans partenaire) filtrés
+     * en fonction de la quantité minimum et de la recherche
+     * sur le nom commun et le nom latin de la plante
+     *
+     * @param StockFilterData $filters
+     * @return Query
+     */
     public function findInternalStocksWithFilters(StockFilterData $filters)
     {
         $qb = $this->createQueryBuilder('s')
