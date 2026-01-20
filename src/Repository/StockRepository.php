@@ -18,37 +18,6 @@ class StockRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Stock::class);
     }
-    public function searchByTerm(?string $term): array
-    {
-        // On utilise 's' pour Stock (plus explicite que 'p')
-        $qb = $this->createQueryBuilder('s');
-
-        // Jointures nécessaires pour accéder aux champs des entités liées
-        $qb->leftJoin('s.plant', 'plant')
-            ->leftJoin('s.partner', 'partner')
-            ->leftJoin('s.season', 'season')
-            ->leftJoin('s.packaging', 'packaging')
-            // On sélectionne les entités jointes pour éviter des requêtes SQL supplémentaires (optimisation)
-            ->addSelect('plant', 'partner', 'season', 'packaging');
-
-        if ($term) {
-            $qb->andWhere(
-                $qb->expr()->orX(
-                    'partner.companyName LIKE :term',
-                    'plant.latinName LIKE :term',
-                    'plant.commonName LIKE :term',
-                    'season.year LIKE :term',
-                    'packaging.label LIKE :term',
-                    's.quantity LIKE :term'
-                )
-            )
-                ->setParameter('term', '%' . $term . '%');
-        }
-
-        return $qb->orderBy('s.quantity', 'DESC')
-            ->getQuery()
-            ->getResult();
-    }
 
     /**
      * Pour le Dashboard Admin : Tous les stocks bas
@@ -78,41 +47,25 @@ class StockRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function getGestionQueryBuilder(?string $term): QueryBuilder
-    {
-        $qb = $this->createQueryBuilder('s')
-            ->leftJoin('s.plant', 'plant')
-            ->leftJoin('s.season', 'season')
-            ->leftJoin('s.packaging', 'packaging')
-            ->addSelect('plant', 'season', 'packaging')
-            // Filtre obligatoire pour la gestion
-            ->where('s.partner IS NULL');
-
-        if ($term) {
-            $qb->andWhere(
-                $qb->expr()->orX(
-                    'plant.latinName LIKE :term',
-                    'plant.commonName LIKE :term',
-                    'season.year LIKE :term',
-                    'packaging.label LIKE :term',
-                    's.quantity LIKE :term'
-                )
-            )
-                ->setParameter('term', '%' . $term . '%');
-        }
-
-        return $qb->orderBy('s.quantity', 'DESC');
-    }
-
     public function findWithFilters(StockFilterData $filters)
     {
         $qb = $this->createQueryBuilder('s')
             ->leftJoin('s.plant', 'p')
-            ->addSelect('p');
+            ->leftJoin('s.partner', 'partner')
+            ->leftJoin('s.season', 'season')
+            ->leftJoin('s.packaging', 'packaging')
+            ->addSelect('p', 'partner', 'season', 'packaging');
 
         if ($filters->query) {
-            // On cherche dans commonName ET latinName pour être sûr de trouver
-            $qb->andWhere('p.commonName LIKE :q OR p.latinName LIKE :q')
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    'p.commonName LIKE :q',
+                    'p.latinName LIKE :q',
+                    'partner.companyName LIKE :q',
+                    'season.year LIKE :q',
+                    'packaging.label LIKE :q'
+                )
+            )
                 ->setParameter('q', '%' . $filters->query . '%');
         }
 
