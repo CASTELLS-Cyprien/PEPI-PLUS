@@ -26,14 +26,17 @@ class UserType extends AbstractType
                 'label' => 'Adresse e-mail',
                 'attr' => [
                     'readonly' => $options['is_profile'], // L'utilisateur peut voir mais pas modifier
-                    'class' => $options['is_profile'] ? 'bg-gray-100 cursor-not-allowed' : '',
-                ],
+                    'placeholder' => 'Ex: jean.dupont@example.com',
+                    'class' => $options['is_profile'] ? 'bg-gray-100 cursor-not-allowed' : ''
+                ]
             ])
             ->add('firstName', TextType::class, [
-                'label' => 'Prénom'
+                'label' => 'Prénom',
+                'attr' => ['placeholder' => 'Ex: Jean']
             ])
             ->add('lastName', TextType::class, [
-                'label' => 'Nom'
+                'label' => 'Nom',
+                'attr' => ['placeholder' => 'Ex: Dupont']
             ]);
 
         // On affiche ces champs UNIQUEMENT si on n'est PAS sur le profil personnel

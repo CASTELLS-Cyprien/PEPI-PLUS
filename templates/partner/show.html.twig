@@ -9,7 +9,7 @@
 		class="min-h-screen bg-gray-100">
 		{# Header #}
 		<div class="bg-white shadow-sm border-b border-gray-200">
-			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+			<div class="sm:px-8 lg:px-8 py-6">
 				<div class="flex items-center justify-between">
 					<div class="flex items-center space-x-3">
 						<a href="{{ path('app_partner_index') }}" class="text-gray-400 hover:text-gray-600">
@@ -37,7 +37,7 @@
 		</div>
 
 		{# Content #}
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+		<div class="sm:px-8 lg:px-8 py-8">
 			<div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200">
 				<div class="px-4 py-5 sm:px-6 bg-gray-50 border-b border-gray-200">
 					<h3 class="text-lg leading-6 font-medium text-gray-900">Informations Générales</h3>
@@ -109,7 +109,7 @@
 				</a>
 
 				{# Optionnel : Bouton pour voir directement ses stocks #}
-				<a href="{{ path('app_stock_index', {'query': partner.companyName}) }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 shadow-sm">
+				<a href="{{ path('app_stock_index', { 'stock_filter': { 'query': partner.companyName, 'minQuantity': '', 'maxQuantity': '' } }) }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 shadow-sm">
 					<twig:ux:icon name="mingcute:eye-line" class="w-4 h-4 inline mr-2"/>
 					Consulter l'inventaire de ce partenaire
 				</a>

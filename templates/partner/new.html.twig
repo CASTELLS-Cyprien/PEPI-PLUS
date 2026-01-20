@@ -9,7 +9,7 @@
 		class="min-h-screen bg-gray-100">
 		{# Header #}
 		<div class="bg-white shadow-sm border-b border-gray-200">
-			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+			<div class="sm:px-8 lg:px-8 py-6">
 				<div class="flex items-center space-x-3">
 					<a href="{{ path('app_partner_index') }}" class="text-gray-400 hover:text-gray-600">
 						<twig:ux:icon name="iconoir:arrow-left" class="w-6 h-6 inline mr-2"/>
@@ -28,20 +28,14 @@
 
 		{# Content #}
 		<div
-			class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+			class="sm:px-8 lg:px-8 py-8">
 			{# Formulaire #}
-			<div class="bg-white shadow-sm rounded-lg border border-gray-200 p-6">
+			<div ">
 				{{ include('partner/_form.html.twig', {
 					button_label: 'Créer le partenaire',
 				}) }}
 			</div>
 
-			<div class="mt-6">
-				<a href="{{ path('app_partner_index') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-500 flex items-center">
-					<twig:ux:icon name="iconoir:arrow-left" class="w-4 h-4 inline mr-2"/>
-					Retour à la liste des partenaires
-				</a>
-			</div>
 		</div>
 	</div>
 {% endblock %}

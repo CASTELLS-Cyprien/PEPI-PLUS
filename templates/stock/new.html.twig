@@ -9,7 +9,7 @@
 		class="min-h-screen bg-gray-100">
 		{# Header #}
 		<div class="bg-white shadow-sm border-b border-gray-200">
-			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+			<div class="sm:px-8 lg:px-8 py-6">
 				<div class="flex items-center space-x-3">
 					<a href="{{ path('app_stock_gestion_index') }}" class="text-gray-400 hover:text-gray-600">
 						<twig:ux:icon name="iconoir:arrow-left" class="w-6 h-6 inline mr-2"/>
@@ -27,7 +27,7 @@
 		</div>
 
 		{# Content #}
-		<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+		<div class="sm:px-8 lg:px-8 py-6">
 			{{ include('stock/_form.html.twig', {
             button_label: 'Mettre à jour',
         }) }}
