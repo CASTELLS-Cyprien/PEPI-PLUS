@@ -9,3 +9,7 @@ input::-webkit-search-results-decoration {
     -webkit-appearance: none;
     display: none;
 }
+
+/* Preline UI */
+@import "./node_modules/preline/variants.css";
+@import "./node_modules/preline/src/plugins/datepicker/styles.css";

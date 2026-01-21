@@ -16,15 +16,10 @@
 		{# Google Fonts #}
 		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 	</head>
-	{# templates/base.html.twig #}
-	<body
-		class="antialiased flex min-h-screen bg-menthe-clair">
-		{# Ajout de flex et du fond ici #}
+	<body class="antialiased flex min-h-screen bg-menthe-clair">
 		{% if app.user %}
 			{% include 'includes/sidebar.html.twig' %}
 		{% endif %}
-
-		{# templates/base.html.twig #}
 		<main
 			class="flex-1 {% if app.user %}lg:ml-72{% endif %} min-h-screen">
 
@@ -48,8 +43,19 @@
 			{% block body %}{% endblock %}
 		</main>
 		 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-		{% block javascripts %}
-			{{ encore_entry_script_tags('app') }}
-		{% endblock %}
-	</body>
-</html>
+		{# script preline #}
+		 <script src="https://cdn.jsdelivr.net/npm/preline/dist/preline.js"></script>
+		 <script src="./assets/vendor/lodash/lodash.min.js"></script>
+		 <script src="./assets/vendor/vanilla-calendar-pro/index.js"></script>
+		 <script>
+							document.addEventListener('turbo:load', () => {
+							if (window.HSStaticMethods && typeof window.HSStaticMethods.autoInit === 'function') {
+								window.HSStaticMethods.autoInit();
+							}
+						});
+						</script>
+			{% block javascripts %}
+		{{ encore_entry_script_tags('app') }}
+
+	{% endblock %}
+</body></html>

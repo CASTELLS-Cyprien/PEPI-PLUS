@@ -24,8 +24,11 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "@preline/select": "^3.2.3",
         "@tailwindcss/postcss": "^4.1.18",
-        "postcss-loader": "^8.2.0"
+        "postcss-loader": "^8.2.0",
+        "preline": "^3.2.3",
+        "vanilla-calendar-pro": "^3.1.0"
     },
     "name": "pepi-plus",
     "version": "1.0.0",

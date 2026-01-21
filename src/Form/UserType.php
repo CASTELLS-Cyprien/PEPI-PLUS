@@ -87,7 +87,24 @@ class UserType extends AbstractType
                     'label' => 'Entreprise associée',
                     'placeholder' => 'Aucune entreprise (Personnel interne)',
                     'required' => false,
-                    'attr' => ['class' => 'w-full px-3 py-2 border border-gray-300 rounded-md']
+                    'attr' => [
+                        'class' => 'hidden',
+                        'data-hs-select' => json_encode([
+                            "hasSearch" => true,
+                            "isClearable" => true,
+                            "placeholder" => "Aucune entreprise (Personnel interne)",
+                            "allowEmptyOption" => true,
+                            "allowPlaceholderSelection" => true,
+                            "searchPlaceholder" => "Rechercher une entreprise...",
+                            "searchNoResultText" => "Aucun résultat",
+                            "searchClasses" => "block w-full text-sm border-gray-200 rounded-lg focus:border-green-500 focus:ring-green-500 py-2 px-3",
+                            "toggleTag" => '<button type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-select-dropdown" aria-label="Select"></button>',
+                            "toggleClasses" => "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 px-4 pe-9 flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-sm text-start focus:outline-none focus:ring-2 focus:ring-green-500",
+                            "dropdownClasses" => "mt-2 max-h-72 pb-1 z-20 w-full hidden bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto",
+                            "optionClasses" => "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 focus:outline-none focus:bg-gray-100",
+                            "optionTemplate" => '<div class="flex justify-between items-center w-full"><span data-title></span><span class="hidden hs-selected:block"><svg class="shrink-0 size-3.5 text-green-600" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></div>'
+                        ]),
+                    ],
                 ]);
         }
     }
