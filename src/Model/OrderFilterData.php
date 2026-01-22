@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model;
 
 class OrderFilterData
@@ -7,7 +8,12 @@ class OrderFilterData
 
     public ?string $status = null;
 
-    public ?\DateTimeInterface $updatedAt = null;
+    // Champ texte pour l'affichage du range picker
+    public ?string $updatedAtRange = null;
+    public ?\DateTimeInterface $updatedAtStart = null;
+    public ?\DateTimeInterface $updatedAtEnd = null;
 
-    public ?\DateTimeInterface $createdAt = null;
+    public ?string $createdAtRange = null;
+    public ?\DateTimeInterface $createdAtStart = null;
+    public ?\DateTimeInterface $createdAtEnd = null;
 }

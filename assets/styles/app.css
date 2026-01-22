@@ -1,7 +1,10 @@
 @import "tailwindcss";
-@source not "../../public";
 
-/* Désactive l'icône de nettoyage par défaut des navigateurs (le X bleu) */
+@source "../../templates/**/*.html.twig";
+@source "../../assets/**/*.js";
+@source "../../node_modules/preline/dist/*.js";
+
+/* Désactive l'icône de nettoyage par défaut des navigateurs */
 input::-webkit-search-decoration,
 input::-webkit-search-cancel-button,
 input::-webkit-search-results-button,
@@ -11,5 +14,5 @@ input::-webkit-search-results-decoration {
 }
 
 /* Preline UI */
-@import "./node_modules/preline/variants.css";
-@import "./node_modules/preline/src/plugins/datepicker/styles.css";
+@import "preline/variants.css";
+@import "preline/src/plugins/datepicker/styles.css";

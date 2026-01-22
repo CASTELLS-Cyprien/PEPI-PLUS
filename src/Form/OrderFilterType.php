@@ -17,6 +17,7 @@ class OrderFilterType extends AbstractType
         $builder
             ->add('query', TextType::class, [
                 'required' => false,
+                'label' => 'Recherche',
             ])
             ->add('status', ChoiceType::class, [
                 'required' => false,
@@ -27,19 +28,44 @@ class OrderFilterType extends AbstractType
                     'Annulée' => 'Annulée',
                 ],
                 'placeholder' => 'Tous les statuts',
-                'attr' => ['class' => 'form-select']
             ])
-            ->add('updatedAt', DateType::class, [
+            // Champs visibles pour le range picker
+            ->add('updatedAtRange', TextType::class, [
                 'required' => false,
-                'label' => 'Mis à jour le',
-                'widget' => 'single_text',
-                'attr' => ['class' => 'form-control']
+                'label' => 'Mis à jour',
+                'mapped' => false,
+                'attr' => [
+                    'class' => 'flatpickr-range',
+                    'readonly' => true,
+                    'placeholder' => 'Sélectionner une période...'
+                ]
             ])
-            ->add('createdAt', DateType::class, [
+            ->add('createdAtRange', TextType::class, [
                 'required' => false,
-                'label' => 'Créé le',
+                'label' => 'Créé',
+                'mapped' => false,
+                'attr' => [
+                    'class' => 'flatpickr-range',
+                    'readonly' => true,
+                    'placeholder' => 'Sélectionner une période...'
+                ]
+            ])
+            // Champs cachés pour les dates start/end
+            ->add('updatedAtStart', DateType::class, [
+                'required' => false,
                 'widget' => 'single_text',
-                'attr' => ['class' => 'form-control']
+            ])
+            ->add('updatedAtEnd', DateType::class, [
+                'required' => false,
+                'widget' => 'single_text',
+            ])
+            ->add('createdAtStart', DateType::class, [
+                'required' => false,
+                'widget' => 'single_text',
+            ])
+            ->add('createdAtEnd', DateType::class, [
+                'required' => false,
+                'widget' => 'single_text',
             ]);
     }
 

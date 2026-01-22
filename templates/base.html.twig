@@ -42,20 +42,20 @@
 
 			{% block body %}{% endblock %}
 		</main>
-		 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-		{# script preline #}
-		 <script src="https://cdn.jsdelivr.net/npm/preline/dist/preline.js"></script>
-		 <script src="./assets/vendor/lodash/lodash.min.js"></script>
-		 <script src="./assets/vendor/vanilla-calendar-pro/index.js"></script>
-		 <script>
-							document.addEventListener('turbo:load', () => {
-							if (window.HSStaticMethods && typeof window.HSStaticMethods.autoInit === 'function') {
-								window.HSStaticMethods.autoInit();
-							}
-						});
-						</script>
-			{% block javascripts %}
-		{{ encore_entry_script_tags('app') }}
 
-	{% endblock %}
-</body></html>
+		{% block javascripts %}
+			{{ encore_entry_script_tags('app') }}
+			 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+			 <script>
+				document.addEventListener('turbo:load', () => {
+					if (window.HSStaticMethods && typeof window.HSStaticMethods.autoInit === 'function') {
+					window.HSStaticMethods.autoInit();
+					}
+				});
+			</script>
+			{# script preline #}
+			 <script src="https://cdn.jsdelivr.net/npm/preline/dist/preline.js"></script>
+			 <script src="./assets/vendor/lodash/lodash.min.js"></script> <script src="./assets/vendor/vanilla-calendar-pro/index.js"></script>
+		{% endblock %}
+	</body>
+</html>

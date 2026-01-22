@@ -3,7 +3,7 @@
 	{% set formToRender = filterForm is defined ? filterForm : (searchForm is defined ? searchForm : null) %}
 
 	{% if formToRender %}
-		{{ form_start(formToRender, {'method': 'GET', 'attr': {'class': 'relative w-full max-w-2xl'}}) }}
+		{{ form_start(formToRender, {'method': 'GET', 'attr': {'class': 'relative w-full'}}) }}
 		<div
 			class="relative flex items-center">
 
@@ -51,7 +51,7 @@
 				<div
 					class="p-4 space-y-4">
 
-					{# FILTRE : STATUT (S'affiche si présent dans le FormType) #}
+					{# FILTRE : STATUT #}
 					{% if filterForm.status is defined %}
 						<div class="space-y-1.5">
 							<label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider">Statut</label>
@@ -75,18 +75,27 @@
 						</div>
 					{% endif %}
 
-					{# FILTRES : DATES (Page Order) #}
-					{% if filterForm.updatedAt is defined %}
+					{# FILTRE : DATE DE MISE À JOUR (RANGE PICKER) #}
+					{% if filterForm.updatedAtRange is defined %}
 						<div class="space-y-1.5">
-							<label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider">Mise à jour le</label>
-							{{ form_widget(filterForm.updatedAt, {'attr': {'class': 'w-full rounded-lg border-gray-200 text-sm'}}) }}
+							<label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider">Mis à jour</label>
+							{{ form_widget(filterForm.updatedAtRange, {'attr': {'class': 'w-full rounded-lg border-gray-200 text-sm px-3 py-2 cursor-pointer'}}) }}
+							<div class="hidden">
+								{{ form_widget(filterForm.updatedAtStart) }}
+								{{ form_widget(filterForm.updatedAtEnd) }}
+							</div>
 						</div>
 					{% endif %}
 
-					{% if filterForm.createdAt is defined %}
+					{# FILTRE : DATE DE CRÉATION (RANGE PICKER) #}
+					{% if filterForm.createdAtRange is defined %}
 						<div class="space-y-1.5">
-							<label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider">Créé le</label>
-							{{ form_widget(filterForm.createdAt, {'attr': {'class': 'w-full rounded-lg border-gray-200 text-sm'}}) }}
+							<label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider">Créé</label>
+							{{ form_widget(filterForm.createdAtRange, {'attr': {'class': 'w-full rounded-lg border-gray-200 text-sm px-3 py-2 cursor-pointer'}}) }}
+							<div class="hidden">
+								{{ form_widget(filterForm.createdAtStart) }}
+								{{ form_widget(filterForm.createdAtEnd) }}
+							</div>
 						</div>
 					{% endif %}
 
@@ -103,3 +112,74 @@
 		{{ form_end(formToRender) }}
 	{% endif %}
 </div>
+
+
+{# Script Flatpickr pour les date range pickers #}
+{# Je fait comme ça car impossible de faire fonctionner dans le app.mjs et app.css #}
+{% if filterForm is defined and (filterForm.updatedAtRange is defined or filterForm.createdAtRange is defined) %}
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_green.css">
+ <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fr.js"></script>
+	 <script>
+	document.addEventListener('DOMContentLoaded', function() {
+	    // Configuration pour le champ "Mis à jour"
+	    const updatedAtRangeInput = document.getElementById('{{ filterForm.updatedAtRange.vars.id }}');
+	    const updatedAtStartInput = document.getElementById('{{ filterForm.updatedAtStart.vars.id }}');
+	    const updatedAtEndInput = document.getElementById('{{ filterForm.updatedAtEnd.vars.id }}');
+	    
+	    if (updatedAtRangeInput) {
+	        flatpickr(updatedAtRangeInput, {
+	            mode: "range",
+	            dateFormat: "d/m/Y",
+	            locale: "fr",
+	            onChange: function(selectedDates, dateStr, instance) {
+	                if (selectedDates.length === 2) {
+	                    const formatDate = (date) => {
+	                        const year = date.getFullYear();
+	                        const month = String(date.getMonth() + 1).padStart(2, '0');
+	                        const day = String(date.getDate()).padStart(2, '0');
+	                        return `${year}-${month}-${day}`;
+	                    };
+	                    
+	                    updatedAtStartInput.value = formatDate(selectedDates[0]);
+	                    updatedAtEndInput.value = formatDate(selectedDates[1]);
+	                } else if (selectedDates.length === 0) {
+	                    updatedAtStartInput.value = '';
+	                    updatedAtEndInput.value = '';
+	                }
+	            }
+	        });
+	    }
+	
+	    // Configuration pour le champ "Créé"
+	    const createdAtRangeInput = document.getElementById('{{ filterForm.createdAtRange.vars.id }}');
+	    const createdAtStartInput = document.getElementById('{{ filterForm.createdAtStart.vars.id }}');
+	    const createdAtEndInput = document.getElementById('{{ filterForm.createdAtEnd.vars.id }}');
+	    
+	    if (createdAtRangeInput) {
+	        flatpickr(createdAtRangeInput, {
+	            mode: "range",
+	            dateFormat: "d/m/Y",
+	            locale: "fr",
+	            onChange: function(selectedDates, dateStr, instance) {
+	                if (selectedDates.length === 2) {
+	                    const formatDate = (date) => {
+	                        const year = date.getFullYear();
+	                        const month = String(date.getMonth() + 1).padStart(2, '0');
+	                        const day = String(date.getDate()).padStart(2, '0');
+	                        return `${year}-${month}-${day}`;
+	                    };
+	                    
+	                    createdAtStartInput.value = formatDate(selectedDates[0]);
+	                    createdAtEndInput.value = formatDate(selectedDates[1]);
+	                } else if (selectedDates.length === 0) {
+	                    createdAtStartInput.value = '';
+	                    createdAtEndInput.value = '';
+	                }
+	            }
+	        });
+	    }
+	});
+	</script>
+{% endif %}

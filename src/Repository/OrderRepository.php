@@ -46,12 +46,13 @@ class OrderRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    
     public function findWithFilters(OrderFilterData $filters): Query
     {
         $qb = $this->createQueryBuilder('o')
-            ->orderBy('o.updated_at', 'DESC');
+            ->orderBy('o.id', 'DESC');
 
-        // Filtre de recherche textuelle (issu de votre barre search)
+        // Filtre de recherche textuelle
         if ($filters->query) {
             $qb->andWhere('o.orderNumber LIKE :q')
                ->setParameter('q', "%{$filters->query}%");
@@ -63,28 +64,35 @@ class OrderRepository extends ServiceEntityRepository
                ->setParameter('status', $filters->status);
         }
 
-        // Filtre par Date
-        if ($filters->updatedAt) {
-            $dateStart = $filters->updatedAt->format('Y-m-d 00:00:00');
-            $dateEnd = $filters->updatedAt->format('Y-m-d 23:59:59');
-            
-            $qb->andWhere('o.updated_at BETWEEN :start AND :end')
-               ->setParameter('start', $dateStart)
-               ->setParameter('end', $dateEnd);
+        // Filtre par plage de dates updated_at
+        if ($filters->updatedAtStart && $filters->updatedAtEnd) {
+            $qb->andWhere('o.updated_at BETWEEN :updatedStart AND :updatedEnd')
+               ->setParameter('updatedStart', $filters->updatedAtStart->format('Y-m-d 00:00:00'))
+               ->setParameter('updatedEnd', $filters->updatedAtEnd->format('Y-m-d 23:59:59'));
+        } elseif ($filters->updatedAtStart) {
+            $qb->andWhere('o.updated_at >= :updatedStart')
+               ->setParameter('updatedStart', $filters->updatedAtStart->format('Y-m-d 00:00:00'));
+        } elseif ($filters->updatedAtEnd) {
+            $qb->andWhere('o.updated_at <= :updatedEnd')
+               ->setParameter('updatedEnd', $filters->updatedAtEnd->format('Y-m-d 23:59:59'));
         }
 
-         // Filtre par Date
-        if ($filters->createdAt) {
-            $dateStart = $filters->createdAt->format('Y-m-d 00:00:00');
-            $dateEnd = $filters->createdAt->format('Y-m-d 23:59:59');
-            
-            $qb->andWhere('o.updated_at BETWEEN :start AND :end')
-               ->setParameter('start', $dateStart)
-               ->setParameter('end', $dateEnd);
+        // Filtre par plage de dates createdAt
+        if ($filters->createdAtStart && $filters->createdAtEnd) {
+            $qb->andWhere('o.createdAt BETWEEN :createdStart AND :createdEnd')
+               ->setParameter('createdStart', $filters->createdAtStart->format('Y-m-d 00:00:00'))
+               ->setParameter('createdEnd', $filters->createdAtEnd->format('Y-m-d 23:59:59'));
+        } elseif ($filters->createdAtStart) {
+            $qb->andWhere('o.createdAt >= :createdStart')
+               ->setParameter('createdStart', $filters->createdAtStart->format('Y-m-d 00:00:00'));
+        } elseif ($filters->createdAtEnd) {
+            $qb->andWhere('o.createdAt <= :createdEnd')
+               ->setParameter('createdEnd', $filters->createdAtEnd->format('Y-m-d 23:59:59'));
         }
         
         return $qb->getQuery();
     }
+}
     //    /**
     //     * @return Order[] Returns an array of Order objects
     //     */
@@ -109,4 +117,3 @@ class OrderRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
-}
