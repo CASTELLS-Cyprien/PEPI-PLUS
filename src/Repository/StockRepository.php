@@ -105,7 +105,11 @@ class StockRepository extends ServiceEntityRepository
             $qb->andWhere('s.quantity >= :minQty')
                 ->setParameter('minQty', $filters->minQuantity);
         }
-
+        
+        if ($filters->maxQuantity !== null) {
+            $qb->andWhere('s.quantity <= :maxQty')
+                ->setParameter('maxQty', $filters->maxQuantity);
+        }
         return $qb->orderBy('s.quantity', 'DESC');
     }
     //    /**
