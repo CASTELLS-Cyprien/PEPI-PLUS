@@ -1507,20 +1507,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     script_attributes?: array<string, scalar|null|Param>,
  *     link_attributes?: array<string, scalar|null|Param>,
  * }
- * @psalm-type StimulusConfig = array{
- *     controller_paths?: list<scalar|null|Param>,
- *     controllers_json?: scalar|null|Param, // Default: "%kernel.project_dir%/assets/controllers.json"
- * }
- * @psalm-type TurboConfig = array{
- *     broadcast?: bool|array{
- *         enabled?: bool|Param, // Default: true
- *         entity_template_prefixes?: list<scalar|null|Param>,
- *         doctrine_orm?: bool|array{ // Enable the Doctrine ORM integration
- *             enabled?: bool|Param, // Default: true
- *         },
- *     },
- *     default_transport?: scalar|null|Param, // Default: "default"
- * }
  * @psalm-type UxIconsConfig = array{
  *     icon_dir?: scalar|null|Param, // The local directory where icons are stored. // Default: "%kernel.project_dir%/assets/icons"
  *     default_icon_attributes?: array<string, scalar|null|Param>,
@@ -1577,6 +1563,10 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     throttle_limit?: int|Param, // Another password reset cannot be made faster than this throttle time in seconds. // Default: 3600
  *     enable_garbage_collection?: bool|Param, // Enable/Disable automatic garbage collection. // Default: true
  * }
+ * @psalm-type StimulusConfig = array{
+ *     controller_paths?: list<scalar|null|Param>,
+ *     controllers_json?: scalar|null|Param, // Default: "%kernel.project_dir%/assets/controllers.json"
+ * }
  * @psalm-type ConfigType = array{
  *     imports?: ImportsConfig,
  *     parameters?: ParametersConfig,
@@ -1589,12 +1579,11 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     security?: SecurityConfig,
  *     monolog?: MonologConfig,
  *     webpack_encore?: WebpackEncoreConfig,
- *     stimulus?: StimulusConfig,
- *     turbo?: TurboConfig,
  *     ux_icons?: UxIconsConfig,
  *     twig_component?: TwigComponentConfig,
  *     knp_paginator?: KnpPaginatorConfig,
  *     symfonycasts_reset_password?: SymfonycastsResetPasswordConfig,
+ *     stimulus?: StimulusConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
@@ -1610,12 +1599,11 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         monolog?: MonologConfig,
  *         maker?: MakerConfig,
  *         webpack_encore?: WebpackEncoreConfig,
- *         stimulus?: StimulusConfig,
- *         turbo?: TurboConfig,
  *         ux_icons?: UxIconsConfig,
  *         twig_component?: TwigComponentConfig,
  *         knp_paginator?: KnpPaginatorConfig,
  *         symfonycasts_reset_password?: SymfonycastsResetPasswordConfig,
+ *         stimulus?: StimulusConfig,
  *     },
  *     "when@prod"?: array{
  *         imports?: ImportsConfig,
@@ -1629,12 +1617,11 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         security?: SecurityConfig,
  *         monolog?: MonologConfig,
  *         webpack_encore?: WebpackEncoreConfig,
- *         stimulus?: StimulusConfig,
- *         turbo?: TurboConfig,
  *         ux_icons?: UxIconsConfig,
  *         twig_component?: TwigComponentConfig,
  *         knp_paginator?: KnpPaginatorConfig,
  *         symfonycasts_reset_password?: SymfonycastsResetPasswordConfig,
+ *         stimulus?: StimulusConfig,
  *     },
  *     "when@test"?: array{
  *         imports?: ImportsConfig,
@@ -1649,12 +1636,11 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         security?: SecurityConfig,
  *         monolog?: MonologConfig,
  *         webpack_encore?: WebpackEncoreConfig,
- *         stimulus?: StimulusConfig,
- *         turbo?: TurboConfig,
  *         ux_icons?: UxIconsConfig,
  *         twig_component?: TwigComponentConfig,
  *         knp_paginator?: KnpPaginatorConfig,
  *         symfonycasts_reset_password?: SymfonycastsResetPasswordConfig,
+ *         stimulus?: StimulusConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,

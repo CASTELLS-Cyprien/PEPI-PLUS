@@ -1,8 +1,5 @@
 @import "tailwindcss";
-
-@source "../../templates/**/*.html.twig";
-@source "../../assets/**/*.js";
-@source "../../node_modules/preline/dist/*.js";
+@source not "../../public";
 
 /* Désactive l'icône de nettoyage par défaut des navigateurs */
 input::-webkit-search-decoration,
@@ -12,7 +9,3 @@ input::-webkit-search-results-decoration {
     -webkit-appearance: none;
     display: none;
 }
-
-/* Preline UI */
-@import "preline/variants.css";
-@import "preline/src/plugins/datepicker/styles.css";

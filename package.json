@@ -3,17 +3,13 @@
         "@babel/core": "^7.17.0",
         "@babel/preset-env": "^7.16.0",
         "@hotwired/stimulus": "^3.0.0",
-        "@hotwired/turbo": "^7.1.0 || ^8.0",
         "@symfony/stimulus-bridge": "^3.2.0 || ^4.0.0",
-        "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/assets",
         "@symfony/webpack-encore": "^5.1.0",
-        "@tailwindcss/postcss": "^4.1.18",
-        "autoprefixer": "^10.4.23",
+        "@tailwindcss/forms": "^0.5.11",
         "core-js": "^3.38.0",
-        "postcss": "^8.5.6",
-        "postcss-loader": "^8.2.0",
         "regenerator-runtime": "^0.13.9",
-        "tailwindcss": "^4.1.18",
+        "ts-loader": "^9.5.4",
+        "typescript": "^5.9.3",
         "webpack": "^5.74.0",
         "webpack-cli": "^5.1.0"
     },
@@ -26,27 +22,13 @@
         "build": "encore production --progress"
     },
     "dependencies": {
-        "@preline/select": "^3.2.3",
+        "@tailwindcss/postcss": "^4.1.18",
         "flatpickr": "^4.6.13",
+        "lodash": "^4.17.23",
+        "postcss": "^8.5.6",
+        "postcss-loader": "^8.2.0",
         "preline": "^3.2.3",
+        "tailwindcss": "^4.1.18",
         "vanilla-calendar-pro": "^3.1.0"
-    },
-    "name": "pepi-plus",
-    "version": "1.0.0",
-    "description": "",
-    "main": "webpack.config.js",
-    "directories": {
-        "test": "tests"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/CASTELLS-Cyprien/PEPI-PLUS.git"
-    },
-    "keywords": [],
-    "author": "",
-    "type": "commonjs",
-    "bugs": {
-        "url": "https://github.com/CASTELLS-Cyprien/PEPI-PLUS/issues"
-    },
-    "homepage": "https://github.com/CASTELLS-Cyprien/PEPI-PLUS#readme"
+    }
 }

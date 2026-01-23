@@ -7,11 +7,6 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 }
 
 Encore
-    .enablePostCssLoader((options) => {
-        options.postcssOptions = {
-            config: true // Force la lecture du fichier postcss.config.mjs
-        };
-    })
     // directory where compiled assets will be stored
     .setOutputPath('public/build/')
     // public path used by the web server to access the output path
@@ -25,7 +20,7 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .addEntry('app', './assets/app.mjs')
+    .addEntry('app', './assets/app.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
@@ -64,11 +59,13 @@ Encore
         config.corejs = '3.38';
     })
 
+    .enablePostCssLoader()
+
     // enables Sass/SCSS support
     //.enableSassLoader()
 
     // uncomment if you use TypeScript
-    //.enableTypeScriptLoader()
+    .enableTypeScriptLoader()
 
     // uncomment if you use React
     //.enableReactPreset()
@@ -79,6 +76,6 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
-    ;
+;
 
 module.exports = Encore.getWebpackConfig();
