@@ -7,7 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Partner;
 use App\Model\StockFilterData;
-
+use Doctrine\ORM\Query;
 /**
  * @extends ServiceEntityRepository<Stock>
  */

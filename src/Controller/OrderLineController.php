@@ -22,32 +22,6 @@ final class OrderLineController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_order_line_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $orderLine = new OrderLine();
-        $form = $this->createForm(OrderLineType::class, $orderLine);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            try {
-                $entityManager->persist($orderLine);
-                $entityManager->flush();
-
-                $this->addFlash('success', 'Ligne de commande ajoutée avec succès !');
-
-                return $this->redirectToRoute('app_order_line_index', [], Response::HTTP_SEE_OTHER);
-            } catch (\Exception $e) {
-                $this->addFlash('error', 'Impossible d\'ajouter la ligne de commande : ' . $e->getMessage());
-            }
-        }
-
-        return $this->render('order_line/new.html.twig', [
-            'order_line' => $orderLine,
-            'form' => $form,
-        ]);
-    }
-
     #[Route('/{id}', name: 'app_order_line_show', methods: ['GET'])]
     public function show(OrderLine $orderLine): Response
     {

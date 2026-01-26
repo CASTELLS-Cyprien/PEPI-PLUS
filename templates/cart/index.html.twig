@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Panier de Réservation
+{% endblock %}
+
+{% block body %}
+	<div
+		class="min-h-screen bg-gray-100 pb-12">
+		{# Header identique à votre page show #}
+		<div class="bg-white shadow-sm border-b border-gray-200">
+			<div class="sm:px-8 lg:px-8 py-6">
+				<div class="flex items-center justify-between">
+					<div class="flex items-center space-x-3">
+						<a href="{{ path('app_stock_index') }}" class="text-gray-400 hover:text-gray-600 transition-colors">
+							<twig:ux:icon name="iconoir:arrow-left" class="w-6 h-6"/>
+						</a>
+						<div>
+							<h1 class="text-2xl font-bold text-gray-900">Mon Panier</h1>
+							<p class="mt-1 text-sm text-gray-500">Récapitulatif avant la création de la commande</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="sm:px-8 lg:px-8 py-8">
+			{% if items is empty %}
+				<div class="bg-white p-12 text-center rounded-lg shadow border border-gray-200">
+					<p class="text-gray-500 italic">Votre panier est vide.</p>
+					<a href="{{ path('app_stock_index') }}" class="mt-4 inline-block text-green-600 font-bold">Retourner au stock global</a>
+				</div>
+			{% else %}
+				<div
+					class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+					{# Colonne Gauche : Tableau des articles (Structure demandée) #}
+					<div class="lg:col-span-2">
+						<div class="bg-white shadow rounded-lg border border-gray-200 overflow-hidden">
+							<table class="min-w-full divide-y divide-gray-200">
+								<thead class="bg-gray-50">
+									<tr>
+										<th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Plante</th>
+										<th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Conditionnement</th>
+										<th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Saison</th>
+										<th class="px-6 py-3 text-center text-xs font-bold text-gray-500 uppercase">Quantité</th>
+										<th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Source</th>
+										<th class="px-6 py-3 text-right text-xs font-bold text-gray-500 uppercase">Action</th>
+									</tr>
+								</thead>
+								<tbody class="bg-white divide-y divide-gray-200">
+									{% for item in items %}
+										<tr class="hover:bg-gray-50">
+											<td class="px-6 py-4 whitespace-nowrap">
+												<div class="text-sm font-bold text-gray-900">{{ item.stock.plant.LatinName }}</div>
+												<div class="text-sm text-gray-400">{{ item.stock.plant.CommonName }}</div>
+											</td>
+											<td class="px-6 py-4 whitespace-nowrap">
+												<div class="text-sm text-gray-600">{{ item.stock.packaging.label }}</div>
+											</td>
+											<td class="px-6 py-4 whitespace-nowrap">
+												<div class="text-xs text-gray-600">{{ item.stock.season.year }}</div>
+											</td>
+											<td class="px-6 py-4 whitespace-nowrap text-center text-sm font-extrabold">
+												{{ item.quantity }}
+											</td>
+											<td class="px-6 py-4 whitespace-nowrap">
+												{% if item.stock.partner %}
+													<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">
+														Partenaire :
+														{{ item.stock.partner.companyName }}
+													</span>
+												{% endif %}
+											</td>
+											<td class="px-6 py-4 whitespace-nowrap text-right">
+												<a href="{{ path('app_cart_remove', {'id': item.stock.id}) }}" class="text-red-500 hover:text-red-700">
+													<twig:ux:icon name="heroicons:trash" class="w-5 h-5 inline"/>
+												</a>
+											</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					{# Colonne Droite : Validation #}
+					<div class="lg:col-span-1">
+						<div class="bg-white shadow rounded-lg p-6 border border-gray-200">
+							<h3 class="text-sm font-bold uppercase text-gray-600 mb-4">Résumé de la commande</h3>
+							<div class="flex justify-between mb-6">
+								<span class="text-gray-600">Total articles</span>
+								<span class="font-bold text-lg">{{ items|length }}</span>
+							</div>
+							<form action="{{ path('app_cart_validate') }}" method="POST">
+								<button type="submit" class="w-full flex justify-center items-center px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-md font-bold shadow transition-all">
+									<twig:ux:icon name="iconoir:check" class="w-5 h-5 mr-2"/>
+									Valider et Créer la Commande
+								</button>
+							</form>
+						</div>
+					</div>
+
+				</div>
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}

@@ -88,20 +88,20 @@
 									</td>
 									<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
 										<div class="flex justify-end space-x-3">
-											{% if (is_granted('ROLE_COLLABORATOR') or is_granted('ROLE_ADMIN')) and stock.partner is null %}
+											{% if stock.partner is null %}
 												<a href="{{ path('app_stock_edit', {'id': stock.id}) }}" class="text-blue-600 hover:text-blue-900">
 													<twig:ux:icon name="cuida:edit-outline" class="w-5 h-5"/>
 												</a>
 											{% endif %}
-											{% if (is_granted('ROLE_COLLABORATOR') or is_granted('ROLE_ADMIN')) and stock.partner is not null %}
-												<form action="{{ path('app_order_reserve', {'id': stock.id}) }}" method="POST" class="flex items-center space-x-2 justify-end">
-													<input type="number" name="quantity" min="1" max="{{ stock.quantity }}" class="w-16 border border-gray-300 rounded-md text-sm" placeholder="Qté" required/>
-													<button type="submit" class="text-blue-600 hover:text-blue-900">
-														<twig:ux:icon name="formkit:add" class="w-5 h-5"/>
+											{% if stock.partner is not null %}
+												<form action="{{ path('app_cart_add', {'id': stock.id}) }}" method="POST" class="flex items-center space-x-2">
+													<input type="number" name="quantity" min="1" max="{{ stock.quantity }}" class="w-16 border border-gray-300 rounded-md text-sm px-2 py-1" placeholder="Qté" required/>
+													<button type="submit" class="text-blue-600 hover:text-blue-900 bg-blue-50 rounded-lg transition-colors">
+														<twig:ux:icon name="iconoir:cart" class="w-5 h-5"/>
 													</button>
 												</form>
 											{% endif %}
-											<a href="{{ path('app_stock_show', {'id': stock.id}) }}" class="text-green-600 hover:text-green-900">
+											<a href="{{ path('app_stock_show', {'id': stock.id}) }}" class="text-green-600 hover:text-green-900 flex items-center">
 												<twig:ux:icon name="mingcute:eye-line" class="w-5 h-5"/>
 											</a>
 										</div>

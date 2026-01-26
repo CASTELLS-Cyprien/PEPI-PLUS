@@ -164,47 +164,4 @@ final class OrderController extends AbstractController
         $this->addFlash('success', 'Commande livrée : le stock a été basculé en interne.');
         return $this->redirectToRoute('app_order_show', ['id' => $order->getId()]);
     }
-
-
-    #[Route('/order/reserve/{id}', name: 'app_order_reserve', methods: ['POST'])]
-    public function reserve(Stock $stock, Request $request, EntityManagerInterface $em): Response
-    {
-        $quantity = (int) $request->request->get('quantity');
-
-        if ($quantity <= 0 || $quantity > $stock->getQuantity()) {
-            $this->addFlash('danger', 'Quantité invalide ou stock insuffisant.');
-            return $this->redirectToRoute('app_stock_index');
-        }
-
-        $order = new Order();
-        $order->setOrderNumber('CMD-' . strtoupper(bin2hex(random_bytes(4))));
-        $order->setStatus('Réservation');
-        $order->setCreatedAt(new \DateTimeImmutable());
-        $order->setCollaborator($this->getUser());
-        $order->setUpdatedBy($this->getUser());
-        $order->setUpdatedAt(new \DateTimeImmutable());
-
-        // AJOUT DE L'HISTORIQUE
-        $history = new OrderStatusHistory();
-        $history->setStatus('Réservation');
-        $history->setChangedBy($this->getUser());
-        $history->setCreatedAt(new \DateTimeImmutable());
-        $order->addOrderStatusHistory($history);
-
-        $line = new OrderLine();
-        $line->setStock($stock);
-        $line->setQuantity($quantity);
-        $line->setPurchaseOrder($order);
-
-        // Décrémentation immédiate du stock virtuel
-        $stock->setQuantity($stock->getQuantity() - $quantity);
-        $stock->setUpdatedAt(new \DateTimeImmutable());
-
-        $em->persist($order);
-        $em->persist($line);
-        $em->flush();
-
-        $this->addFlash('success', "Réservation de $quantity unités effectuée.");
-        return $this->redirectToRoute('app_order_index');
-    }
 }
