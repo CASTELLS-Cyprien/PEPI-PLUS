@@ -154,6 +154,12 @@ class AppExportFixtures extends Fixture
         $entities['Plant_20']->setType('Plante à rhizome');
         $manager->persist($entities['Plant_20']);
 
+        $entities['Plant_74'] = new \App\Entity\Plant();
+        $entities['Plant_74']->setLatinName('Rosa rubiginosa');
+        $entities['Plant_74']->setCommonName('Rosier');
+        $entities['Plant_74']->setType('fleur');
+        $manager->persist($entities['Plant_74']);
+
         $entities['Partner_1'] = new \App\Entity\Partner();
         $entities['Partner_1']->setCompanyName('Guillet');
         $entities['Partner_1']->setContactDetails('20, boulevard Bernier
@@ -479,7 +485,7 @@ class AppExportFixtures extends Fixture
         $manager->persist($entities['Stock_15']);
 
         $entities['Stock_16'] = new \App\Entity\Stock();
-        $entities['Stock_16']->setQuantity(344);
+        $entities['Stock_16']->setQuantity(329);
         if (isset($entities['Plant_18'])) $entities['Stock_16']->setPlant($entities['Plant_18']);
         if (isset($entities['Packaging_5'])) $entities['Stock_16']->setPackaging($entities['Packaging_5']);
         if (isset($entities['Season_4'])) $entities['Stock_16']->setSeason($entities['Season_4']);
@@ -495,7 +501,7 @@ class AppExportFixtures extends Fixture
         $manager->persist($entities['Stock_17']);
 
         $entities['Stock_18'] = new \App\Entity\Stock();
-        $entities['Stock_18']->setQuantity(419);
+        $entities['Stock_18']->setQuantity(269);
         if (isset($entities['Plant_2'])) $entities['Stock_18']->setPlant($entities['Plant_2']);
         if (isset($entities['Packaging_2'])) $entities['Stock_18']->setPackaging($entities['Packaging_2']);
         if (isset($entities['Season_4'])) $entities['Stock_18']->setSeason($entities['Season_4']);
@@ -687,7 +693,7 @@ class AppExportFixtures extends Fixture
         $manager->persist($entities['Stock_41']);
 
         $entities['Stock_42'] = new \App\Entity\Stock();
-        $entities['Stock_42']->setQuantity(374);
+        $entities['Stock_42']->setQuantity(340);
         if (isset($entities['Plant_14'])) $entities['Stock_42']->setPlant($entities['Plant_14']);
         if (isset($entities['Packaging_2'])) $entities['Stock_42']->setPackaging($entities['Packaging_2']);
         if (isset($entities['Season_3'])) $entities['Stock_42']->setSeason($entities['Season_3']);
@@ -703,7 +709,7 @@ class AppExportFixtures extends Fixture
         $manager->persist($entities['Stock_43']);
 
         $entities['Stock_45'] = new \App\Entity\Stock();
-        $entities['Stock_45']->setQuantity(356);
+        $entities['Stock_45']->setQuantity(340);
         if (isset($entities['Plant_14'])) $entities['Stock_45']->setPlant($entities['Plant_14']);
         if (isset($entities['Packaging_5'])) $entities['Stock_45']->setPackaging($entities['Packaging_5']);
         if (isset($entities['Season_4'])) $entities['Stock_45']->setSeason($entities['Season_4']);
@@ -719,7 +725,7 @@ class AppExportFixtures extends Fixture
         $manager->persist($entities['Stock_46']);
 
         $entities['Stock_47'] = new \App\Entity\Stock();
-        $entities['Stock_47']->setQuantity(346);
+        $entities['Stock_47']->setQuantity(340);
         if (isset($entities['Plant_1'])) $entities['Stock_47']->setPlant($entities['Plant_1']);
         if (isset($entities['Packaging_4'])) $entities['Stock_47']->setPackaging($entities['Packaging_4']);
         if (isset($entities['Season_3'])) $entities['Stock_47']->setSeason($entities['Season_3']);
@@ -743,7 +749,7 @@ class AppExportFixtures extends Fixture
         $manager->persist($entities['Stock_49']);
 
         $entities['Stock_50'] = new \App\Entity\Stock();
-        $entities['Stock_50']->setQuantity(436);
+        $entities['Stock_50']->setQuantity(286);
         if (isset($entities['Plant_7'])) $entities['Stock_50']->setPlant($entities['Plant_7']);
         if (isset($entities['Packaging_2'])) $entities['Stock_50']->setPackaging($entities['Packaging_2']);
         if (isset($entities['Season_1'])) $entities['Stock_50']->setSeason($entities['Season_1']);
@@ -765,6 +771,14 @@ class AppExportFixtures extends Fixture
         if (isset($entities['Season_4'])) $entities['Stock_53']->setSeason($entities['Season_4']);
         $entities['Stock_53']->setPartner(NULL);
         $manager->persist($entities['Stock_53']);
+
+        $entities['Stock_54'] = new \App\Entity\Stock();
+        $entities['Stock_54']->setQuantity(15);
+        if (isset($entities['Plant_18'])) $entities['Stock_54']->setPlant($entities['Plant_18']);
+        if (isset($entities['Packaging_5'])) $entities['Stock_54']->setPackaging($entities['Packaging_5']);
+        if (isset($entities['Season_4'])) $entities['Stock_54']->setSeason($entities['Season_4']);
+        $entities['Stock_54']->setPartner(NULL);
+        $manager->persist($entities['Stock_54']);
 
         $entities['Order_19'] = new \App\Entity\Order();
         $entities['Order_19']->setOrderNumber('CMD-A5D8DD40');
@@ -850,6 +864,55 @@ class AppExportFixtures extends Fixture
         if (isset($entities['User_1'])) $entities['Order_30']->setCollaborator($entities['User_1']);
         $manager->persist($entities['Order_30']);
 
+        $entities['Order_31'] = new \App\Entity\Order();
+        $entities['Order_31']->setOrderNumber('CMD-B7894EF7');
+        $entities['Order_31']->setStatus('Annulée');
+        $entities['Order_31']->setCreatedAt(new \DateTimeImmutable('2026-01-23 15:11:51'));
+        if (isset($entities['User_1'])) $entities['Order_31']->setCollaborator($entities['User_1']);
+        $manager->persist($entities['Order_31']);
+
+        $entities['Order_32'] = new \App\Entity\Order();
+        $entities['Order_32']->setOrderNumber('CMD-1A584D6B');
+        $entities['Order_32']->setStatus('Annulée');
+        $entities['Order_32']->setCreatedAt(new \DateTimeImmutable('2026-01-23 15:17:44'));
+        if (isset($entities['User_1'])) $entities['Order_32']->setCollaborator($entities['User_1']);
+        $manager->persist($entities['Order_32']);
+
+        $entities['Order_33'] = new \App\Entity\Order();
+        $entities['Order_33']->setOrderNumber('CMD-ED7987B4');
+        $entities['Order_33']->setStatus('Réservation');
+        $entities['Order_33']->setCreatedAt(new \DateTimeImmutable('2026-01-26 08:34:33'));
+        if (isset($entities['User_1'])) $entities['Order_33']->setCollaborator($entities['User_1']);
+        $manager->persist($entities['Order_33']);
+
+        $entities['Order_34'] = new \App\Entity\Order();
+        $entities['Order_34']->setOrderNumber('CMD-3E72CE55');
+        $entities['Order_34']->setStatus('Livrée');
+        $entities['Order_34']->setCreatedAt(new \DateTimeImmutable('2026-01-26 08:45:08'));
+        if (isset($entities['User_1'])) $entities['Order_34']->setCollaborator($entities['User_1']);
+        $manager->persist($entities['Order_34']);
+
+        $entities['Order_35'] = new \App\Entity\Order();
+        $entities['Order_35']->setOrderNumber('CMD-B148FFAC');
+        $entities['Order_35']->setStatus('Annulée');
+        $entities['Order_35']->setCreatedAt(new \DateTimeImmutable('2026-01-26 09:01:10'));
+        if (isset($entities['User_1'])) $entities['Order_35']->setCollaborator($entities['User_1']);
+        $manager->persist($entities['Order_35']);
+
+        $entities['Order_36'] = new \App\Entity\Order();
+        $entities['Order_36']->setOrderNumber('CMD-AE7177F2');
+        $entities['Order_36']->setStatus('Annulée');
+        $entities['Order_36']->setCreatedAt(new \DateTimeImmutable('2026-01-26 09:15:26'));
+        if (isset($entities['User_1'])) $entities['Order_36']->setCollaborator($entities['User_1']);
+        $manager->persist($entities['Order_36']);
+
+        $entities['Order_37'] = new \App\Entity\Order();
+        $entities['Order_37']->setOrderNumber('CMD-B885A6AF');
+        $entities['Order_37']->setStatus('Annulée');
+        $entities['Order_37']->setCreatedAt(new \DateTimeImmutable('2026-01-26 09:16:12'));
+        if (isset($entities['User_1'])) $entities['Order_37']->setCollaborator($entities['User_1']);
+        $manager->persist($entities['Order_37']);
+
         $entities['OrderLine_42'] = new \App\Entity\OrderLine();
         $entities['OrderLine_42']->setQuantity(50);
         if (isset($entities['Stock_47'])) $entities['OrderLine_42']->setStock($entities['Stock_47']);
@@ -921,6 +984,54 @@ class AppExportFixtures extends Fixture
         if (isset($entities['Stock_18'])) $entities['OrderLine_53']->setStock($entities['Stock_18']);
         if (isset($entities['Order_30'])) $entities['OrderLine_53']->setPurchaseOrder($entities['Order_30']);
         $manager->persist($entities['OrderLine_53']);
+
+        $entities['OrderLine_54'] = new \App\Entity\OrderLine();
+        $entities['OrderLine_54']->setQuantity(150);
+        if (isset($entities['Stock_50'])) $entities['OrderLine_54']->setStock($entities['Stock_50']);
+        if (isset($entities['Order_31'])) $entities['OrderLine_54']->setPurchaseOrder($entities['Order_31']);
+        $manager->persist($entities['OrderLine_54']);
+
+        $entities['OrderLine_55'] = new \App\Entity\OrderLine();
+        $entities['OrderLine_55']->setQuantity(150);
+        if (isset($entities['Stock_18'])) $entities['OrderLine_55']->setStock($entities['Stock_18']);
+        if (isset($entities['Order_32'])) $entities['OrderLine_55']->setPurchaseOrder($entities['Order_32']);
+        $manager->persist($entities['OrderLine_55']);
+
+        $entities['OrderLine_56'] = new \App\Entity\OrderLine();
+        $entities['OrderLine_56']->setQuantity(20);
+        if (isset($entities['Stock_42'])) $entities['OrderLine_56']->setStock($entities['Stock_42']);
+        if (isset($entities['Order_33'])) $entities['OrderLine_56']->setPurchaseOrder($entities['Order_33']);
+        $manager->persist($entities['OrderLine_56']);
+
+        $entities['OrderLine_57'] = new \App\Entity\OrderLine();
+        $entities['OrderLine_57']->setQuantity(10);
+        if (isset($entities['Stock_45'])) $entities['OrderLine_57']->setStock($entities['Stock_45']);
+        if (isset($entities['Order_33'])) $entities['OrderLine_57']->setPurchaseOrder($entities['Order_33']);
+        $manager->persist($entities['OrderLine_57']);
+
+        $entities['OrderLine_58'] = new \App\Entity\OrderLine();
+        $entities['OrderLine_58']->setQuantity(15);
+        if (isset($entities['Stock_16'])) $entities['OrderLine_58']->setStock($entities['Stock_16']);
+        if (isset($entities['Order_34'])) $entities['OrderLine_58']->setPurchaseOrder($entities['Order_34']);
+        $manager->persist($entities['OrderLine_58']);
+
+        $entities['OrderLine_59'] = new \App\Entity\OrderLine();
+        $entities['OrderLine_59']->setQuantity(14);
+        if (isset($entities['Stock_42'])) $entities['OrderLine_59']->setStock($entities['Stock_42']);
+        if (isset($entities['Order_35'])) $entities['OrderLine_59']->setPurchaseOrder($entities['Order_35']);
+        $manager->persist($entities['OrderLine_59']);
+
+        $entities['OrderLine_60'] = new \App\Entity\OrderLine();
+        $entities['OrderLine_60']->setQuantity(6);
+        if (isset($entities['Stock_45'])) $entities['OrderLine_60']->setStock($entities['Stock_45']);
+        if (isset($entities['Order_36'])) $entities['OrderLine_60']->setPurchaseOrder($entities['Order_36']);
+        $manager->persist($entities['OrderLine_60']);
+
+        $entities['OrderLine_61'] = new \App\Entity\OrderLine();
+        $entities['OrderLine_61']->setQuantity(6);
+        if (isset($entities['Stock_47'])) $entities['OrderLine_61']->setStock($entities['Stock_47']);
+        if (isset($entities['Order_37'])) $entities['OrderLine_61']->setPurchaseOrder($entities['Order_37']);
+        $manager->persist($entities['OrderLine_61']);
 
         $manager->flush();
     }
