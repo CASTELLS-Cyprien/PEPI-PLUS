@@ -164,4 +164,46 @@ final class OrderController extends AbstractController
         $this->addFlash('success', 'Commande livrée : le stock a été basculé en interne.');
         return $this->redirectToRoute('app_order_show', ['id' => $order->getId()]);
     }
+
+    #[Route('/{id}/cancel', name: 'app_order_cancel', methods: ['POST'])]
+    public function cancel(Order $order, EntityManagerInterface $em): Response
+    {
+        // 1. Vérification de sécurité
+        if ($order->getStatus() === 'Annulée') {
+            $this->addFlash('warning', 'Cette commande est déjà annulée.');
+            return $this->redirectToRoute('app_order_show', ['id' => $order->getId()]);
+        }
+
+        if ($order->getStatus() === 'Livrée') {
+            $this->addFlash('danger', 'Impossible d\'annuler une commande déjà livrée (le stock est déjà en interne).');
+            return $this->redirectToRoute('app_order_show', ['id' => $order->getId()]);
+        }
+
+        // 2. Restitution du Stock
+        foreach ($order->getOrderLines() as $line) {
+            $stock = $line->getStock();
+            // On rajoute la quantité de la ligne au stock d'origine
+            $stock->setQuantity($stock->getQuantity() + $line->getQuantity());
+            $stock->setUpdatedAt(new \DateTimeImmutable());
+        }
+
+        // 3. Mise à jour du statut
+        $order->setStatus('Annulée');
+        $order->setUpdatedAt(new \DateTimeImmutable());
+        $order->setUpdatedBy($this->getUser());
+
+        // 4. Création de l'Historique (Traçabilité)
+        $history = new OrderStatusHistory();
+        $history->setStatus('Annulée');
+        $history->setChangedBy($this->getUser());
+        $history->setCreatedAt(new \DateTimeImmutable());
+
+        $order->addOrderStatusHistory($history);
+
+        $em->flush();
+
+        $this->addFlash('success', 'La commande a été annuléee.');
+
+        return $this->redirectToRoute('app_order_show', ['id' => $order->getId()]);
+    }
 }

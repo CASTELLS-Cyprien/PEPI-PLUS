@@ -20,9 +20,6 @@
 								Modifier la commande
 							</h1>
 							<p class="mt-1 text-sm text-gray-500 font-mono">
-								ID:
-								{{ order.id }}
-								|
 								{{ order.orderNumber }}
 							</p>
 						</div>
@@ -37,30 +34,138 @@
 				</div>
 			</div>
 		</div>
+		<div class="sm:px-8 lg:px-8 py-8">
+			<div
+				class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-		{# Content #}
-		<div
-			class="sm:px-8 lg:px-8 py-8">
-			{# Card Form #}
-			<div class="bg-white shadow-sm rounded-xl border border-gray-200 overflow-hidden">
-				<div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
-					<h3 class="text-sm font-bold text-gray-700 uppercase tracking-wider">
-						Détails du statut
-					</h3>
+				{# Colonne Gauche : Infos Générales #}
+				<div class="lg:col-span-1 space-y-6">
+					<div class="bg-white shadow rounded-lg border border-gray-200 overflow-hidden">
+						<div class="px-4 py-5 sm:px-6 bg-gray-50 border-b border-gray-200">
+							<h3 class="text-sm font-bold uppercase tracking-wider text-gray-600">Informations</h3>
+						</div>
+						<div class="px-4 py-5">
+							<dl class="space-y-4">
+								<div>
+									<dt class="text-xs font-medium text-gray-500 uppercase">Collaborateur</dt>
+									<dd class="mt-1 text-sm text-gray-900 font-semibold italic">
+										{{ order.collaborator ? order.collaborator.firstName ~ ' ' ~ order.collaborator.lastName : 'N/A' }}
+									</dd>
+								</div>
+								<div>
+									<dt class="text-xs font-medium text-gray-500 uppercase">Date de création</dt>
+									<dd class="mt-1 text-sm text-gray-900">
+										{{ order.createdAt|date('d/m/Y H:i') }}
+									</dd>
+								</div>
+								<div>
+									<dt class="text-xs font-medium text-gray-500 uppercase">Dernière modification</dt>
+									<dd class="mt-1 text-sm text-gray-900">
+										{{ order.updatedAt|date('d/m/Y H:i') }}
+										par
+										<strong>{{ order.updatedBy.firstName }}</strong>
+									</dd>
+								</div>
+							</dl>
+						</div>
+					</div>
+
+					<div class="bg-white shadow rounded-xl mt-8 overflow-hidden">
+						<div class="px-4 py-5 sm:px-6 bg-gray-50 border-b border-gray-200">
+							<h3 class="text-sm font-bold uppercase tracking-wider text-gray-600">Historique des statuts</h3>
+						</div>
+						<ul class="divide-y divide-gray-200">
+							{% for history in order.orderStatusHistories %}
+								<li class="p-4 hover:bg-gray-50 transition-colors">
+									<div class="flex justify-between items-center">
+										<div>
+											<span class="px-2 py-1 text-xs font-semibold rounded-full {{ history.status == 'Livrée' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700' }}">
+												{{ history.status }}
+											</span>
+											<p class="text-sm text-gray-600 mt-1">
+												Par :
+												<strong>{{ history.changedBy.firstName }}
+													{{ history.changedBy.lastName }}</strong>
+											</p>
+										</div>
+										<div class="text-xs text-gray-400">
+											{{ history.createdAt|date('d/m/Y H:i') }}
+										</div>
+									</div>
+								</li>
+							{% else %}
+								<li class="p-4 text-sm text-gray-500 italic text-center">Aucun historique disponible.</li>
+							{% endfor %}
+						</ul>
+					</div>
 				</div>
 
-				<div class="p-8">
-					{{ include('order/_form.html.twig', {
-                        button_label: 'Mettre à jour la commande',
-                    }) }}
-				</div>
-			</div>
+				{# Colonne Droite : Liste des produits (OrderLines) #}
+				<div class="lg:col-span-2">
+					<div class="bg-white shadow rounded-lg border border-gray-200 overflow-hidden">
+						<div class="px-4 py-5 sm:px-6 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
+							<h3 class="text-sm font-bold uppercase tracking-wider text-gray-600">Articles réservés</h3>
+							<span class="bg-gray-200 text-gray-700 text-xs font-bold px-2.5 py-1 rounded">
+								{{ order.orderLines|length }}
+								ligne(s)
+							</span>
+						</div>
 
-			<div class="mt-8 text-center">
-				<p class="text-xs text-gray-400 italic">
-					Dernière modification le
-					{{ order.updatedAt|date('d/m/Y à H:i') }}
-				</p>
+						<table class="min-w-full divide-y divide-gray-200">
+							<thead class="bg-gray-50">
+								<tr>
+									<th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Plante</th>
+									<th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Conditionnement</th>
+									<th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Saison</th>
+									<th class="px-6 py-3 text-center text-xs font-bold text-gray-500 uppercase">Quantité</th>
+									<th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Source</th>
+								</tr>
+							</thead>
+							<tbody class="bg-white divide-y divide-gray-200">
+								{% for line in order.orderLines %}
+									<tr class="hover:bg-gray-50">
+										<td class="px-6 py-4 whitespace-nowrap">
+											<div class="text-sm font-bold text-gray-900">{{ line.stock.plant.LatinName }}</div>
+											<div class="text-sm text-gray-400">{{ line.stock.plant.CommonName }}</div>
+										</td>
+										<td class="px-6 py-4 whitespace-nowrap">
+											<div class="text-sm text-gray-600">{{ line.stock.packaging.label }}</div>
+										</td>
+										<td class="px-6 py-4 whitespace-nowrap">
+											<div class="text-xs text-gray-600">{{ line.stock.season.year }}</div>
+										</td>
+										<td class="px-6 py-4 whitespace-nowrap text-center text-sm font-extrabold">
+											{{ line.quantity }}
+										</td>
+										<td class="px-6 py-4 whitespace-nowrap">
+											{% if line.stock.partner %}
+												<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">
+													Partenaire :
+													{{ line.stock.partner.companyName }}
+												</span>
+											{% else %}
+												<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+													Stock Interne
+												</span>
+											{% endif %}
+										</td>
+									</tr>
+								{% else %}
+									<tr>
+										<td colspan="4" class="px-6 py-10 text-center text-gray-500 italic">
+											Aucun article associé à cette commande.
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<div class="min-w-full divide-y divide-gray-200 mt-8">
+						{{ include('order/_form.html.twig', {
+                        	button_label: 'Mettre à jour la commande',
+                    	}) }}
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
