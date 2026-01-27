@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use App\Entity\Order;
-use App\Entity\Partner;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
@@ -18,37 +17,60 @@ class OrderNotificationService
 
     public function notifyPartnersForOrder(Order $order): void
     {
-        $linesByPartner = $this->groupOrderLinesByPartner($order);
+        $linesByPartner = [];
 
-        if (empty($linesByPartner)) {
-            $this->logger->warning('Aucune ligne de commande trouvée pour la commande ' . $order->getOrderNumber());
-            return;
+        // 1. Groupement : On s'assure de ne rien rater
+        foreach ($order->getOrderLines() as $line) {
+            $stock = $line->getStock();
+
+            // Sécurité : on vérifie toute la chaîne
+            if (!$stock || !$stock->getPartner()) {
+                $this->logger->warning("Ligne de commande sans partenaire : ID " . $line->getId());
+                continue;
+            }
+
+            $partner = $stock->getPartner();
+            $partnerId = $partner->getId();
+
+            if (!isset($linesByPartner[$partnerId])) {
+                $linesByPartner[$partnerId] = [
+                    'partner' => $partner,
+                    'lines' => []
+                ];
+            }
+            $linesByPartner[$partnerId]['lines'][] = $line;
         }
 
-        foreach ($linesByPartner as $partnerId => $lines) {
-            $partner = $lines[0]['stock']->getPartner();
+        // DEBUG : On logue combien d'entreprises ont été trouvées dans la commande
+        $this->logger->info(sprintf(
+            "Commande %s : %d entreprise(s) distincte(s) identifiée(s).",
+            $order->getOrderNumber(),
+            count($linesByPartner)
+        ));
 
-            if (!$partner) continue;
+        // 2. Envoi des emails
+        foreach ($linesByPartner as $partnerId => $data) {
+            $partner = $data['partner'];
+            $lines = $data['lines']; // Ici, il y aura vos 2 plants pour la Company A
 
-            // On récupère l'email du premier utilisateur lié au partenaire
-            $partnerEmail = null;
+            // Collecte de TOUS les emails des utilisateurs du partenaire
+            $recipients = [];
             foreach ($partner->getUsers() as $user) {
                 if ($user->getEmail()) {
-                    $partnerEmail = $user->getEmail();
-                    break; // On prend le premier trouvé
+                    $recipients[] = $user->getEmail();
                 }
             }
 
-            if (!$partnerEmail) {
-                $this->logger->error('Email introuvable pour le partenaire : ' . $partner->getCompanyName());
-                continue;
+            if (empty($recipients)) {
+                $this->logger->error("Aucun email pour le partenaire : " . $partner->getCompanyName());
+                continue; // On passe au partenaire suivant sans bloquer le reste
             }
 
             try {
                 $email = (new TemplatedEmail())
                     ->from(new Address('contact@pepiplus.fr', 'Pépi+'))
-                    ->to($partnerEmail)
-                    ->subject(sprintf('Nouvelle commande #%s - Pépi+', $order->getOrderNumber()))
+                    ->to(...$recipients) // Envoie à tous les utilisateurs du partenaire
+                    ->subject("Nouvelle commande #" . $order->getOrderNumber())
                     ->htmlTemplate('emails/order_notification_partner.html.twig')
                     ->context([
                         'order' => $order,
@@ -57,30 +79,12 @@ class OrderNotificationService
                     ]);
 
                 $this->mailer->send($email);
-                $this->logger->info('Email envoyé avec succès à ' . $partnerEmail);
-            } catch (\Exception $e) {
-                $this->logger->error('Échec de l\'envoi au partenaire ' . $partnerId . ' : ' . $e->getMessage());
-            }
-        }
-    }
+                $this->logger->info("Email envoyé à " . $partner->getCompanyName());
 
-    private function groupOrderLinesByPartner(Order $order): array
-    {
-        $grouped = [];
-        // Utilisation de getOrderLines() qui doit renvoyer la collection
-        foreach ($order->getOrderLines() as $line) {
-            $stock = $line->getStock();
-            if ($stock && $stock->getPartner()) {
-                $partnerId = $stock->getPartner()->getId();
-                $grouped[$partnerId][] = [
-                    'plant' => $line->getStock()->getPlant(),
-                    'quantity' => $line->getQuantity(),
-                    'packaging' => $line->getStock()->getPackaging()?->getLabel(),
-                    'season' => $line->getStock()->getSeason()?->getYear(),
-                    'stock' => $stock
-                ];
+                sleep(5);
+            } catch (\Exception $e) {
+                $this->logger->error("Erreur partenaire ID $partnerId : " . $e->getMessage());
             }
         }
-        return $grouped;
     }
 }
