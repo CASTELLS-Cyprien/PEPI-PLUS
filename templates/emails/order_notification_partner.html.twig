@@ -1,0 +1,92 @@
+{# templates/emails/order_notification_partner.html.twig #}
+<div style="background-color: #D9EDd4; padding: 40px 20px; font-family: 'Open Sans', Helvetica, Arial, sans-serif;">
+	<div
+		style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; border: 1px solid rgba(149, 180, 154, 0.3);">
+
+		{# Header #}
+		<div style="padding: 30px; text-align: center; border-bottom: 1px solid #f0f0f0;">
+			<h1 style="color: #2D6A4F; font-family: 'Montserrat', sans-serif; font-size: 24px; margin: 0;">
+				Pépi+
+			</h1>
+			<p style="color: #666; font-size: 14px; margin-top: 5px;">Nouvelle commande partenaire</p>
+		</div>
+
+		{# Corps de l'email #}
+		<div style="padding: 40px 30px;">
+			<h2 style="color: #333D33; font-size: 20px; margin-bottom: 20px;">Bonjour
+				{{ partner.companyName }},</h2>
+
+			<p style="color: #4a5568; line-height: 1.6; font-size: 16px;">
+				Une nouvelle commande vient d'être enregistrée sur la plateforme. Voici les détails concernant vos produits :
+			</p>
+
+			{# Bloc Infos Commande #}
+			<div style="background-color: #f8fafc; border-left: 4px solid #2D6A4F; padding: 20px; margin: 25px 0; border-radius: 0 8px 8px 0;">
+				<p style="margin: 0; color: #2D6A4F; font-weight: bold; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Récapitulatif</p>
+				<p style="margin: 10px 0 5px 0; color: #1a202c;">
+					<strong>Commande :</strong>
+					#{{ order.orderNumber }}</p>
+				<p style="margin: 5px 0 5px 0; color: #1a202c;">
+					<strong>Date :</strong>
+					{{ order.createdAt|date('d/m/Y H:i') }}</p>
+				<p style="margin: 5px 0 0 0; color: #1a202c;">
+					<strong>Collaborateur :</strong>
+					{{ order.collaborator.firstName }}
+					{{ order.collaborator.lastName }}</p>
+			</div>
+
+			<h3 style="color: #2D6A4F; font-size: 18px; margin-top: 30px; margin-bottom: 15px; border-bottom: 2px solid #D9EDd4; display: inline-block;">Plants commandés</h3>
+
+			<table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+				<thead>
+					<tr>
+						<th style="text-align: left; padding: 12px; border-bottom: 2px solid #f0f0f0; color: #718096; font-size: 13px; text-transform: uppercase;">Produit</th>
+						<th style="text-align: center; padding: 12px; border-bottom: 2px solid #f0f0f0; color: #718096; font-size: 13px; text-transform: uppercase;">Qté</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% set totalQuantity = 0 %}
+					{% for item in orderLines %}
+						{% set totalQuantity = totalQuantity + item.quantity %}
+						<tr>
+							<td style="padding: 15px 12px; border-bottom: 1px solid #f0f0f0;">
+								<div style="font-weight: 600; color: #2d3748;">{{ item.plant.commonName }}</div>
+								<div style="font-size: 13px; color: #718096; font-style: italic;">{{ item.plant.latinName }}</div>
+								<div style="font-size: 12px; color: #a0aec0; margin-top: 4px;">{{ item.packaging }}
+									•
+									{{ item.season }}</div>
+							</td>
+							<td style="padding: 15px 12px; border-bottom: 1px solid #f0f0f0; text-align: center; font-weight: bold; color: #2D6A4F;">
+								{{ item.quantity }}
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+				<tfoot>
+					<tr>
+						<td style="padding: 20px 12px; text-align: right; font-weight: 600; color: #718096;">Total :</td>
+						<td style="padding: 20px 12px; text-align: center; font-weight: 800; color: #2D6A4F; font-size: 18px;">{{ totalQuantity }}</td>
+					</tr>
+				</tfoot>
+			</table>
+
+			<div style="text-align: center; margin: 40px 0 20px 0;">
+				<a href="#" style="background-color: #2D6A4F; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; display: inline-block;">
+					Voir la commande sur Pépi+
+				</a>
+			</div>
+		</div>
+
+		{# Footer #}
+		<div style="padding: 30px; background-color: #f8fafc; text-align: center; border-top: 1px solid #f0f0f0;">
+			<p style="color: #718096; font-size: 14px; margin: 0;">
+				Ceci est une notification automatique, merci de ne pas y répondre directement.
+			</p>
+			<p style="color: #a0aec0; font-size: 12px; margin-top: 10px;">
+				©
+				{{ "now"|date("Y") }}
+				Pépi+ • Gestion de stock horticole
+			</p>
+		</div>
+	</div>
+</div>

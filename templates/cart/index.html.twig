@@ -60,8 +60,19 @@
 											<td class="px-6 py-4 whitespace-nowrap">
 												<div class="text-xs text-gray-600">{{ item.stock.season.year }}</div>
 											</td>
-											<td class="px-6 py-4 whitespace-nowrap text-center text-sm font-extrabold">
-												{{ item.quantity }}
+											<td class="px-6 py-4 whitespace-nowrap text-center">
+												<form
+													action="{{ path('app_cart_update', {'id': item.stock.id}) }}" method="POST" class="flex flex-col items-center">
+													{% set absoluteMax = item.stock.quantity %}
+
+													<div class="relative flex items-center">
+														<input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ absoluteMax }}" class="w-20 rounded-lg border-gray-300 text-center font-bold text-green-700 focus:border-green-500 focus:ring-green-500" oninput="if(parseInt(this.value) > {{ absoluteMax }}) { this.value = {{ absoluteMax }}; } else if(parseInt(this.value) < 1) { this.value = 1; }" onchange="this.form.submit()">
+													</div>
+													<span class="text-[10px] font-medium text-gray-400 mt-1 uppercase tracking-wider">
+														Disponible :
+														{{ absoluteMax }}
+													</span>
+												</form>
 											</td>
 											<td class="px-6 py-4 whitespace-nowrap">
 												{% if item.stock.partner %}

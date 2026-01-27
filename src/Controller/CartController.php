@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Order;
 use App\Entity\OrderLine;
 use App\Service\CartService;
+use App\Service\OrderNotificationService;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\OrderStatusHistory;
 
@@ -40,8 +41,11 @@ final class CartController extends AbstractController
     }
 
     #[Route('/validate', name: 'app_cart_validate', methods: ['POST'])]
-    public function validate(CartService $cartService, EntityManagerInterface $em): Response
-    {
+    public function validate(
+        CartService $cartService,
+        EntityManagerInterface $em,
+        OrderNotificationService $notificationService
+    ): Response {
         $items = $cartService->getFullCart();
         if (empty($items)) {
             return $this->redirectToRoute('app_cart_index');
@@ -63,6 +67,7 @@ final class CartController extends AbstractController
             $line->setStock($stock);
             $line->setQuantity($qty);
             $line->setPurchaseOrder($order);
+            $order->addOrderLine($line);
 
             // Décrémentation immédiate du stock
             $stock->setQuantity($stock->getQuantity() - $qty);
@@ -82,9 +87,44 @@ final class CartController extends AbstractController
         $em->persist($order);
         $em->flush();
 
+        // Envoi des emails aux partenaires
+        try {
+            $notificationService->notifyPartnersForOrder($order);
+            $this->addFlash('success', 'Emails envoyés aux partenaires.');
+        } catch (\Exception $e) {
+            // On log l'erreur mais on continue
+            $this->addFlash('warning', 'Erreur email : ' . $e->getMessage());
+        }
+
         $cartService->clear();
 
         $this->addFlash('success', 'Commande créée avec succès.');
         return $this->redirectToRoute('app_order_show', ['id' => $order->getId()]);
+    }
+    #[Route('/update/{id}', name: 'app_cart_update', methods: ['POST'])]
+    public function update(int $id, Request $request, CartService $cartService, \App\Repository\StockRepository $stockRepository): Response
+    {
+        $quantity = (int) $request->request->get('quantity');
+        $stock = $stockRepository->find($id);
+
+        if (!$stock) {
+            return $this->redirectToRoute('app_cart_index');
+        }
+
+        $maxAvailable = $stock->getQuantity(); // Stock réel en base
+
+        if ($quantity <= 0) {
+            $cartService->remove($id);
+        } else {
+            // On s'assure que la quantité demandée ne dépasse jamais le stock réel
+            $finalQty = min($quantity, $maxAvailable);
+            $cartService->add($id, $finalQty, true);
+
+            if ($quantity > $maxAvailable) {
+                $this->addFlash('warning', 'Quantité ajustée au maximum disponible.');
+            }
+        }
+
+        return $this->redirectToRoute('app_cart_index');
     }
 }

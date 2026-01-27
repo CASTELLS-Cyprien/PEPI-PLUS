@@ -31,7 +31,7 @@ class Order
     /**
      * @var Collection<int, OrderLine>
      */
-    #[ORM\OneToMany(targetEntity: OrderLine::class, mappedBy: 'PurchaseOrder')]
+    #[ORM\OneToMany(targetEntity: OrderLine::class, mappedBy: 'purchaseOrder')]
     private Collection $orderLines;
 
     #[ORM\Column]

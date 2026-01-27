@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service;
 
 use App\Repository\StockRepository;
@@ -11,20 +12,25 @@ class CartService
         private StockRepository $stockRepository
     ) {}
 
-    public function add(int $id, int $quantity): void
+    public function add(int $id, int $quantity, bool $replace = false): void
     {
         $session = $this->requestStack->getSession();
         $cart = $session->get('cart', []);
 
-        if (!empty($cart[$id])) {
-            $cart[$id] += $quantity;
-        } else {
+        if ($replace) {
+            // Mode remplacement (utilisé dans le panier)
             $cart[$id] = $quantity;
+        } else {
+            // Mode addition (utilisé sur la page stock)
+            if (!empty($cart[$id])) {
+                $cart[$id] += $quantity;
+            } else {
+                $cart[$id] = $quantity;
+            }
         }
 
         $session->set('cart', $cart);
     }
-
     public function getFullCart(): array
     {
         $session = $this->requestStack->getSession();

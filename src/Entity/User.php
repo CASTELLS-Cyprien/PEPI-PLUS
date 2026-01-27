@@ -45,6 +45,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $isActive = null;
 
+    #[ORM\Column]
+    private bool $mustChangePassword = false;
+
+    /**
+     * @var Collection<int, Order>
+     */
+    #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'updated_by')]
+    private Collection $userOrders;
+
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    private ?Partner $partner = null;
+
+    /**
+     * @var Collection<int, OrderStatusHistory>
+     */
+    #[ORM\OneToMany(targetEntity: OrderStatusHistory::class, mappedBy: 'changedBy')]
+    private Collection $orderStatusHistories;
+
     /**
      * @var Collection<int, Order>
      */
@@ -241,26 +259,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
-    // src/Entity/User.php
-
-    #[ORM\Column]
-    private bool $mustChangePassword = false;
-
-    /**
-     * @var Collection<int, Order>
-     */
-    #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'updated_by')]
-    private Collection $userOrders;
-
-    #[ORM\ManyToOne(inversedBy: 'users')]
-    private ?Partner $partner = null;
-
-    /**
-     * @var Collection<int, OrderStatusHistory>
-     */
-    #[ORM\OneToMany(targetEntity: OrderStatusHistory::class, mappedBy: 'changedBy')]
-    private Collection $orderStatusHistories;
 
     public function isMustChangePassword(): ?bool
     {
