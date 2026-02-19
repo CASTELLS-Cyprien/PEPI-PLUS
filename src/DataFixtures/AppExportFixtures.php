@@ -1033,6 +1033,39 @@ class AppExportFixtures extends Fixture
         if (isset($entities['Order_37'])) $entities['OrderLine_61']->setPurchaseOrder($entities['Order_37']);
         $manager->persist($entities['OrderLine_61']);
 
+        $defaultUser = $entities['User_1'] ?? null;
+
+        foreach ($entities as $entity) {
+
+            // 1. Gestion des dates de création (created_at / createdAt)
+            if (method_exists($entity, 'setCreatedAt') && !method_exists($entity, 'getCreatedAt') || (method_exists($entity, 'getCreatedAt') && $entity->getCreatedAt() === null)) {
+                $entity->setCreatedAt(new \DateTimeImmutable());
+            }
+
+            // 2. Gestion des dates de mise à jour (updated_at)
+            if (method_exists($entity, 'setUpdatedAt') && (method_exists($entity, 'getUpdatedAt') && $entity->getUpdatedAt() === null)) {
+                $entity->setUpdatedAt(new \DateTimeImmutable());
+            }
+
+            // 3. FIX de votre erreur actuelle : Gestion de 'updated_by'
+            // Si l'entité a un setter setUpdatedBy et que le champ est vide
+            if (method_exists($entity, 'setUpdatedBy') && method_exists($entity, 'getUpdatedBy')) {
+                if ($entity->getUpdatedBy() === null && $defaultUser !== null) {
+                    $entity->setUpdatedBy($defaultUser);
+                }
+            }
+
+            // 4. Cas spécifique pour User (isActive)
+            if ($entity instanceof \App\Entity\User) {
+                if (method_exists($entity, 'setIsActive') && $entity->isActive() === null) {
+                    $entity->setIsActive(true);
+                }
+            }
+
+            // On persiste à nouveau au cas où des modifs ont été faites
+            $manager->persist($entity);
+        }
+
         $manager->flush();
     }
 }
