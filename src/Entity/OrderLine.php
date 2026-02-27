@@ -21,7 +21,7 @@ class OrderLine
     private ?Stock $stock = null;
 
     #[ORM\ManyToOne(inversedBy: 'orderLines')]
-    private ?Order $purchaseOrder = null;
+    private ?Order $PurchaseOrder = null;
 
     public function getId(): ?int
     {
@@ -54,12 +54,12 @@ class OrderLine
 
     public function getPurchaseOrder(): ?Order
     {
-        return $this->purchaseOrder;
+        return $this->PurchaseOrder;
     }
 
-    public function setPurchaseOrder(?Order $purchaseOrder): static
+    public function setPurchaseOrder(?Order $PurchaseOrder): static
     {
-        $this->purchaseOrder = $purchaseOrder;
+        $this->PurchaseOrder = $PurchaseOrder;
 
         return $this;
     }
