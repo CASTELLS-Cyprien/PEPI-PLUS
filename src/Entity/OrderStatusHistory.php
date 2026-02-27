@@ -23,7 +23,7 @@ class OrderStatusHistory
     private ?User $changedBy = null;
 
     #[ORM\ManyToOne(inversedBy: 'orderStatusHistories')]
-    private ?Order $purchaseOrder = null;
+    private ?Order $PurchaseOrder = null;
 
     public function getId(): ?int
     {
@@ -68,12 +68,12 @@ class OrderStatusHistory
 
     public function getPurchaseOrder(): ?Order
     {
-        return $this->purchaseOrder;
+        return $this->PurchaseOrder;
     }
 
-    public function setPurchaseOrder(?Order $purchaseOrder): static
+    public function setPurchaseOrder(?Order $PurchaseOrder): static
     {
-        $this->purchaseOrder = $purchaseOrder;
+        $this->PurchaseOrder = $PurchaseOrder;
 
         return $this;
     }

@@ -31,7 +31,7 @@ class Order
     /**
      * @var Collection<int, OrderLine>
      */
-    #[ORM\OneToMany(targetEntity: OrderLine::class, mappedBy: 'purchaseOrder')]
+    #[ORM\OneToMany(targetEntity: OrderLine::class, mappedBy: 'PurchaseOrder')]
     private Collection $orderLines;
 
     #[ORM\Column]
@@ -44,7 +44,7 @@ class Order
     /**
      * @var Collection<int, OrderStatusHistory>
      */
-    #[ORM\OneToMany(targetEntity: OrderStatusHistory::class, mappedBy: 'purchaseOrder', cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: OrderStatusHistory::class, mappedBy: 'PurchaseOrder', cascade: ['persist'])]
     private Collection $orderStatusHistories;
 
     public function __construct()
