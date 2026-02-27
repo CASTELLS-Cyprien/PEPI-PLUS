@@ -88,13 +88,13 @@ final class CartController extends AbstractController
         $em->flush();
 
         // Envoi des emails aux partenaires
-        try {
-            $notificationService->notifyPartnersForOrder($order);
-            $this->addFlash('success', 'Emails envoyés aux partenaires.');
-        } catch (\Exception $e) {
-            // On log l'erreur mais on continue
-            $this->addFlash('warning', 'Erreur email : ' . $e->getMessage());
-        }
+        // try {
+        //     $notificationService->notifyPartnersForOrder($order);
+        //     $this->addFlash('success', 'Emails envoyés aux partenaires.');
+        // } catch (\Exception $e) {
+        //     // On log l'erreur mais on continue
+        //     $this->addFlash('warning', 'Erreur email : ' . $e->getMessage());
+        // }
 
         $cartService->clear();
 
