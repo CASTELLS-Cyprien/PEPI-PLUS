@@ -365,10 +365,10 @@ Deux vues distinctes selon le rôle :
 Tableau paginé (7 éléments/page) avec filtres avancés (`StockFilterType`). Colonnes réelles : **Plant (Nom Latin / Nom Commun)**, **Origine**, **Saison**, **Conditionnement**, **Quantité**, **Actions**. L'origine affiche un badge `bg-blue-100` (*Stock Réel – Pépi+*) ou `bg-purple-100` (nom du partenaire). La quantité s'affiche en `text-red-600` si inférieure à 10. Actions : éditer (stock réel uniquement), ajouter au panier avec saisie de quantité (stock virtuel uniquement), voir la fiche. Route `/stock/gestion` pour la vue stock interne seul (`partner IS NULL`).
 
 **Gestion des commandes** (`/order` → `OrderController`)
-Tableau paginé (10/page) avec filtres (`OrderFilterType`). Colonnes réelles : **Numéro de commande**, **Statut**, **Créé le**, **Mis à jour le**, **Actions**. Badges de statut : `bg-yellow-100` (Réservation), `bg-red-100` (Annulée), `bg-green-100` (En cours / Livrée). Action modifier uniquement visible si statut = `Réservation`. Actions disponibles sur fiche : livrer (`/order/{id}/deliver`) et annuler (`/order/{id}/cancel`).
+Tableau paginé (10/page) avec filtres (`OrderFilterType`). Colonnes réelles : **Numéro de commande**, **Statut**, **Créé le**, **Mis à jour le**, **Actions**. Badges de statut : `bg-yellow-100` (Réservation), `bg-red-100` (Annulée), `bg-green-100` (En cours / Livrée). Action modifier uniquement visible si statut = `Réservation`. Actions disponibles sur fiche : livrer et annuler.
 
 **Panier** (`/cart` → `CartController`)
-Ajout de stocks au panier (`/add/{id}`), modification des quantités (`/update/{id}` avec ajustement automatique au stock disponible), suppression (`/remove/{id}`), validation (`/validate`). À la validation : création de la commande, décrémentation immédiate du stock, enregistrement de l'historique de statut.
+Ajout de stocks au panier, modification des quantités (avec ajustement automatique au stock disponible), suppression, validation. À la validation : création de la commande, décrémentation immédiate du stock, enregistrement de l'historique de statut.
 
 **Espace partenaire**
 - *Mon stock* (`/partner/my-stock/liste`) : liste paginée (8/page) du stock du partenaire connecté, avec recherche par nom latin / commun.
@@ -380,7 +380,7 @@ Ajout de stocks au panier (`/add/{id}`), modification des quantités (`/update/{
 - Partenaires (`/partner/gestion/new`, `/partner/edit/{id}`) : CRUD.
 - Référentiel plants (`/plant`) : CRUD avec pagination 9/page.
 - Conditionnements (`/packaging`) : CRUD avec pagination 10/page.
-- Saisons (`/season`) : CRUD avec pagination 10/page. Route dédiée partenaire : `/season/my-stock/new`.
+- Saisons (`/season`) : CRUD avec pagination 10/page.
 
 ---
 
@@ -392,13 +392,12 @@ Ajout de stocks au panier (`/add/{id}`), modification des quantités (`/update/{
 | RG-02 | Une alerte de stock critique est déclenchée lorsque la quantité d'un stock passe sous **10 unités** (seuil fixé dans `DashboardController` et `StockRepository::findLowStockAlert(10)`). La quantité s'affiche en rouge dans les tableaux | EF-DASH-02, EF-STOCK-01 |
 | RG-02b | Le stock global (`/stock/global`) affiche tous les stocks (réels + virtuels) dans un seul tableau. Le stock interne uniquement est accessible via `/stock/gestion` | EF-STOCK-01, EF-STOCK-05 |
 | RG-03 | Le stock réel et le stock virtuel sont distingués dans l'affichage (origine visible pour chaque plant) | EF-STOCK-05 |
-| RG-04 | Les plants réservés dans une commande peuvent provenir du stock réel ou d'un stock virtuel partenaire | EF-CMD-01, EF-CMD-02 |
+| RG-04 | Les plants réservés dans une commande peuvent provenir seulement du stock virtuel| EF-CMD-01, EF-CMD-02 |
 | RG-05 | La réservation est automatique dès la validation du panier : la commande est créée avec le statut `Réservation` et le stock est décrémenté immédiatement | EF-CMD-02, EF-CMD-03 |
-| RG-05b | Cycle de vie d'une commande : `Réservation` → `En cours` → `Livrée` (irréversible) ou `Annulée` (impossible si déjà `Livrée`) | EF-CMD-06 |
+| RG-05b | Cycle de vie d'une commande : `Réservation` → `Livrée` (irréversible) ou `Annulée` (impossible si déjà `Livrée`) | EF-CMD-06 |
 | RG-05c | Lors du passage au statut `Livrée`, les plants réservés sur le stock virtuel d'un partenaire sont basculés dans le stock réel interne de Pépi+ (création ou mise à jour d'un stock avec `partner = NULL`) | EF-CMD-02, EF-STOCK-06 |
 | RG-06 | Pour tous les plants d'une commande, la traçabilité sanitaire (pépinière de provenance + saison) doit être disponible | EF-CMD-07 |
-| RG-07 | La modification ou la suppression d'une commande impacte automatiquement les stocks (libération et/ou re-réservation) | EF-CMD-04, EF-CMD-05 |
-| RG-08 | L'administrateur gère les entrées/sorties des collaborateurs et les problèmes d'accès | EF-ADMIN-01 |
+| RG-08 | L'administrateur gère les rôles par défaut des utilisateurs | EF-ADMIN-01 |
 | RG-09 | L'adresse email est l'identifiant unique de chaque utilisateur dans le système | EF-AUTH-01, EF-ADMIN-01 |
 | RG-10 | Un partenaire ne peut accéder qu'à son propre stock et à ses propres réservations, pas à ceux des autres partenaires | EF-PART-01, EF-PART-02 |
 | RG-11 | Chaque plant doit obligatoirement avoir un nom latin ET un nom commun (les deux champs sont `NOT NULL` dans la base de données) | EF-REF-01 |
@@ -414,7 +413,7 @@ Ajout de stocks au panier (`/add/{id}`), modification des quantités (`/update/{
 
 - Temps de chargement d'une page < 2 secondes pour 95% des requêtes
 - Recherche dans le catalogue de plants : résultats retournés en < 500ms
-- Pagination obligatoire sur les listes dépassant 20 éléments (KnpPaginator Bundle)
+- Pagination obligatoire sur les listes dépassant 10 éléments (KnpPaginator Bundle)
 
 ### 7.2 Sécurité
 
@@ -488,7 +487,7 @@ reset_password_request (id, user_id, selector, hashed_token,
 **Relations clés :**
 - Un `stock` est lié à un `plant`, un `packaging` et une `season` → garantit la traçabilité sanitaire
 - Un `order_line` est lié à un `stock` avec `onDelete: SET NULL` → si un stock est supprimé, la ligne de commande est conservée avec `stock_id = NULL` (intégrité historique)
-- `order_status_history` trace chaque changement de statut avec l'horodatage et l'utilisateur responsable, en cascade avec la commande (`cascade: persist`)
+- `order_status_history` trace chaque changement de statut avec l'horodatage et l'utilisateur responsable
 - Un `user` peut être lié à un `partner` (rôle PARTNER) ou avoir `partner_id` NULL (COLLABORATOR / ADMIN)
 - `plant.common_name` est **obligatoire** dans l'entité Doctrine (NOT NULL, VARCHAR 255)
 
@@ -526,7 +525,7 @@ reset_password_request (id, user_id, selector, hashed_token,
 | `order_line.quantity` | INT | — | NOT NULL | Quantité réservée pour cette ligne |
 | `order_line.stock_id` | INT | — | NULL (`onDelete: SET NULL`) | FK vers `stock`. Mis à NULL si le stock est supprimé – conservation de la ligne pour historique |
 | `order_line.purchase_order_id` | INT | — | NULL | FK vers `order` |
-| `order_status_history.status` | VARCHAR | 255 | NOT NULL | Statut au moment du changement : `Réservation`, `En cours`, `Livrée`, `Annulée` |
+| `order_status_history.status` | VARCHAR | 255 | NOT NULL | Statut au moment du changement : `Réservation`, `Livrée`, `Annulée` |
 | `order_status_history.created_at` | DATETIME | — | NOT NULL | Date et heure du changement de statut |
 | `order_status_history.changed_by_id` | INT | — | NULL | FK vers `user` – auteur du changement de statut |
 | `order_status_history.purchase_order_id` | INT | — | NULL | FK vers `order` |
@@ -597,7 +596,6 @@ reset_password_request (id, user_id, selector, hashed_token,
 | **Traçabilité** | Obligation sanitaire réglementaire : capacité à fournir la pépinière de provenance et la saison pour chaque plant vendu |
 | **Partenaire** | Fournisseur externe de plants, disposant d'un accès restreint à l'application |
 | **Référentiel** | Ensemble des données de base partagées entre Pépi+ et ses partenaires : plants, conditionnements, saisons |
-| **RBAC** | Role-Based Access Control – contrôle d'accès par rôle |
 | **MVC** | Model-View-Controller – pattern architectural imposé par le CdC |
 | **3-tiers** | Architecture client / serveur applicatif / base de données |
 | **MCD** | Modèle Conceptuel de Données |
@@ -632,8 +630,8 @@ reset_password_request (id, user_id, selector, hashed_token,
 
 | Version | Date | Auteur | Modifications |
 |---|---|---|---|
-| V0.1 | 01/12/2025 | CASTELLS Cyprien | Création initiale du document (démarrage projet) |
-| V0.2 | 01/01/2026 | CASTELLS Cyprien | Ajout des cas d'utilisation, exigences fonctionnelles |
+| V0.1 | 06/01/2026 | CASTELLS Cyprien | Création initiale du document (démarrage projet) |
+| V0.2 | 07/01/2026 | CASTELLS Cyprien | Ajout des cas d'utilisation, exigences fonctionnelles |
 | V0.3 | 01/02/2026 | CASTELLS Cyprien | Ajout modèle de données, règles de gestion, ENF |
 | V1.0 | 27/02/2026 | CASTELLS Cyprien | Version complète – prête pour livraison du 27/03/2026 |
 
@@ -643,8 +641,6 @@ reset_password_request (id, user_id, selector, hashed_token,
 2. Vérification de la cohérence avec le MCD/MLD (`assets/MCD.pdf`, `assets/MLD.pdf`)
 3. Archivage dans le dossier `assets/` du dépôt GitHub
 4. Évaluation par le jury lors de la soutenance en Avril 2026
-
-> Ce document fait partie des livrables obligatoires définis dans le CdC : *« Les documents de spécifications fonctionnelles et techniques »*, à déposer dans le dossier livrable du dépôt Git.
 
 ---
 
@@ -668,5 +664,5 @@ reset_password_request (id, user_id, selector, hashed_token,
 
 ---
 
-*Document réalisé dans le cadre du BTS SIO SLAM – Pôle Sup Saint-Denis – 2025/2026*
+*Document réalisé dans le cadre du BTS SIO SLAM – Pôle Sup Saint-Denis – 2024/2026*
 **Pépi+ © 2026 – CASTELLS Cyprien**
