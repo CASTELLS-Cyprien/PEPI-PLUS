@@ -1,0 +1,20 @@
+{# templates/stock/newGestion.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un stock interne
+{% endblock %}
+
+{% block body %}
+	<div class="min-h-screen bg-gray-100">
+		<div class="bg-white shadow-sm border-b border-gray-200 py-6">
+			<div class="sm:px-8 lg:px-8">
+				<h1 class="text-2xl font-bold text-gray-900">Nouvel élément d'inventaire interne</h1>
+				<p class="mt-1 text-sm text-gray-500">Ajout manuel de stock sans passer par une commande.</p>
+			</div>
+		</div>
+
+		<div class="sm:px-8 lg:px-8 py-6">
+			{{ include('stock/_formGestion.html.twig') }}
+		</div>
+	</div>
+{% endblock %}
