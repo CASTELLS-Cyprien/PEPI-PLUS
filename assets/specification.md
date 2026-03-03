@@ -100,8 +100,8 @@ Pépi+ souhaite se moderniser en dotant ses équipes et ses partenaires d'une **
 **Acteurs primaires :**
 
 - **Visiteur (non connecté)** : accès uniquement à la page de connexion
-- **Collaborateur (COLLABORATOR)** : personnel du service commercial de Pépi+ — gestion des stocks, commandes, tableau de bord et référentiel
-- **Administrateur (ADMIN)** : tous les droits du collaborateur + gestion des utilisateurs, partenaires
+- **Collaborateur (COLLABORATOR)** : personnel du service commercial de Pépi+ — gestion des stocks, commandes, tableau de bord
+- **Administrateur (ADMIN)** : tous les droits du collaborateur + gestion des utilisateurs, partenaires et référentiels
 - **Partenaire (PARTNER)** : fournisseur externe — gestion de son propre stock virtuel et consultation de ses réservations
 
 **Acteurs secondaires :**
@@ -630,10 +630,26 @@ reset_password_request (id, user_id, selector, hashed_token,
 
 | Version | Date | Auteur | Modifications |
 |---|---|---|---|
-| V0.1 | 06/01/2026 | CASTELLS Cyprien | Création initiale du document (démarrage projet) |
-| V0.2 | 07/01/2026 | CASTELLS Cyprien | Ajout des cas d'utilisation, exigences fonctionnelles |
-| V0.3 | 01/02/2026 | CASTELLS Cyprien | Ajout modèle de données, règles de gestion, ENF |
-| V1.0 | 27/02/2026 | CASTELLS Cyprien | Version complète – prête pour livraison du 27/03/2026 |
+| V0.1 | 06/01/2026 | CASTELLS Cyprien | Commit initial – entités Doctrine, CRUD de base, ajout TailwindCSS, formulaires Register et Login, début du module Plant |
+| V0.2 | 07/01/2026 | CASTELLS Cyprien | Formulaire de login, module Stock, Plant, Dashboard, Sidebar, Header, Base template |
+| V0.3 | 08/01/2026 | CASTELLS Cyprien | Module User (stock, change password, reset password), Conditionnement, Saison, Dashboard par défaut, ajout logo |
+| V0.4 | 09/01/2026 | CASTELLS Cyprien | Fixtures initiales, module Order avec `updated_by_id`, début de l'espace Mon Stock partenaire |
+| V0.5 | 12/01/2026 | CASTELLS Cyprien | Ajout des icônes (Symfony UX Icons), autorisation partenaires à créer plants, conditionnements et saisons |
+| V0.6 | 13/01/2026 | CASTELLS Cyprien | Création des OrderLines et vue commande, espace « Mes réservations » partenaires, déplacement des vues Partner, changement du fuseau horaire |
+| V0.7 | 14/01/2026 | CASTELLS Cyprien | Ajout de la recherche globale (Search), mise à jour du MCD, backups de la base de données, gestion des partenaires |
+| V0.8 | 15/01/2026 | CASTELLS Cyprien | Recherche stock et réservations partenaires, messages Flash, correction de bugs, pagination, pages d'erreur |
+| V0.9 | 16/01/2026 | CASTELLS Cyprien | Import base de données, Dashboard et search déplacé dans `includes/`, définition des droits par rôle, pages d'erreur, barre de recherche et pagination finalisées, réinitialisation de mot de passe, correction recherche gestion stocks |
+| V0.10 | 19/01/2026 | CASTELLS Cyprien | Historique des statuts de commande, création et intégration des filtres, rédaction du README |
+| V0.11 | 20/01/2026 | CASTELLS Cyprien | Fixtures commandes, filtre statut `Annulée`, résolution problème filtrage, quantité maximale dans le panier, améliorations UI |
+| V0.12 | 21/01/2026 | CASTELLS Cyprien | Intégration de composants Preline UI pour les selects |
+| V0.13 | 22/01/2026 | CASTELLS Cyprien | Filtre date range (flatpickr), mise à jour des titres de pages, résolution problème de thème, optimisation de l'espace, style des retours, corrections de bugs |
+| V0.14 | 23/01/2026 | CASTELLS Cyprien | Style des rôles utilisateurs, filtre quantité maximale, renommage des statuts de commande, ajout filtre date dans `app.js` |
+| V0.15 | 26/01/2026 | CASTELLS Cyprien | Ajout du système de panier (CartController + CartService), modification statut `Annulée`, amélioration UI historique, mise à jour données de test |
+| V0.16 | 27/01/2026 | CASTELLS Cyprien | Email + édition des quantités dans le panier, résolution problème d'envoi email (Mailtrap) |
+| V0.17 | 18/02/2026 | CASTELLS Cyprien | Mise à niveau PHP 8.2 |
+| V0.18 | 19/02/2026 | CASTELLS Cyprien | Fixtures de données complètes, renommage champ `year` dans l'entité `Season` |
+| V0.19 | 27/02/2026 | CASTELLS Cyprien | Résolution problème réservation partenaires, renommage `purchaseOrder` → `PurchaseOrder`, désactivation temporaire envoi email dans `CartController`, ajustement MCD et ajout fichier draw.io |
+| V1.0 | 27/02/2026 | CASTELLS Cyprien | Rédaction V1 de la spécification fonctionnelle, mise à jour MCD – **version complète prête pour livraison le 27/03/2026** |
 
 ### 11.2 Processus de validation
 
