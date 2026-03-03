@@ -215,9 +215,9 @@ PEPI-PLUS/
 
 Tous les documents sont disponibles dans le dossier `assets/` :
 
-- **Cahier des charges** : `assets/CdC_PepiPlus.pdf`
-- **MCD** (Schéma conceptuel) : `assets/MCD.pdf`
-- **MLD** (Schéma logique) : `assets/MLD.pdf`
+- **Cahier des charges** : `assets/document/CdC_PepiPlus.pdf`
+- **MCD** (Schéma conceptuel) : `assets/schema/MCD.pdf`
+- **MLD** (Schéma logique) : `assets/schema/LD.pdf`
 
 ### Commandes utiles
 
