@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Entity\Stock;
 use App\Entity\Order;
 use App\Entity\OrderLine;
+use App\Entity\OrderStatusHistory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -23,21 +24,20 @@ class AppFixtures extends Fixture
         $json = file_get_contents(__DIR__ . '/data/pepi.json');
         $data = json_decode($json, true);
 
-        // On indexe les tables par leur nom pour un accès facile
         foreach ($data as $item) {
             if (isset($item['type']) && $item['type'] === 'table') {
                 $this->tables[$item['name']] = $item['data'];
             }
         }
 
-        // 2. Importation dans l'ordre des dépendances
+        // 2. Importation par ordre de dépendance
         $this->importPackagings($manager);
         $this->importSeasons($manager);
         $this->importPlants($manager);
         $this->importPartners($manager);
         $this->importUsers($manager);
 
-        // On flush une première fois pour avoir les IDs des parents
+        // Flush pour obtenir les références des parents
         $manager->flush();
 
         $this->importStocks($manager);
@@ -46,6 +46,7 @@ class AppFixtures extends Fixture
         $manager->flush();
 
         $this->importOrderLines($manager);
+        $this->importOrderStatusHistory($manager);
 
         $manager->flush();
     }
@@ -105,7 +106,7 @@ class AppFixtures extends Fixture
             $entity->setFirstName($row['first_name']);
             $entity->setIsActive((bool) $row['is_active']);
 
-            if ($row['partner_id']) {
+            if (!empty($row['partner_id'])) {
                 $entity->setPartner($this->getReference('partner_' . $row['partner_id'], Partner::class));
             }
 
@@ -122,15 +123,19 @@ class AppFixtures extends Fixture
             $entity->setCreatedAt(new \DateTimeImmutable($row['created_at']));
             $entity->setUpdatedAt(new \DateTimeImmutable($row['updated_at']));
 
-            // Relations
             $entity->setPlant($this->getReference('plant_' . $row['plant_id'], Plant::class));
             $entity->setPackaging($this->getReference('packaging_' . $row['packaging_id'], Packaging::class));
-            $entity->setSeason($this->getReference('season_' . $row['season_id'], Season::class ));
+            $entity->setSeason($this->getReference('season_' . $row['season_id'], Season::class));
 
-            if ($row['partner_id']) {
+            if (!empty($row['partner_id'])) {
                 $entity->setPartner($this->getReference('partner_' . $row['partner_id'], Partner::class));
             }
-            if ($row['updated_by_id']) {
+
+            // RÉPARATION : Import du créateur et du modificateur
+            if (!empty($row['created_by_id'])) {
+                $entity->setCreatedBy($this->getReference('user_' . $row['created_by_id'], User::class));
+            }
+            if (!empty($row['updated_by_id'])) {
                 $entity->setUpdatedBy($this->getReference('user_' . $row['updated_by_id'], User::class));
             }
 
@@ -149,7 +154,10 @@ class AppFixtures extends Fixture
             $entity->setUpdatedAt(new \DateTimeImmutable($row['updated_at']));
 
             $entity->setCollaborator($this->getReference('user_' . $row['collaborator_id'], User::class));
-            $entity->setUpdatedBy($this->getReference('user_' . $row['updated_by_id'], User::class));
+            
+            if (!empty($row['updated_by_id'])) {
+                $entity->setUpdatedBy($this->getReference('user_' . $row['updated_by_id'], User::class));
+            }
 
             $manager->persist($entity);
             $this->addReference('order_' . $row['id'], $entity);
@@ -161,9 +169,24 @@ class AppFixtures extends Fixture
         foreach ($this->tables['order_line'] ?? [] as $row) {
             $entity = new OrderLine();
             $entity->setQuantity((int) $row['quantity']);
-
             $entity->setStock($this->getReference('stock_' . $row['stock_id'], Stock::class));
+            
+            // RÉPARATION : Utilisation de purchase_order_id
             $entity->setPurchaseOrder($this->getReference('order_' . $row['purchase_order_id'], Order::class));
+
+            $manager->persist($entity);
+        }
+    }
+
+    private function importOrderStatusHistory(ObjectManager $manager): void
+    {
+        foreach ($this->tables['order_status_history'] ?? [] as $row) {
+            $entity = new OrderStatusHistory();
+            $entity->setStatus($row['status']);
+            $entity->setCreatedAt(new \DateTimeImmutable($row['created_at']));
+            
+            $entity->setPurchaseOrder($this->getReference('order_' . $row['purchase_order_id'], Order::class));
+            $entity->setChangedBy($this->getReference('user_' . $row['changed_by_id'], User::class));
 
             $manager->persist($entity);
         }
