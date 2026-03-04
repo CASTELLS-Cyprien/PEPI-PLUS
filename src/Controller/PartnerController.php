@@ -39,7 +39,7 @@ final class PartnerController extends AbstractController
         return $this->render('partner/index.html.twig', [
             'partners' => $partnerRepository->searchByTerm($searchTerm),
             'searchForm' => $form->createView(),
-            'partners'     => $pagination,
+            'partners' => $pagination,
         ]);
     }
 
@@ -134,14 +134,14 @@ final class PartnerController extends AbstractController
         }
 
         $pagination = $paginator->paginate(
-            $queryBuilder, 
+            $queryBuilder,
             $request->query->getInt('page', 1),
             8
         );
 
         return $this->render('partner/myStock.html.twig', [
             'searchForm' => $form->createView(),
-            'stocks'     => $pagination,
+            'stocks' => $pagination,
         ]);
     }
 
@@ -149,6 +149,17 @@ final class PartnerController extends AbstractController
     public function newMyStock(Request $request, EntityManagerInterface $entityManager): Response
     {
         $stock = new Stock();
+        /** @var User $user */
+        $user = $this->getUser();
+        $now = new \DateTimeImmutable();
+
+        // On pré-remplit les informations de traçabilité et le partenaire
+        $stock->setPartner($user->getPartner());
+        $stock->setCreatedAt($now);
+        $stock->setUpdatedAt($now);
+        $stock->setCreatedBy($user);
+        $stock->setUpdatedBy($user);
+
         $form = $this->createForm(StockType::class, $stock);
         $form->handleRequest($request);
 
@@ -239,7 +250,7 @@ final class PartnerController extends AbstractController
         return $this->render('partner/myReservation.html.twig', [
             'orderLines' => $orderLines,
             'searchForm' => $form->createView(),
-            'stocks'     => $pagination,
+            'stocks' => $pagination,
         ]);
     }
 }

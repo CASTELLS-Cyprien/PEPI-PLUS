@@ -99,6 +99,31 @@
 								</span>
 							</dd>
 						</div>
+						<div class="bg-white shadow sm:rounded-lg mt-6 border border-gray-200">
+							<div class="px-4 py-5 sm:px-6 bg-gray-50 border-b border-gray-200">
+								<h3 class="text-lg font-medium text-gray-900">Historique et Traçabilité</h3>
+							</div>
+							<div class="border-t border-gray-200 px-4 py-5 sm:p-0">
+								<dl class="sm:divide-y sm:divide-gray-200">
+									<div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+										<dt class="text-sm font-medium text-gray-500">Créé le</dt>
+										<dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+											{{ stock.createdAt|date('d/m/Y à H:i') }}
+											par
+											<strong>{{ stock.createdBy ? stock.createdBy.email : 'Inconnu' }}</strong>
+										</dd>
+									</div>
+									<div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+										<dt class="text-sm font-medium text-gray-500">Dernière mise à jour</dt>
+										<dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+											{{ stock.updatedAt|date('d/m/Y à H:i') }}
+											par
+											<strong>{{ stock.updatedBy ? stock.updatedBy.email : 'Inconnu' }}</strong>
+										</dd>
+									</div>
+								</dl>
+							</div>
+						</div>
 					</dl>
 				</div>
 

@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\User;
-use App\Form\SearchType;
 use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/stock')]
@@ -63,21 +62,51 @@ final class StockController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_stock_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/gestion/new', name: 'app_stock_gestion_new', methods: ['GET', 'POST'])]
+    public function newGestion(Request $request, EntityManagerInterface $entityManager, StockRepository $stockRepository): Response
     {
         $stock = new Stock();
+        $now = new \DateTimeImmutable();
+
+        // Initialisation par défaut
+        $stock->setCreatedAt($now);
+        $stock->setUpdatedAt($now);
+        $stock->setPartner(null); // Stock interne
+
         $form = $this->createForm(StockType::class, $stock);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($stock);
-            $entityManager->flush();
+            /** @var User $user */
+            $user = $this->getUser();
 
-            return $this->redirectToRoute('app_stock_index', [], Response::HTTP_SEE_OTHER);
+            // Recherche d'un stock identique existant
+            $existingStock = $stockRepository->findOneBy([
+                'plant' => $stock->getPlant(),
+                'packaging' => $stock->getPackaging(),
+                'season' => $stock->getSeason(),
+                'partner' => null
+            ]);
+
+            if ($existingStock) {
+                // Si existe, on cumule
+                $existingStock->setQuantity($existingStock->getQuantity() + $stock->getQuantity());
+                $existingStock->setUpdatedAt($now);
+                $existingStock->setUpdatedBy($user);
+                $this->addFlash('success', 'Quantité ajoutée au stock existant.');
+            } else {
+                // Si nouveau, on définit le créateur
+                $stock->setCreatedBy($user);
+                $stock->setUpdatedBy($user);
+                $entityManager->persist($stock);
+                $this->addFlash('success', 'Nouveau stock créé avec succès.');
+            }
+
+            $entityManager->flush();
+            return $this->redirectToRoute('app_stock_gestion_index');
         }
 
-        return $this->render('stock/new.html.twig', [
+        return $this->render('stock/newGestion.html.twig', [
             'stock' => $stock,
             'form' => $form,
         ]);
@@ -119,23 +148,26 @@ final class StockController extends AbstractController
         ]);
     }
 
-
     #[Route('/edit/{id}', name: 'app_stock_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Stock $stock, EntityManagerInterface $entityManager): Response
     {
-
-        //Si le stock appartient à un partenaire, on interdit l'édition
+        // Sécurité : Si le stock appartient à un partenaire, on redirige vers l'index global
         if ($stock->getPartner() !== null) {
-            return $this->redirectToRoute('app_stock_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_stock_index');
         }
 
         $form = $this->createForm(StockType::class, $stock);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $stock->setUpdatedAt(new \DateTimeImmutable());
+            $stock->setUpdatedBy($this->getUser());
+
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_stock_index', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash('success', 'Stock mis à jour.');
+            // On redirige vers l'index de GESTION et non global
+            return $this->redirectToRoute('app_stock_gestion_index');
         }
 
         return $this->render('stock/edit.html.twig', [
@@ -147,11 +179,20 @@ final class StockController extends AbstractController
     #[Route('/{id}', name: 'app_stock_delete', methods: ['POST'])]
     public function delete(Request $request, Stock $stock, EntityManagerInterface $entityManager): Response
     {
+        // On stocke l'information avant la suppression pour savoir où rediriger
+        $isInternal = ($stock->getPartner() === null);
+
         if ($this->isCsrfTokenValid('delete' . $stock->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($stock);
             $entityManager->flush();
+            $this->addFlash('success', 'L\'élément a été supprimé.');
         }
 
-        return $this->redirectToRoute('app_partner_myStock', [], Response::HTTP_SEE_OTHER);
+        // Redirection dynamique
+        if ($isInternal) {
+            return $this->redirectToRoute('app_stock_gestion_index');
+        }
+
+        return $this->redirectToRoute('app_partner_myStock');
     }
 }

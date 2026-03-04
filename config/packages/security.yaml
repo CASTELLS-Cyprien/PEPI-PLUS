@@ -50,7 +50,7 @@ security:
         - { path: ^/order/show, roles: [ROLE_PARTNER, ROLE_COLLABORATOR, ROLE_ADMIN] }
         - { path: ^/(plant/new|season/new|packaging/new), roles: [ROLE_PARTNER, ROLE_COLLABORATOR, ROLE_ADMIN] }
         - { path: ^/(stock|order|plant|packaging|season), roles: [ROLE_COLLABORATOR, ROLE_ADMIN] }
-        - { path: ^/(partner|users), roles: ROLE_ADMIN }
+        - { path: ^/(partner|user), roles: ROLE_ADMIN }
         - { path: ^/, roles: [ROLE_USER, ROLE_ADMIN] }
 
 when@test:
