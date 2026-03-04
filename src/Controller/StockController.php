@@ -66,9 +66,9 @@ final class StockController extends AbstractController
     public function newGestion(Request $request, EntityManagerInterface $entityManager, StockRepository $stockRepository): Response
     {
         $stock = new Stock();
+        $now = new \DateTimeImmutable();
 
         // Initialisation par défaut
-        $now = new \DateTimeImmutable();
         $stock->setCreatedAt($now);
         $stock->setUpdatedAt($now);
         $stock->setPartner(null); // Stock interne
@@ -80,7 +80,7 @@ final class StockController extends AbstractController
             /** @var User $user */
             $user = $this->getUser();
 
-            // 1. Chercher si un stock identique existe déjà (même plant, packaging et season ET partner est null)
+            // Recherche d'un stock identique existant
             $existingStock = $stockRepository->findOneBy([
                 'plant' => $stock->getPlant(),
                 'packaging' => $stock->getPackaging(),
@@ -89,24 +89,20 @@ final class StockController extends AbstractController
             ]);
 
             if ($existingStock) {
-                // 2. Si il existe, on additionne les quantités
-                $newQuantity = $existingStock->getQuantity() + $stock->getQuantity();
-                $existingStock->setQuantity($newQuantity);
-
-                // On met à jour les infos de traçabilité sur l'existant
+                // Si existe, on cumule
+                $existingStock->setQuantity($existingStock->getQuantity() + $stock->getQuantity());
                 $existingStock->setUpdatedAt($now);
                 $existingStock->setUpdatedBy($user);
-
-                $entityManager->flush();
-                $this->addFlash('success', 'Quantité ajoutée au stock existant avec succès.');
+                $this->addFlash('success', 'Quantité ajoutée au stock existant.');
             } else {
-                // 3. Si il n'existe pas, on crée la nouvelle entrée
+                // Si nouveau, on définit le créateur
+                $stock->setCreatedBy($user);
                 $stock->setUpdatedBy($user);
                 $entityManager->persist($stock);
-                $entityManager->flush();
-                $this->addFlash('success', 'Nouvel élément créé dans l\'inventaire.');
+                $this->addFlash('success', 'Nouveau stock créé avec succès.');
             }
 
+            $entityManager->flush();
             return $this->redirectToRoute('app_stock_gestion_index');
         }
 

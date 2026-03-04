@@ -45,6 +45,9 @@ class Stock
     #[ORM\Column]
     private ?\DateTimeImmutable $updated_at = null;
 
+    #[ORM\ManyToOne]
+    private ?User $created_by = null;
+
     public function __construct()
     {
         $this->orderLines = new ArrayCollection();
@@ -177,6 +180,18 @@ class Stock
     public function setUpdatedAt(\DateTimeImmutable $updated_at): static
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->created_by;
+    }
+
+    public function setCreatedBy(?User $created_by): static
+    {
+        $this->created_by = $created_by;
 
         return $this;
     }

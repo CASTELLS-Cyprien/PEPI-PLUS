@@ -115,6 +115,39 @@
 								</span>
 							</dd>
 						</div>
+						{# Bloc Traçabilité à ajouter dans show.html.twig #}
+						<div class="bg-white shadow sm:rounded-lg mt-6 border border-gray-200">
+							<div class="px-4 py-5 sm:px-6 bg-gray-50 border-b border-gray-200">
+								<h3 class="text-lg font-medium text-gray-900 leading-6">Historique de l'élément</h3>
+							</div>
+							<div class="border-t border-gray-200 px-4 py-5 sm:p-0">
+								<dl
+									class="sm:divide-y sm:divide-gray-200">
+									{# Créateur #}
+									<div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+										<dt class="text-sm font-medium text-gray-500">Créé par</dt>
+										<dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+											{{ stock.createdBy ? stock.createdBy.email : 'Utilisateur inconnu' }}
+											<span class="text-gray-400 mx-2">|</span>
+											le
+											{{ stock.createdAt|date('d/m/Y à H:i') }}
+										</dd>
+									</div>
+
+									{# Dernière modification #}
+									<div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+										<dt class="text-sm font-medium text-gray-500">Dernière mise à jour</dt>
+										<dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+											{{ stock.updatedBy ? stock.updatedBy.email : 'N/A' }}
+											<span class="text-gray-400 mx-2">|</span>
+											le
+											{{ stock.updatedAt|date('d/m/Y à H:i') }}
+										</dd>
+									</div>
+
+								</dl>
+							</div>
+						</div>
 					</dl>
 				</div>
 
