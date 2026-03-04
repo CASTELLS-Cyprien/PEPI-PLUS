@@ -1,0 +1,1587 @@
+[
+    {
+        "type": "header",
+        "version": "5.2.1",
+        "comment": "Export to JSON plugin for PHPMyAdmin"
+    },
+    {
+        "type": "database",
+        "name": "pepi"
+    },
+    {
+        "type": "table",
+        "name": "doctrine_migration_versions",
+        "database": "pepi",
+        "data": [
+            {
+                "version": "DoctrineMigrations\\Version20260106100215",
+                "executed_at": "2026-02-24 10:28:15",
+                "execution_time": "617"
+            },
+            {
+                "version": "DoctrineMigrations\\Version20260109094622",
+                "executed_at": "2026-02-24 10:28:15",
+                "execution_time": "133"
+            },
+            {
+                "version": "DoctrineMigrations\\Version20260109133917",
+                "executed_at": "2026-02-24 10:28:15",
+                "execution_time": "58"
+            },
+            {
+                "version": "DoctrineMigrations\\Version20260109145425",
+                "executed_at": "2026-02-24 10:28:15",
+                "execution_time": "5"
+            },
+            {
+                "version": "DoctrineMigrations\\Version20260114101934",
+                "executed_at": "2026-02-24 10:28:15",
+                "execution_time": "27"
+            },
+            {
+                "version": "DoctrineMigrations\\Version20260115102638",
+                "executed_at": "2026-02-24 10:28:16",
+                "execution_time": "64"
+            },
+            {
+                "version": "DoctrineMigrations\\Version20260116150855",
+                "executed_at": "2026-02-24 10:28:16",
+                "execution_time": "63"
+            },
+            {
+                "version": "DoctrineMigrations\\Version20260119090757",
+                "executed_at": "2026-02-24 10:28:16",
+                "execution_time": "154"
+            },
+            {
+                "version": "DoctrineMigrations\\Version20260304101507",
+                "executed_at": "2026-03-04 13:08:39",
+                "execution_time": "158"
+            }
+        ]
+    },
+    {
+        "type": "table",
+        "name": "messenger_messages",
+        "database": "pepi",
+        "data": []
+    },
+    {
+        "type": "table",
+        "name": "order",
+        "database": "pepi",
+        "data": [
+            {
+                "id": "1",
+                "collaborator_id": "1",
+                "order_number": "CMD-A5D8DD40",
+                "status": "Livrée",
+                "created_at": "2026-01-15 11:29:18",
+                "updated_by_id": "1",
+                "updated_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "2",
+                "collaborator_id": "1",
+                "order_number": "CMD-E1716062",
+                "status": "Annulée",
+                "created_at": "2026-01-15 11:29:28",
+                "updated_by_id": "1",
+                "updated_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "3",
+                "collaborator_id": "1",
+                "order_number": "CMD-E9C76D67",
+                "status": "Livrée",
+                "created_at": "2026-01-15 11:29:37",
+                "updated_by_id": "1",
+                "updated_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "4",
+                "collaborator_id": "1",
+                "order_number": "CMD-2A01B697",
+                "status": "Réservation",
+                "created_at": "2026-01-15 11:29:45",
+                "updated_by_id": "1",
+                "updated_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "5",
+                "collaborator_id": "1",
+                "order_number": "CMD-903AF58F",
+                "status": "Réservation",
+                "created_at": "2026-01-15 11:29:56",
+                "updated_by_id": "1",
+                "updated_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "6",
+                "collaborator_id": "1",
+                "order_number": "CMD-799187E8",
+                "status": "Réservation",
+                "created_at": "2026-01-15 11:30:05",
+                "updated_by_id": "1",
+                "updated_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "7",
+                "collaborator_id": "1",
+                "order_number": "CMD-DB7FB83D",
+                "status": "Annulée",
+                "created_at": "2026-01-15 11:30:13",
+                "updated_by_id": "1",
+                "updated_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "8",
+                "collaborator_id": "1",
+                "order_number": "CMD-41E34563",
+                "status": "Livrée",
+                "created_at": "2026-01-15 11:30:20",
+                "updated_by_id": "1",
+                "updated_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "9",
+                "collaborator_id": "3",
+                "order_number": "CMD-BA7C40A0",
+                "status": "Réservation",
+                "created_at": "2026-01-16 10:56:06",
+                "updated_by_id": "1",
+                "updated_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "10",
+                "collaborator_id": "1",
+                "order_number": "CMD-BC97D781",
+                "status": "Livrée",
+                "created_at": "2026-01-19 09:16:36",
+                "updated_by_id": "1",
+                "updated_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "11",
+                "collaborator_id": "1",
+                "order_number": "CMD-E5EC138C",
+                "status": "Réservation",
+                "created_at": "2026-01-19 09:27:38",
+                "updated_by_id": "1",
+                "updated_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "12",
+                "collaborator_id": "1",
+                "order_number": "CMD-11BCA3BE",
+                "status": "Livrée",
+                "created_at": "2026-01-19 09:40:35",
+                "updated_by_id": "1",
+                "updated_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "13",
+                "collaborator_id": "1",
+                "order_number": "CMD-B7894EF7",
+                "status": "Annulée",
+                "created_at": "2026-01-23 15:11:51",
+                "updated_by_id": "1",
+                "updated_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "14",
+                "collaborator_id": "1",
+                "order_number": "CMD-1A584D6B",
+                "status": "Annulée",
+                "created_at": "2026-01-23 15:17:44",
+                "updated_by_id": "1",
+                "updated_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "15",
+                "collaborator_id": "1",
+                "order_number": "CMD-ED7987B4",
+                "status": "Réservation",
+                "created_at": "2026-01-26 08:34:33",
+                "updated_by_id": "1",
+                "updated_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "16",
+                "collaborator_id": "1",
+                "order_number": "CMD-3E72CE55",
+                "status": "Livrée",
+                "created_at": "2026-01-26 08:45:08",
+                "updated_by_id": "1",
+                "updated_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "17",
+                "collaborator_id": "1",
+                "order_number": "CMD-B148FFAC",
+                "status": "Annulée",
+                "created_at": "2026-01-26 09:01:10",
+                "updated_by_id": "1",
+                "updated_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "18",
+                "collaborator_id": "1",
+                "order_number": "CMD-AE7177F2",
+                "status": "Annulée",
+                "created_at": "2026-01-26 09:15:26",
+                "updated_by_id": "1",
+                "updated_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "19",
+                "collaborator_id": "1",
+                "order_number": "CMD-B885A6AF",
+                "status": "Annulée",
+                "created_at": "2026-01-26 09:16:12",
+                "updated_by_id": "1",
+                "updated_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "20",
+                "collaborator_id": "1",
+                "order_number": "CMD-0CE5E425",
+                "status": "Réservation",
+                "created_at": "2026-02-24 11:05:54",
+                "updated_by_id": "1",
+                "updated_at": "2026-02-24 11:05:54"
+            },
+            {
+                "id": "21",
+                "collaborator_id": "1",
+                "order_number": "CMD-A3BB8282",
+                "status": "Réservation",
+                "created_at": "2026-02-27 09:22:31",
+                "updated_by_id": "1",
+                "updated_at": "2026-02-27 09:22:31"
+            },
+            {
+                "id": "22",
+                "collaborator_id": "1",
+                "order_number": "CMD-004700CA",
+                "status": "Annulée",
+                "created_at": "2026-03-03 08:46:40",
+                "updated_by_id": "1",
+                "updated_at": "2026-03-03 10:44:24"
+            }
+        ]
+    },
+    {
+        "type": "table",
+        "name": "order_line",
+        "database": "pepi",
+        "data": [
+            {
+                "id": "1",
+                "stock_id": "46",
+                "purchase_order_id": "1",
+                "quantity": "50"
+            },
+            {
+                "id": "2",
+                "stock_id": "44",
+                "purchase_order_id": "2",
+                "quantity": "88"
+            },
+            {
+                "id": "3",
+                "stock_id": "46",
+                "purchase_order_id": "3",
+                "quantity": "70"
+            },
+            {
+                "id": "4",
+                "stock_id": "13",
+                "purchase_order_id": "4",
+                "quantity": "66"
+            },
+            {
+                "id": "5",
+                "stock_id": "28",
+                "purchase_order_id": "5",
+                "quantity": "55"
+            },
+            {
+                "id": "6",
+                "stock_id": "35",
+                "purchase_order_id": "6",
+                "quantity": "33"
+            },
+            {
+                "id": "7",
+                "stock_id": "47",
+                "purchase_order_id": "7",
+                "quantity": "12"
+            },
+            {
+                "id": "8",
+                "stock_id": "48",
+                "purchase_order_id": "8",
+                "quantity": "23"
+            },
+            {
+                "id": "9",
+                "stock_id": "18",
+                "purchase_order_id": "9",
+                "quantity": "15"
+            },
+            {
+                "id": "10",
+                "stock_id": "25",
+                "purchase_order_id": "10",
+                "quantity": "50"
+            },
+            {
+                "id": "11",
+                "stock_id": "25",
+                "purchase_order_id": "11",
+                "quantity": "50"
+            },
+            {
+                "id": "12",
+                "stock_id": "18",
+                "purchase_order_id": "12",
+                "quantity": "20"
+            },
+            {
+                "id": "13",
+                "stock_id": "49",
+                "purchase_order_id": "13",
+                "quantity": "150"
+            },
+            {
+                "id": "14",
+                "stock_id": "18",
+                "purchase_order_id": "14",
+                "quantity": "150"
+            },
+            {
+                "id": "15",
+                "stock_id": "42",
+                "purchase_order_id": "15",
+                "quantity": "20"
+            },
+            {
+                "id": "16",
+                "stock_id": "44",
+                "purchase_order_id": "15",
+                "quantity": "10"
+            },
+            {
+                "id": "17",
+                "stock_id": "16",
+                "purchase_order_id": "16",
+                "quantity": "15"
+            },
+            {
+                "id": "18",
+                "stock_id": "42",
+                "purchase_order_id": "17",
+                "quantity": "14"
+            },
+            {
+                "id": "19",
+                "stock_id": "44",
+                "purchase_order_id": "18",
+                "quantity": "6"
+            },
+            {
+                "id": "20",
+                "stock_id": "46",
+                "purchase_order_id": "19",
+                "quantity": "6"
+            },
+            {
+                "id": "21",
+                "stock_id": "42",
+                "purchase_order_id": "20",
+                "quantity": "10"
+            },
+            {
+                "id": "22",
+                "stock_id": "46",
+                "purchase_order_id": "20",
+                "quantity": "10"
+            },
+            {
+                "id": "23",
+                "stock_id": "42",
+                "purchase_order_id": "21",
+                "quantity": "10"
+            },
+            {
+                "id": "24",
+                "stock_id": "46",
+                "purchase_order_id": "21",
+                "quantity": "10"
+            },
+            {
+                "id": "25",
+                "stock_id": "11",
+                "purchase_order_id": "22",
+                "quantity": "10"
+            },
+            {
+                "id": "26",
+                "stock_id": "13",
+                "purchase_order_id": "22",
+                "quantity": "10"
+            }
+        ]
+    },
+    {
+        "type": "table",
+        "name": "order_status_history",
+        "database": "pepi",
+        "data": [
+            {
+                "id": "1",
+                "changed_by_id": "1",
+                "purchase_order_id": "20",
+                "status": "Réservation",
+                "created_at": "2026-02-24 11:05:54"
+            },
+            {
+                "id": "2",
+                "changed_by_id": "1",
+                "purchase_order_id": "21",
+                "status": "Réservation",
+                "created_at": "2026-02-27 09:22:31"
+            },
+            {
+                "id": "3",
+                "changed_by_id": "1",
+                "purchase_order_id": "22",
+                "status": "Réservation",
+                "created_at": "2026-03-03 08:46:40"
+            },
+            {
+                "id": "4",
+                "changed_by_id": "1",
+                "purchase_order_id": "22",
+                "status": "Annulée",
+                "created_at": "2026-03-03 10:44:24"
+            }
+        ]
+    },
+    {
+        "type": "table",
+        "name": "packaging",
+        "data": [
+            {
+                "id": 1,
+                "label": "Godet (9x9x9)"
+            },
+            {
+                "id": 2,
+                "label": "Pot 1L"
+            },
+            {
+                "id": 3,
+                "label": "Pot 3L"
+            },
+            {
+                "id": 4,
+                "label": "Pot 10L"
+            },
+            {
+                "id": 5,
+                "label": "Racine nue"
+            },
+            {
+                "id": 6,
+                "label": "Motte"
+            }
+        ]
+    },
+    {
+        "type": "table",
+        "name": "partner",
+        "database": "pepi",
+        "data": [
+            {
+                "id": "1",
+                "company_name": "Guillet",
+                "contact_details": "20, boulevard Bernier\r\n48227 Traoredan",
+                "created_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "2",
+                "company_name": "Laroche",
+                "contact_details": "902, rue Christine Launay\r\n28334 Rocher",
+                "created_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "3",
+                "company_name": "Riou S.A.R.L.",
+                "contact_details": "17, avenue Lebreton\r\n98332 Cousin",
+                "created_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "4",
+                "company_name": "Lemaire",
+                "contact_details": "88, rue de Blanc\r\n36045 JacquotBourg",
+                "created_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "5",
+                "company_name": "Delannoy",
+                "contact_details": "avenue Timothée Descamps\r\n57745 Perrot",
+                "created_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "6",
+                "company_name": "Millet",
+                "contact_details": "23, rue Marion\r\n85402 DufourBourg",
+                "created_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "7",
+                "company_name": "Pruvost Humbert SARL",
+                "contact_details": "86, rue de Robin\r\n59973 Lebon-sur-Hubert",
+                "created_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "8",
+                "company_name": "Charrier",
+                "contact_details": "3, rue Torres\r\n34027 Dupuy-sur-Guibert",
+                "created_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "9",
+                "company_name": "Delorme",
+                "contact_details": "70, rue Delmas\r\n75107 Dumas",
+                "created_at": "2026-02-24 10:28:40"
+            },
+            {
+                "id": "10",
+                "company_name": "Martineau S.A.S.",
+                "contact_details": "8, rue de Brunet\r\n66564 Beguenec",
+                "created_at": "2026-02-24 10:28:40"
+            }
+        ]
+    },
+    {
+        "type": "table",
+        "name": "plant",
+        "database": "pepi",
+        "data": [
+            {
+                "id": 1,
+                "latin_name": "Sorbus torminalis",
+                "common_name": "Alisier torminal",
+                "type": "Feuillu"
+            },
+            {
+                "id": 2,
+                "latin_name": "Prunus dulcis",
+                "common_name": "Amandier",
+                "type": "Fruitier"
+            },
+            {
+                "id": 3,
+                "latin_name": "Hippophae rhamnoides",
+                "common_name": "Argousier",
+                "type": "Arbuste"
+            },
+            {
+                "id": 4,
+                "latin_name": "Crataegus monogyna",
+                "common_name": "Aubépine monogyne",
+                "type": "Arbuste"
+            },
+            {
+                "id": 5,
+                "latin_name": "Betula pendula",
+                "common_name": "Bouleau verruqueux",
+                "type": "Feuillu"
+            },
+            {
+                "id": 6,
+                "latin_name": "Buxus sempervirens",
+                "common_name": "Buis toujours vert",
+                "type": "Arbuste"
+            },
+            {
+                "id": 7,
+                "latin_name": "Catalpa bignonioides",
+                "common_name": "Catalpa commun",
+                "type": "Feuillu"
+            },
+            {
+                "id": 8,
+                "latin_name": "Cedrus atlantica",
+                "common_name": "Cèdre de l'Atlas",
+                "type": "Résineux"
+            },
+            {
+                "id": 9,
+                "latin_name": "Cedrus libani",
+                "common_name": "Cèdre du Liban",
+                "type": "Résineux"
+            },
+            {
+                "id": 10,
+                "latin_name": "Prunus avium",
+                "common_name": "Merisier",
+                "type": "Feuillu"
+            },
+            {
+                "id": 11,
+                "latin_name": "Prunus cerasus",
+                "common_name": "Cerisier acide",
+                "type": "Fruitier"
+            },
+            {
+                "id": 12,
+                "latin_name": "Castanea sativa",
+                "common_name": "Châtaignier commun",
+                "type": "Feuillu"
+            },
+            {
+                "id": 13,
+                "latin_name": "Quercus robur",
+                "common_name": "Chêne pédonculé",
+                "type": "Feuillu"
+            },
+            {
+                "id": 14,
+                "latin_name": "Quercus petraea",
+                "common_name": "Chêne sessile",
+                "type": "Feuillu"
+            },
+            {
+                "id": 15,
+                "latin_name": "Quercus pubescens",
+                "common_name": "Chêne pubescent",
+                "type": "Feuillu"
+            },
+            {
+                "id": 16,
+                "latin_name": "Cornus mas",
+                "common_name": "Cornouiller mâle",
+                "type": "Arbuste"
+            },
+            {
+                "id": 17,
+                "latin_name": "Cornus sanguinea",
+                "common_name": "Cornouiller sanguin",
+                "type": "Arbuste"
+            },
+            {
+                "id": 18,
+                "latin_name": "Corylus avellana",
+                "common_name": "Noisetier commun",
+                "type": "Arbuste"
+            },
+            {
+                "id": 19,
+                "latin_name": "Cotinus coggygria",
+                "common_name": "Arbre à perruques",
+                "type": "Arbuste"
+            },
+            {
+                "id": 20,
+                "latin_name": "Cupressus sempervirens",
+                "common_name": "Cyprès toujours vert",
+                "type": "Résineux"
+            },
+            {
+                "id": 21,
+                "latin_name": "Cytisus scoparius",
+                "common_name": "Genêt à balais",
+                "type": "Arbuste"
+            },
+            {
+                "id": 22,
+                "latin_name": "Pyrus communis",
+                "common_name": "Poirier commun",
+                "type": "Fruitier"
+            },
+            {
+                "id": 23,
+                "latin_name": "Malus domestica",
+                "common_name": "Pommier commun",
+                "type": "Fruitier"
+            },
+            {
+                "id": 24,
+                "latin_name": "Prunus spinosa",
+                "common_name": "Prunellier",
+                "type": "Arbuste"
+            },
+            {
+                "id": 25,
+                "latin_name": "Rosa canina",
+                "common_name": "Églantier",
+                "type": "Arbuste"
+            },
+            {
+                "id": 26,
+                "latin_name": "Sambucus nigra",
+                "common_name": "Sureau noir",
+                "type": "Arbuste"
+            },
+            {
+                "id": 27,
+                "latin_name": "Sorbus aucuparia",
+                "common_name": "Sorbier des oiseleurs",
+                "type": "Feuillu"
+            },
+            {
+                "id": 28,
+                "latin_name": "Taxus baccata",
+                "common_name": "If commun",
+                "type": "Résineux"
+            },
+            {
+                "id": 29,
+                "latin_name": "Tilia cordata",
+                "common_name": "Tilleul à petites feuilles",
+                "type": "Feuillu"
+            },
+            {
+                "id": 30,
+                "latin_name": "Ulmus minor",
+                "common_name": "Orme champêtre",
+                "type": "Feuillu"
+            },
+            {
+                "id": 31,
+                "latin_name": "Viburnum lantana",
+                "common_name": "Viorne lantane",
+                "type": "Arbuste"
+            },
+            {
+                "id": 32,
+                "latin_name": "Viburnum opulus",
+                "common_name": "Viorne obier",
+                "type": "Arbuste"
+            }
+        ]
+    },
+    {
+        "type": "table",
+        "name": "reset_password_request",
+        "database": "pepi",
+        "data": []
+    },
+    {
+        "type": "table",
+        "name": "season",
+        "database": "pepi",
+        "data": [
+            {
+                "id": "1",
+                "year": "2023"
+            },
+            {
+                "id": "2",
+                "year": "2024"
+            },
+            {
+                "id": "3",
+                "year": "2025"
+            },
+            {
+                "id": "4",
+                "year": "2026"
+            },
+            {
+                "id": "5",
+                "year": "2020"
+            },
+            {
+                "id": "6",
+                "year": "2019"
+            }
+        ]
+    },
+    {
+        "type": "table",
+        "name": "stock",
+        "database": "pepi",
+        "data": [
+            {
+                "id": "1",
+                "plant_id": "19",
+                "packaging_id": "1",
+                "season_id": "1",
+                "partner_id": "5",
+                "updated_by_id": "5",
+                "quantity": "250",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "5"
+            },
+            {
+                "id": "2",
+                "plant_id": "4",
+                "packaging_id": "1",
+                "season_id": "4",
+                "partner_id": null,
+                "updated_by_id": "1",
+                "quantity": "401",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "1"
+            },
+            {
+                "id": "3",
+                "plant_id": "12",
+                "packaging_id": "1",
+                "season_id": "1",
+                "partner_id": "9",
+                "updated_by_id": "9",
+                "quantity": "81",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "9"
+            },
+            {
+                "id": "4",
+                "plant_id": "12",
+                "packaging_id": "1",
+                "season_id": "2",
+                "partner_id": "2",
+                "updated_by_id": "2",
+                "quantity": "85",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "2"
+            },
+            {
+                "id": "5",
+                "plant_id": "13",
+                "packaging_id": "1",
+                "season_id": "4",
+                "partner_id": null,
+                "updated_by_id": "1",
+                "quantity": "185",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "1"
+            },
+            {
+                "id": "6",
+                "plant_id": "14",
+                "packaging_id": "1",
+                "season_id": "3",
+                "partner_id": "5",
+                "updated_by_id": "5",
+                "quantity": "194",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "5"
+            },
+            {
+                "id": "7",
+                "plant_id": "7",
+                "packaging_id": "1",
+                "season_id": "3",
+                "partner_id": "5",
+                "updated_by_id": "5",
+                "quantity": "45",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "5"
+            },
+            {
+                "id": "8",
+                "plant_id": "8",
+                "packaging_id": "1",
+                "season_id": "3",
+                "partner_id": "1",
+                "updated_by_id": "1",
+                "quantity": "25",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "1"
+            },
+            {
+                "id": "9",
+                "plant_id": "7",
+                "packaging_id": "1",
+                "season_id": "1",
+                "partner_id": null,
+                "updated_by_id": "1",
+                "quantity": "250",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "1"
+            },
+            {
+                "id": "10",
+                "plant_id": "9",
+                "packaging_id": "1",
+                "season_id": "1",
+                "partner_id": "2",
+                "updated_by_id": "2",
+                "quantity": "269",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "2"
+            },
+            {
+                "id": "11",
+                "plant_id": "15",
+                "packaging_id": "1",
+                "season_id": "4",
+                "partner_id": "4",
+                "updated_by_id": "4",
+                "quantity": "334",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-03-03 08:46:40",
+                "created_by_id": "4"
+            },
+            {
+                "id": "12",
+                "plant_id": "5",
+                "packaging_id": "1",
+                "season_id": "2",
+                "partner_id": "9",
+                "updated_by_id": "9",
+                "quantity": "116",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "9"
+            },
+            {
+                "id": "13",
+                "plant_id": "20",
+                "packaging_id": "1",
+                "season_id": "3",
+                "partner_id": "5",
+                "updated_by_id": "5",
+                "quantity": "315",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-03-03 08:46:40",
+                "created_by_id": "5"
+            },
+            {
+                "id": "14",
+                "plant_id": "13",
+                "packaging_id": "1",
+                "season_id": "3",
+                "partner_id": null,
+                "updated_by_id": "1",
+                "quantity": "101",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "1"
+            },
+            {
+                "id": "15",
+                "plant_id": "20",
+                "packaging_id": "1",
+                "season_id": "1",
+                "partner_id": null,
+                "updated_by_id": "1",
+                "quantity": "90",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "1"
+            },
+            {
+                "id": "16",
+                "plant_id": "18",
+                "packaging_id": "1",
+                "season_id": "4",
+                "partner_id": "4",
+                "updated_by_id": "4",
+                "quantity": "329",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "4"
+            },
+            {
+                "id": "17",
+                "plant_id": "17",
+                "packaging_id": "1",
+                "season_id": "1",
+                "partner_id": "1",
+                "updated_by_id": "1",
+                "quantity": "80",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "1"
+            },
+            {
+                "id": "18",
+                "plant_id": "2",
+                "packaging_id": "1",
+                "season_id": "4",
+                "partner_id": "6",
+                "updated_by_id": "6",
+                "quantity": "269",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "6"
+            },
+            {
+                "id": "19",
+                "plant_id": "10",
+                "packaging_id": "1",
+                "season_id": "1",
+                "partner_id": "7",
+                "updated_by_id": "7",
+                "quantity": "104",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "7"
+            },
+            {
+                "id": "20",
+                "plant_id": "19",
+                "packaging_id": "1",
+                "season_id": "3",
+                "partner_id": null,
+                "updated_by_id": "1",
+                "quantity": "57",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "1"
+            },
+            {
+                "id": "21",
+                "plant_id": "8",
+                "packaging_id": "1",
+                "season_id": "4",
+                "partner_id": "7",
+                "updated_by_id": "7",
+                "quantity": "317",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "7"
+            },
+            {
+                "id": "22",
+                "plant_id": "10",
+                "packaging_id": "1",
+                "season_id": "3",
+                "partner_id": null,
+                "updated_by_id": "1",
+                "quantity": "177",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "1"
+            },
+            {
+                "id": "23",
+                "plant_id": "14",
+                "packaging_id": "1",
+                "season_id": "3",
+                "partner_id": "1",
+                "updated_by_id": "1",
+                "quantity": "40",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "1"
+            },
+            {
+                "id": "24",
+                "plant_id": "9",
+                "packaging_id": "1",
+                "season_id": "2",
+                "partner_id": null,
+                "updated_by_id": "1",
+                "quantity": "9",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "1"
+            },
+            {
+                "id": "25",
+                "plant_id": "19",
+                "packaging_id": "1",
+                "season_id": "1",
+                "partner_id": "1",
+                "updated_by_id": "1",
+                "quantity": "302",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "1"
+            },
+            {
+                "id": "26",
+                "plant_id": "15",
+                "packaging_id": "1",
+                "season_id": "4",
+                "partner_id": null,
+                "updated_by_id": "1",
+                "quantity": "147",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "1"
+            },
+            {
+                "id": "27",
+                "plant_id": "19",
+                "packaging_id": "1",
+                "season_id": "1",
+                "partner_id": "8",
+                "updated_by_id": "8",
+                "quantity": "314",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "8"
+            },
+            {
+                "id": "28",
+                "plant_id": "6",
+                "packaging_id": "1",
+                "season_id": "1",
+                "partner_id": "3",
+                "updated_by_id": "3",
+                "quantity": "313",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "3"
+            },
+            {
+                "id": "29",
+                "plant_id": "20",
+                "packaging_id": "1",
+                "season_id": "2",
+                "partner_id": "2",
+                "updated_by_id": "2",
+                "quantity": "22",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "2"
+            },
+            {
+                "id": "30",
+                "plant_id": "16",
+                "packaging_id": "1",
+                "season_id": "1",
+                "partner_id": null,
+                "updated_by_id": "1",
+                "quantity": "375",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "1"
+            },
+            {
+                "id": "31",
+                "plant_id": "18",
+                "packaging_id": "1",
+                "season_id": "2",
+                "partner_id": "4",
+                "updated_by_id": "4",
+                "quantity": "34",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "4"
+            },
+            {
+                "id": "32",
+                "plant_id": "9",
+                "packaging_id": "1",
+                "season_id": "2",
+                "partner_id": "10",
+                "updated_by_id": "10",
+                "quantity": "222",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "10"
+            },
+            {
+                "id": "33",
+                "plant_id": "17",
+                "packaging_id": "1",
+                "season_id": "4",
+                "partner_id": null,
+                "updated_by_id": "1",
+                "quantity": "121",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "1"
+            },
+            {
+                "id": "34",
+                "plant_id": "13",
+                "packaging_id": "1",
+                "season_id": "4",
+                "partner_id": "10",
+                "updated_by_id": "10",
+                "quantity": "76",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "10"
+            },
+            {
+                "id": "35",
+                "plant_id": "12",
+                "packaging_id": "1",
+                "season_id": "4",
+                "partner_id": "7",
+                "updated_by_id": "7",
+                "quantity": "270",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "7"
+            },
+            {
+                "id": "36",
+                "plant_id": "13",
+                "packaging_id": "1",
+                "season_id": "4",
+                "partner_id": "9",
+                "updated_by_id": "9",
+                "quantity": "77",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "9"
+            },
+            {
+                "id": "37",
+                "plant_id": "5",
+                "packaging_id": "1",
+                "season_id": "3",
+                "partner_id": "10",
+                "updated_by_id": "10",
+                "quantity": "310",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "10"
+            },
+            {
+                "id": "38",
+                "plant_id": "20",
+                "packaging_id": "1",
+                "season_id": "4",
+                "partner_id": "2",
+                "updated_by_id": "2",
+                "quantity": "67",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "2"
+            },
+            {
+                "id": "39",
+                "plant_id": "3",
+                "packaging_id": "1",
+                "season_id": "4",
+                "partner_id": "1",
+                "updated_by_id": "1",
+                "quantity": "28",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "1"
+            },
+            {
+                "id": "40",
+                "plant_id": "8",
+                "packaging_id": "1",
+                "season_id": "3",
+                "partner_id": "4",
+                "updated_by_id": "4",
+                "quantity": "131",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "4"
+            },
+            {
+                "id": "41",
+                "plant_id": "11",
+                "packaging_id": "1",
+                "season_id": "1",
+                "partner_id": "5",
+                "updated_by_id": "5",
+                "quantity": "23",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "5"
+            },
+            {
+                "id": "42",
+                "plant_id": "14",
+                "packaging_id": "1",
+                "season_id": "3",
+                "partner_id": "2",
+                "updated_by_id": "2",
+                "quantity": "320",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-27 09:22:31",
+                "created_by_id": "2"
+            },
+            {
+                "id": "43",
+                "plant_id": "6",
+                "packaging_id": "1",
+                "season_id": "1",
+                "partner_id": "7",
+                "updated_by_id": "7",
+                "quantity": "122",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "7"
+            },
+            {
+                "id": "44",
+                "plant_id": "14",
+                "packaging_id": "1",
+                "season_id": "4",
+                "partner_id": "5",
+                "updated_by_id": "5",
+                "quantity": "340",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "5"
+            },
+            {
+                "id": "45",
+                "plant_id": "4",
+                "packaging_id": "1",
+                "season_id": "4",
+                "partner_id": "2",
+                "updated_by_id": "2",
+                "quantity": "227",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "2"
+            },
+            {
+                "id": "46",
+                "plant_id": "1",
+                "packaging_id": "1",
+                "season_id": "3",
+                "partner_id": "5",
+                "updated_by_id": "5",
+                "quantity": "320",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-27 09:22:31",
+                "created_by_id": "5"
+            },
+            {
+                "id": "47",
+                "plant_id": "8",
+                "packaging_id": "1",
+                "season_id": "1",
+                "partner_id": "1",
+                "updated_by_id": "1",
+                "quantity": "241",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "1"
+            },
+            {
+                "id": "48",
+                "plant_id": "4",
+                "packaging_id": "1",
+                "season_id": "2",
+                "partner_id": "5",
+                "updated_by_id": "5",
+                "quantity": "243",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "5"
+            },
+            {
+                "id": "49",
+                "plant_id": "7",
+                "packaging_id": "1",
+                "season_id": "1",
+                "partner_id": "2",
+                "updated_by_id": "2",
+                "quantity": "286",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "2"
+            },
+            {
+                "id": "50",
+                "plant_id": "19",
+                "packaging_id": "1",
+                "season_id": "1",
+                "partner_id": null,
+                "updated_by_id": "1",
+                "quantity": "50",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "1"
+            },
+            {
+                "id": "51",
+                "plant_id": "2",
+                "packaging_id": "1",
+                "season_id": "4",
+                "partner_id": null,
+                "updated_by_id": "1",
+                "quantity": "20",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "1"
+            },
+            {
+                "id": "52",
+                "plant_id": "18",
+                "packaging_id": "1",
+                "season_id": "4",
+                "partner_id": null,
+                "updated_by_id": "1",
+                "quantity": "15",
+                "created_at": "2026-02-24 10:28:40",
+                "updated_at": "2026-02-24 10:28:40",
+                "created_by_id": "1"
+            },
+            {
+                "id": "53",
+                "plant_id": "1",
+                "packaging_id": "1",
+                "season_id": "1",
+                "partner_id": null,
+                "updated_by_id": "1",
+                "quantity": "40",
+                "created_at": "2026-03-04 13:09:03",
+                "updated_at": "2026-03-04 13:09:03",
+                "created_by_id": "1"
+            }
+        ]
+    },
+    {
+        "type": "table",
+        "name": "user",
+        "database": "pepi",
+        "data": [
+            {
+                "id": "1",
+                "email": "castellscyprien@gmail.com",
+                "roles": "{\"1\":\"ROLE_ADMIN\",\"2\":\"ROLE_USER\"}",
+                "password": "$2y$13$05x8uNui85x23QbX.5ZzUeN8.aHwBjg0MAoxL8tjM.HgzSZrGiEYu",
+                "last_name": "CASTELLS",
+                "first_name": "Cyprien",
+                "is_active": "1",
+                "must_change_password": "0",
+                "partner_id": null
+            },
+            {
+                "id": "2",
+                "email": "partner@gmail.com",
+                "roles": "{\"1\":\"ROLE_PARTNER\",\"2\":\"ROLE_USER\"}",
+                "password": "$2y$13$Sso1\/.lRLcCXIXh.3Gw2dOEeCZHgDn1HoNEbFru8FtmHLbzHgMmAa",
+                "last_name": "Roche",
+                "first_name": "Élisabeth",
+                "is_active": "1",
+                "must_change_password": "0",
+                "partner_id": "1"
+            },
+            {
+                "id": "3",
+                "email": "collaborateur@gmail.com",
+                "roles": "[\"ROLE_COLLABORATOR\",\"ROLE_USER\"]",
+                "password": "$2y$13$Ga\/LgPM1M18KLSo0cSXGzuPpBdI1nthU84JEHo2P9aYiNShOd03ZS",
+                "last_name": "Moreau",
+                "first_name": "Nathan",
+                "is_active": "1",
+                "must_change_password": "0",
+                "partner_id": null
+            },
+            {
+                "id": "4",
+                "email": "chloe.dubois@gmail.com",
+                "roles": "{\"1\":\"ROLE_PARTNER\",\"2\":\"ROLE_USER\"}",
+                "password": "$2y$13$qEgxARQQJhMTrTIRY.rVeOGf34Dnn86FAc\/h6pSinDJa0Bn6\/QDzy",
+                "last_name": "Dubois",
+                "first_name": "Chloé",
+                "is_active": "1",
+                "must_change_password": "0",
+                "partner_id": "2"
+            },
+            {
+                "id": "5",
+                "email": "hugo.durand@gmail.com",
+                "roles": "{\"1\":\"ROLE_PARTNER\",\"2\":\"ROLE_USER\"}",
+                "password": "$2y$13$rKbBx6fAgguL4ndMhfIQYuQQweHV.vfI.2nHgh6im1JApsM0gkEuC",
+                "last_name": "Durand",
+                "first_name": "Hugo",
+                "is_active": "1",
+                "must_change_password": "0",
+                "partner_id": "3"
+            },
+            {
+                "id": "6",
+                "email": "emma.richard@gmail.com",
+                "roles": "[\"ROLE_PARTNER\",\"ROLE_USER\"]",
+                "password": "$2y$13$21PX7OQN90XkXOMe8FHToOiDtIymYhnDEJ2yqfGkn7K3nBU4mLs\/u",
+                "last_name": "Richard",
+                "first_name": "Emma",
+                "is_active": "1",
+                "must_change_password": "0",
+                "partner_id": "8"
+            },
+            {
+                "id": "7",
+                "email": "lucas.robert@gmail.com",
+                "roles": "[\"ROLE_PARTNER\",\"ROLE_USER\"]",
+                "password": "$2y$13$556R.wMWlz3ntmbYBgubC.bfEPymWdtmhcGExEcWWV1DRnkS4AVB6",
+                "last_name": "Robert",
+                "first_name": "Lucas",
+                "is_active": "1",
+                "must_change_password": "0",
+                "partner_id": "5"
+            },
+            {
+                "id": "8",
+                "email": "sophii.petit@gmail.com",
+                "roles": "[\"ROLE_PARTNER\",\"ROLE_USER\"]",
+                "password": "$2y$13$51YrE7rzkrxCZcM1W\/dwsuLzGIw3CkkwgpQOkHscNC.jOAwjc2FJC",
+                "last_name": "Petit",
+                "first_name": "Sophie",
+                "is_active": "1",
+                "must_change_password": "0",
+                "partner_id": "9"
+            },
+            {
+                "id": "9",
+                "email": "t.bernard@gmail.com",
+                "roles": "[\"ROLE_PARTNER\",\"ROLE_USER\"]",
+                "password": "$2y$13$LrAJ9NvNBYDYJ5VySc3.eekuk81oZVtMhO0OSYStC\/2McgeCJy63O",
+                "last_name": "Bernard",
+                "first_name": "Thomas",
+                "is_active": "1",
+                "must_change_password": "0",
+                "partner_id": "4"
+            },
+            {
+                "id": "10",
+                "email": "m.lefebvre@gmail.com",
+                "roles": "[\"ROLE_PARTNER\",\"ROLE_USER\"]",
+                "password": "$2y$13$4Sz2UcCORwso7O0ehIPfvOw7NZFJDDg4rjHMZqKW9gZY0XqhmSNoG",
+                "last_name": "Lefebvre",
+                "first_name": "Marie",
+                "is_active": "1",
+                "must_change_password": "0",
+                "partner_id": "10"
+            },
+            {
+                "id": "11",
+                "email": "jean.dupont@gmail.com",
+                "roles": "[\"ROLE_PARTNER\",\"ROLE_USER\"]",
+                "password": "$2y$13$1NWW\/CLmg5oBOdvrZkEdEORJi0vaLh5ZcpmQhh\/4i9IxvGhSTqb1i",
+                "last_name": "Dupont",
+                "first_name": "Jean",
+                "is_active": "1",
+                "must_change_password": "0",
+                "partner_id": "6"
+            },
+            {
+                "id": "12",
+                "email": "mannon.michel@gmail.com",
+                "roles": "[\"ROLE_PARTNER\",\"ROLE_USER\"]",
+                "password": "$2y$13$a8TsLk2\/NRRDRUpPIEimaeKaNOQar7FZz58fQa19BX4jj6CV8mtIi",
+                "last_name": "Michel",
+                "first_name": "Mannon",
+                "is_active": "1",
+                "must_change_password": "0",
+                "partner_id": "7"
+            }
+        ]
+    }
+]
