@@ -233,6 +233,9 @@ php bin/console doctrine:fixtures:load
 
 # Vider le cache
 php bin/console cache:clear
+
+# Supprimer la base de donnée
+php bin/console doctrine:database:drop --force
 ```
 
 
