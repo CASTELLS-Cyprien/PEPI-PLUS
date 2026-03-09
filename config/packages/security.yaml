@@ -42,15 +42,23 @@ security:
 
     # Note: Only the *first* matching rule is applied
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+       # 1. Accès publics
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/reset-password, roles: PUBLIC_ACCESS }
+
+        # 2. MODIFICATION : Autoriser le profil ET le changement de mot de passe
+        # Cette règle capture : /user/my-account/profile  ET  /user/profile/change-password
+        - { path: ^/user/(my-account/profile|profile/change-password), roles: [ROLE_USER, ROLE_PARTNER, ROLE_COLLABORATOR, ROLE_ADMIN] }
+
+        # 3. Reste de la configuration (Inchangé)
         - { path: ^/partner/(my-stock/|my-reservations), roles: ROLE_PARTNER }
         - { path: ^/order/show, roles: [ROLE_PARTNER, ROLE_COLLABORATOR, ROLE_ADMIN] }
         - { path: ^/(plant/new|season/new|packaging/new), roles: [ROLE_PARTNER, ROLE_COLLABORATOR, ROLE_ADMIN] }
         - { path: ^/(stock|order|plant|packaging|season), roles: [ROLE_COLLABORATOR, ROLE_ADMIN] }
+        
+        # Cette règle restrictive ne bloquera pas les deux URLs ci-dessus car elles sont placées AVANT
         - { path: ^/(partner|user), roles: ROLE_ADMIN }
+
         - { path: ^/, roles: [ROLE_USER, ROLE_ADMIN] }
 
 when@test:
