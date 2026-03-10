@@ -41,6 +41,10 @@
 							<span class="px-4 py-2 inline-flex text-sm leading-5 font-semibold rounded-full bg-green-100 text-green-800">
 								{{ order.status }}
 							</span>
+						{% elseif order.status == 'Validé' %}
+							<span class="px-4 py-2 inline-flex text-sm leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+								{{ order.status }}
+							</span>
 						{% else %}
 							<span class="px-4 py-2 inline-flex text-sm leading-5 font-semibold rounded-full bg-red-100 text-red-800">
 								{{ order.status }}
@@ -96,14 +100,16 @@
 								<li class="p-4 hover:bg-gray-50 transition-colors">
 									<div class="flex justify-between items-center">
 										<div>
-											<span class="px-2 py-1 text-xs font-semibold rounded-full 
-											{% if history.status == 'Livrée' %}
-												bg-green-100 text-green-800
-											{% elseif history.status == 'Réservation' %}
-												bg-yellow-100 text-yellow-800
-											{% elseif history.status == 'Annulée' %}
-												bg-red-100 text-red-800
-											{% endif %}">
+											<span class="px-2 py-1 text-xs font-semibold rounded-full
+												{% if history.status == 'Livrée' %}
+													bg-green-100 text-green-800
+												{% elseif history.status == 'Réservation' %}
+													bg-yellow-100 text-yellow-800
+												{% elseif history.status == 'Annulée' %}
+													bg-red-100 text-red-800
+												{% elseif history.status == 'Validé' %}
+													bg-blue-100 text-blue-800
+												{% endif %}">
 												{{ history.status }}
 											</span>
 											<p class="text-sm text-gray-600 mt-1">
@@ -122,22 +128,6 @@
 							{% endfor %}
 						</ul>
 					</div>
-
-					{# Actions contextuelles #}
-					{% if order.status == 'Réservation' %}
-						<div class="bg-green-50 p-4 rounded-lg border border-green-200">
-							<h4 class="text-green-800 font-bold text-sm mb-3">Action requise</h4>
-							<form action="{{ path('app_order_deliver', {'id': order.id}) }}" method="POST" onsubmit="return confirm('Confirmer la réception ? Les plantes seront ajoutées au stock interne de Pépi+.');">
-								<button type="submit" class="w-full flex justify-center items-center px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-md font-bold shadow transition-all">
-									<twig:ux:icon name="iconoir:delivery-truck" class="w-5 h-5 mr-2"/>
-									Valider la Livraison
-								</button>
-							</form>
-							<p class="mt-2 text-xs text-green-700 italic text-center">
-								Cette action basculera le stock partenaire vers le stock réel.
-							</p>
-						</div>
-					{% endif %}
 				</div>
 
 				{# Colonne Droite : Liste des produits (OrderLines) #}

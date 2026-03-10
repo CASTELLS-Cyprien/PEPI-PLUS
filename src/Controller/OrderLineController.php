@@ -77,4 +77,47 @@ final class OrderLineController extends AbstractController
 
         return $this->redirectToRoute('app_order_edit', ['id' => $order->getId()]);
     }
+    #[Route('/update-quantity/{id}', name: 'app_order_line_update_qty', methods: ['POST'])]
+    public function updateQuantity(OrderLine $orderLine, Request $request, EntityManagerInterface $em): Response
+    {
+        $order = $orderLine->getPurchaseOrder();
+
+        // Sécurité : Vérifier que la commande n'est pas verrouillée
+        if (in_array($order->getStatus(), ['Livrée', 'Annulée'])) {
+            $this->addFlash('danger', 'Modification impossible sur une commande terminée.');
+            return $this->redirectToRoute('app_order_edit', ['id' => $order->getId()]);
+        }
+
+        $quantity = (int) $request->request->get('quantity');
+        $stock = $orderLine->getStock();
+
+        // Le stock total disponible est le stock en rayon + ce qui est déjà pris par cette ligne
+        $maxAvailable = $stock->getQuantity() + $orderLine->getQuantity();
+
+        if ($quantity <= 0) {
+            // Redirection vers la suppression si quantité 0 (comme le panier)
+            return $this->redirectToRoute('app_order_line_delete', ['id' => $orderLine->getId()], Response::HTTP_TEMPORARY_REDIRECT);
+        }
+
+        // On s'assure de ne pas dépasser le stock réel
+        $finalQty = min($quantity, $maxAvailable);
+
+        // Calcul de la différence pour ajuster le stock global
+        $diff = $finalQty - $orderLine->getQuantity();
+
+        // Mise à jour
+        $orderLine->setQuantity($finalQty);
+        $stock->setQuantity($stock->getQuantity() - $diff);
+
+        $order->setUpdatedAt(new \DateTimeImmutable());
+        $order->setUpdatedBy($this->getUser());
+
+        $em->flush();
+
+        if ($quantity > $maxAvailable) {
+            $this->addFlash('warning', 'Quantité ajustée au maximum disponible.');
+        }
+
+        return $this->redirectToRoute('app_order_edit', ['id' => $order->getId()]);
+    }
 }

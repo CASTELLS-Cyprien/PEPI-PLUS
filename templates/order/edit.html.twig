@@ -86,15 +86,15 @@
 									<div class="flex justify-between items-center">
 										<div>
 											<span class="px-2 py-1 text-xs font-semibold rounded-full
-																																																																																																							{% if history.status == 'Livrée' %}
-																																																																																																								bg-green-100 text-green-800
-																																																																																																							{% elseif history.status == 'Réservation' %}
-																																																																																																								bg-yellow-100 text-yellow-800
-																																																																																																							{% elseif history.status == 'Validé' %}
-																																																																																																							bg-blue-100 text-blue-800
-																																																																																																							{% elseif history.status == 'Annulée' %}
-																																																																																																								bg-red-100 text-red-800
-																																																																																																							{% endif %}">
+												{% if history.status == 'Livrée' %}
+													bg-green-100 text-green-800
+												{% elseif history.status == 'Réservation' %}
+													bg-yellow-100 text-yellow-800
+												{% elseif history.status == 'Validé' %}
+												bg-blue-100 text-blue-800
+												{% elseif history.status == 'Annulée' %}
+													bg-red-100 text-red-800
+												{% endif %}">
 												{{ history.status }}
 											</span>
 											<p class="text-sm text-gray-600 mt-1">
@@ -150,8 +150,24 @@
 										<td class="px-6 py-4 whitespace-nowrap">
 											<div class="text-xs text-gray-600">{{ line.stock.season.year }}</div>
 										</td>
-										<td class="px-6 py-4 whitespace-nowrap text-center text-sm font-extrabold">
-											{{ line.quantity }}
+										<td class="px-6 py-4 whitespace-nowrap">
+											{% if order.status == 'Réservation' %}
+												{# Calcul du stock total réellement disponible pour cette ligne #}
+												{% set absoluteMax = line.stock.quantity + line.quantity %}
+
+												<form action="{{ path('app_order_line_update_qty', {'id': line.id}) }}" method="POST" class="flex flex-col items-center">
+													<input type="number" name="quantity" value="{{ line.quantity }}" min="1" max="{{ absoluteMax }}" class="w-16 rounded-md border-gray-300 text-center font-bold text-green-700 focus:ring-green-500" oninput="if(parseInt(this.value) > {{ absoluteMax }}) { this.value = {{ absoluteMax }}; } else if(parseInt(this.value) < 1) { this.value = 1; }" onchange="this.form.submit()">
+
+													<span class="text-[10px] text-gray-400 mt-1 uppercase">
+														Max :
+														{{ absoluteMax }}
+													</span>
+												</form>
+											{% else %}
+												<div class="flex flex-col items-center">
+													<span class="text-sm font-bold text-gray-900">{{ line.quantity }}</span>
+												</div>
+											{% endif %}
 										</td>
 										<td class="px-6 py-4 whitespace-nowrap">
 											{% if line.stock.partner %}
