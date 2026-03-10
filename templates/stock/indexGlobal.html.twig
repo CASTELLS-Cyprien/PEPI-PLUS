@@ -25,6 +25,28 @@
 
 		{# Content #}
 		<div class="sm:px-8 lg:px-8 py-8">
+			{% if editOrder %}
+				<div class="mb-6 bg-indigo-50 border-l-4 border-indigo-400 p-4 rounded-r-lg shadow-sm flex justify-between items-center">
+					<div class="flex items-center">
+						<div class="flex-shrink-0">
+							<twig:ux:icon name="mingcute:information-line" class="h-5 w-5 text-indigo-400"/>
+						</div>
+						<div class="ml-3">
+							<p class="text-sm text-indigo-700">
+								Mode ajout activé pour la commande
+								<span class="font-bold">#{{ editOrder.orderNumber }}</span>.
+								<br>
+								<span class="text-xs text-indigo-500 italic">Utilisez l'icône verte (+) pour ajouter un article à cette commande.</span>
+							</p>
+						</div>
+					</div>
+					<div>
+						<a href="{{ path('app_stock_index') }}" class="text-xs font-medium text-indigo-600 hover:text-indigo-500 bg-white px-3 py-1 rounded-full border border-indigo-200 transition-all">
+							Quitter le mode ajout
+						</a>
+					</div>
+				</div>
+			{% endif %}
 			<div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200">
 				<div>
 					{% include 'includes/search.html.twig' with {'filterForm': filterForm} %}
@@ -94,12 +116,24 @@
 												</a>
 											{% endif %}
 											{% if stock.partner is not null %}
-												<form action="{{ path('app_cart_add', {'id': stock.id}) }}" method="POST" class="flex items-center space-x-2">
-													<input type="number" name="quantity" min="1" max="{{ stock.quantity }}" class="w-16 border border-gray-300 rounded-md text-sm px-2 py-1" placeholder="Qté" required/>
-													<button type="submit" class="text-blue-600 hover:text-blue-900 bg-blue-50 rounded-lg transition-colors">
-														<twig:ux:icon name="iconoir:cart" class="w-5 h-5"/>
-													</button>
-												</form>
+												{% if editOrderId %}
+													{# MODE COMMANDE : Icône d'ajout direct #}
+													<form action="{{ path('app_order_add_line_direct', {'id': editOrderId}) }}" method="POST" class="flex items-center space-x-2">
+														<input type="hidden" name="stockId" value="{{ stock.id }}">
+														<input type="number" name="qty" min="1" max="{{ stock.quantity }}" value="1" class="w-16 border border-gray-300 rounded-md text-sm px-2 py-1">
+														<button type="submit" class="text-green-600 hover:text-green-900" title="Ajouter à la commande">
+															<twig:ux:icon name="mingcute:add-circle-line" class="w-6 h-6"/>
+														</button>
+													</form>
+												{% else %}
+													{# MODE NORMAL : Ton icône de panier habituelle #}
+													<form action="{{ path('app_cart_add', {'id': stock.id}) }}" method="POST" class="flex items-center space-x-2">
+														<input type="number" name="quantity" min="1" max="{{ stock.quantity }}" class="w-16 border border-gray-300 rounded-md text-sm px-2 py-1" placeholder="Qté" required/>
+														<button type="submit" class="text-blue-600 hover:text-blue-900 bg-blue-50 rounded-lg transition-colors p-1">
+															<twig:ux:icon name="iconoir:cart" class="w-5 h-5"/>
+														</button>
+													</form>
+												{% endif %}
 											{% endif %}
 											<a href="{{ path('app_stock_show', {'id': stock.id}) }}" class="text-green-600 hover:text-green-900 flex items-center">
 												<twig:ux:icon name="mingcute:eye-line" class="w-5 h-5"/>
@@ -107,22 +141,22 @@
 										</div>
 									</td>
 								</tr>
-							{% else %}
-								<tr>
-									<td colspan="6" class="px-6 py-10 text-center text-gray-500">
-										<p class="mt-2">
-											Aucun stock répertorié (Réel ou Virtuel)
-										</p>
-									</td>
-								</tr>
-							{% endfor %}
+							</td>
 						</tbody>
-					</table>
-				</div>
-				<div class="mt-4 px-4">
-					{{ knp_pagination_render(stocks) }}
-				</div>
-			</div>
-		</div>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="6" class="px-6 py-10 text-center text-gray-500">
+							<p class="mt-2">
+								Aucun stock répertorié (Réel ou Virtuel)
+							</p>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 	</div>
-{% endblock %}
+	<div class="mt-4 px-4">
+		{{ knp_pagination_render(stocks) }}
+	</div>
+</div></div></div>{% endblock %}

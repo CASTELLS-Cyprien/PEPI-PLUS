@@ -75,38 +75,68 @@ final class OrderController extends AbstractController
         ]);
     }
     #[Route('/edit/{id}', name: 'app_order_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Order $order, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Order $order, EntityManagerInterface $entityManager, StockRepository $stockRepository): Response
     {
-        // On mémorise l'ancien statut pour comparer
+        // 1. Sauvegarde de l'état initial
         $oldStatus = $order->getStatus();
 
+        // 2. Création et gestion du formulaire de statut
         $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            try {
+            $newStatus = $order->getStatus();
+
+            // --- VÉRIFICATION : Sécurité du flux de statut ---
+            // Une commande ne peut être "Livrée" que si elle était "Validé" au préalable
+            if ($newStatus === 'Livrée' && $oldStatus !== 'Validé') {
+                $this->addFlash('danger', 'Action impossible : une commande doit être "Validée" avant d\'être marquée comme "Livrée".');
+                return $this->redirectToRoute('app_order_edit', ['id' => $order->getId()]);
+            }
+
+            // --- GESTION DE L'ANNULATION ---
+            if ($newStatus === 'Annulée' && $oldStatus !== 'Annulée') {
+                foreach ($order->getOrderLines() as $line) {
+                    $stock = $line->getStock();
+                    if ($stock) {
+                        $stock->setQuantity($stock->getQuantity() + $line->getQuantity());
+                        $stock->setUpdatedAt(new \DateTimeImmutable());
+                    }
+                }
+            }
+
+            // --- ENREGISTREMENT DE L'HISTORIQUE ---
+            if ($oldStatus !== $newStatus) {
+                $history = new OrderStatusHistory();
+                $history->setStatus($newStatus);
+                $history->setChangedBy($this->getUser());
+                $history->setCreatedAt(new \DateTimeImmutable());
+                $history->setPurchaseOrder($order);
+
+                $entityManager->persist($history);
                 $order->setUpdatedAt(new \DateTimeImmutable());
                 $order->setUpdatedBy($this->getUser());
-
-                // Si le statut a été modifié dans le formulaire
-                if ($oldStatus !== $order->getStatus()) {
-                    $history = new OrderStatusHistory();
-                    $history->setStatus($order->getStatus());
-                    $history->setChangedBy($this->getUser());
-                    $history->setCreatedAt(new \DateTimeImmutable());
-                    $order->addOrderStatusHistory($history);
-                }
-                $entityManager->flush();
-                $this->addFlash('success', 'Commande mise à jour avec succès !');
-                return $this->redirectToRoute('app_order_show', ['id' => $order->getId()]);
-            } catch (\Exception $e) {
-                $this->addFlash('error', 'Impossible de mettre à jour la commande : ' . $e->getMessage());
             }
+
+            $entityManager->flush();
+            $this->addFlash('success', 'La commande a été mise à jour.');
+            return $this->redirectToRoute('app_order_show', ['id' => $order->getId()]);
+        }
+
+        // 3. LOGIQUE DE RECHERCHE DE STOCK (Ajout direct sans JS)
+        $searchQuery = $request->query->get('q');
+        $stocksFound = [];
+
+        // On ne permet la recherche d'articles que si la commande est en "Réservation"
+        if ($order->getStatus() === 'Réservation' && $searchQuery) {
+            $stocksFound = $stockRepository->searchByTerm($searchQuery);
         }
 
         return $this->render('order/edit.html.twig', [
             'order' => $order,
             'form' => $form,
+            'stocksFound' => $stocksFound,
+            'searchQuery' => $searchQuery
         ]);
     }
 
@@ -205,5 +235,28 @@ final class OrderController extends AbstractController
         $this->addFlash('success', 'La commande a été annuléee.');
 
         return $this->redirectToRoute('app_order_show', ['id' => $order->getId()]);
+    }
+
+    #[Route('/{id}/add-line-direct', name: 'app_order_add_line_direct', methods: ['POST'])]
+    public function addLineDirect(Order $order, Request $request, StockRepository $stockRepo, EntityManagerInterface $em): Response
+    {
+        $stockId = $request->request->get('stockId');
+        $qty = (int) $request->request->get('qty');
+        $stock = $stockRepo->find($stockId);
+
+        if ($stock && $qty > 0 && $stock->getQuantity() >= $qty) {
+            $line = new OrderLine();
+            $line->setPurchaseOrder($order);
+            $line->setStock($stock);
+            $line->setQuantity($qty);
+
+            $stock->setQuantity($stock->getQuantity() - $qty);
+            $em->persist($line);
+            $em->flush();
+
+            $this->addFlash('success', 'Article ajouté à la commande ' . $order->getOrderNumber());
+        }
+
+        return $this->redirectToRoute('app_order_edit', ['id' => $order->getId()]);
     }
 }

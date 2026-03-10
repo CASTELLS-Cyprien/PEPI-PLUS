@@ -30,6 +30,12 @@
 							<twig:ux:icon name="mingcute:eye-line" class="w-5 h-5 mr-2"/>
 							Voir
 						</a>
+						{% if order.status == 'Réservation' %}
+							<a href="{{ path('app_stock_index', { 'editOrderId': order.id }) }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">
+								<twig:ux:icon name="formkit:add" class="w-4 h-4 mr-2"/>
+								Choisir un produit
+							</a>
+						{% endif %}
 					</div>
 				</div>
 			</div>
@@ -79,14 +85,16 @@
 								<li class="p-4 hover:bg-gray-50 transition-colors">
 									<div class="flex justify-between items-center">
 										<div>
-											<span class="px-2 py-1 text-xs font-semibold rounded-full 
-											{% if history.status == 'Livrée' %}
-												bg-green-100 text-green-800
-											{% elseif history.status == 'Réservation' %}
-												bg-yellow-100 text-yellow-800
-											{% elseif history.status == 'Annulée' %}
-												bg-red-100 text-red-800
-											{% endif %}">
+											<span class="px-2 py-1 text-xs font-semibold rounded-full
+																																																																																																							{% if history.status == 'Livrée' %}
+																																																																																																								bg-green-100 text-green-800
+																																																																																																							{% elseif history.status == 'Réservation' %}
+																																																																																																								bg-yellow-100 text-yellow-800
+																																																																																																							{% elseif history.status == 'Validé' %}
+																																																																																																							bg-blue-100 text-blue-800
+																																																																																																							{% elseif history.status == 'Annulée' %}
+																																																																																																								bg-red-100 text-red-800
+																																																																																																							{% endif %}">
 												{{ history.status }}
 											</span>
 											<p class="text-sm text-gray-600 mt-1">
@@ -126,6 +134,7 @@
 									<th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Saison</th>
 									<th class="px-6 py-3 text-center text-xs font-bold text-gray-500 uppercase">Quantité</th>
 									<th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Source</th>
+									<th class="px-6 py-3 text-right text-xs font-bold text-gray-500 uppercase">Actions</th>
 								</tr>
 							</thead>
 							<tbody class="bg-white divide-y divide-gray-200">
@@ -147,13 +156,22 @@
 										<td class="px-6 py-4 whitespace-nowrap">
 											{% if line.stock.partner %}
 												<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">
-													Partenaire :
 													{{ line.stock.partner.companyName }}
 												</span>
 											{% else %}
 												<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
 													Stock Interne
 												</span>
+											{% endif %}
+										</td>
+										<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+											{% if order.status == 'Réservation' or order.status == 'Validé' %}
+												<form method="post" action="{{ path('app_order_line_delete', {'id': line.id}) }}" onsubmit="return confirm('Supprimer cet article ?');" class="inline">
+													<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ line.id) }}">
+													<button class="text-red-600 hover:text-red-900">
+														<twig:ux:icon name="mingcute:delete-2-line" class="w-5 h-5"/>
+													</button>
+												</form>
 											{% endif %}
 										</td>
 									</tr>

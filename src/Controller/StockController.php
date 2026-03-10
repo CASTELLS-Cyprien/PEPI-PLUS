@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\User;
+use App\Entity\Order;
 use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/stock')]
@@ -18,7 +19,7 @@ final class StockController extends AbstractController
 {
 
     #[Route('/global', name: 'app_stock_index', methods: ['GET'])]
-    public function index(Request $request, StockRepository $stockRepository, PaginatorInterface $paginator): Response
+    public function index(Request $request, StockRepository $stockRepository, PaginatorInterface $paginator, EntityManagerInterface $em): Response
     {
         $filterData = new \App\Model\StockFilterData();
         $form = $this->createForm(\App\Form\StockFilterType::class, $filterData);
@@ -32,9 +33,17 @@ final class StockController extends AbstractController
             7
         );
 
+        // On récupère l'ID depuis l'URL (?editOrderId=...)
+        $editOrderId = $request->query->get('editOrderId');
+
+        // On cherche l'objet Order correspondant
+        $editOrder = $editOrderId ? $em->getRepository(Order::class)->find($editOrderId) : null;
+
         return $this->render('stock/indexGlobal.html.twig', [
             'stocks' => $pagination,
             'filterForm' => $form->createView(),
+            'editOrderId' => $request->query->get('editOrderId'),
+            'editOrder' => $editOrder,
         ]);
     }
 

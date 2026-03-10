@@ -56,21 +56,25 @@ final class OrderLineController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_order_line_delete', methods: ['POST'])]
-    public function delete(Request $request, OrderLine $orderLine, EntityManagerInterface $entityManager): Response
+    public function deleteLine(Request $request, OrderLine $orderLine, EntityManagerInterface $em): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $orderLine->getId(), $request->getPayload()->getString('_token'))) {
-        }
-        try {
-            $entityManager->remove($orderLine);
-            $entityManager->flush();
+        $order = $orderLine->getPurchaseOrder();
 
-            $this->addFlash('success', 'Ligne de commande supprimée avec succès !');
-
-            return $this->redirectToRoute('app_order_line_index', [], Response::HTTP_SEE_OTHER);
-        } catch (\Exception $e) {
-            $this->addFlash('error', 'Impossible de supprimer la ligne de commande : ' . $e->getMessage());
+        if ($order->getStatus() === 'Livrée' || $order->getStatus() === 'Annulée') {
+            $this->addFlash('danger', 'Impossible de modifier le contenu d\'une commande terminée ou annulée.');
+            return $this->redirectToRoute('app_order_edit', ['id' => $order->getId()]);
         }
 
-        return $this->redirectToRoute('app_order_line_index', [], Response::HTTP_SEE_OTHER);
+        if ($this->isCsrfTokenValid('delete' . $orderLine->getId(), $request->request->get('_token'))) {
+            $stock = $orderLine->getStock();
+            if ($stock) {
+                $stock->setQuantity($stock->getQuantity() + $orderLine->getQuantity());
+            }
+            $em->remove($orderLine);
+            $em->flush();
+            $this->addFlash('success', 'Article retiré et stock rendu.');
+        }
+
+        return $this->redirectToRoute('app_order_edit', ['id' => $order->getId()]);
     }
 }

@@ -17,6 +17,7 @@ class OrderType extends AbstractType
                 'label' => 'État actuel',
                 'choices' => [
                     'Réservation (En attente)' => 'Réservation',
+                    'Validé' => 'Validé',
                     'Livrée (Terminée)' => 'Livrée',
                     'Annulée' => 'Annulée',
                 ],
