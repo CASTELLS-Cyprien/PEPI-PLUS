@@ -73,201 +73,93 @@
         "data": [
             {
                 "id": "1",
-                "collaborator_id": "1",
-                "order_number": "CMD-A5D8DD40",
+                "collaborator_id": "3",
+                "order_number": "CMD-2026-001",
                 "status": "Livrée",
-                "created_at": "2026-01-15 11:29:18",
+                "created_at": "2026-01-10 09:00:00",
                 "updated_by_id": "1",
-                "updated_at": "2026-02-24 10:28:40"
+                "updated_at": "2026-01-15 14:00:00"
             },
             {
                 "id": "2",
-                "collaborator_id": "1",
-                "order_number": "CMD-E1716062",
-                "status": "Annulée",
-                "created_at": "2026-01-15 11:29:28",
+                "collaborator_id": "12",
+                "order_number": "CMD-2026-002",
+                "status": "Livrée",
+                "created_at": "2026-01-12 10:30:00",
                 "updated_by_id": "1",
-                "updated_at": "2026-02-24 10:28:40"
+                "updated_at": "2026-01-18 11:00:00"
             },
             {
                 "id": "3",
-                "collaborator_id": "1",
-                "order_number": "CMD-E9C76D67",
-                "status": "Livrée",
-                "created_at": "2026-01-15 11:29:37",
+                "collaborator_id": "3",
+                "order_number": "CMD-2026-003",
+                "status": "Annulée",
+                "created_at": "2026-01-20 15:00:00",
                 "updated_by_id": "1",
-                "updated_at": "2026-02-24 10:28:40"
+                "updated_at": "2026-01-22 09:00:00"
             },
             {
                 "id": "4",
                 "collaborator_id": "1",
-                "order_number": "CMD-2A01B697",
-                "status": "Réservation",
-                "created_at": "2026-01-15 11:29:45",
+                "order_number": "CMD-2026-004",
+                "status": "Livrée",
+                "created_at": "2026-02-01 08:00:00",
                 "updated_by_id": "1",
-                "updated_at": "2026-02-24 10:28:40"
+                "updated_at": "2026-02-05 16:30:00"
             },
             {
                 "id": "5",
-                "collaborator_id": "1",
-                "order_number": "CMD-903AF58F",
-                "status": "Réservation",
-                "created_at": "2026-01-15 11:29:56",
+                "collaborator_id": "3",
+                "order_number": "CMD-2026-005",
+                "status": "Annulée",
+                "created_at": "2026-02-10 11:00:00",
                 "updated_by_id": "1",
-                "updated_at": "2026-02-24 10:28:40"
+                "updated_at": "2026-02-11 10:00:00"
             },
             {
                 "id": "6",
-                "collaborator_id": "1",
-                "order_number": "CMD-799187E8",
-                "status": "Réservation",
-                "created_at": "2026-01-15 11:30:05",
+                "collaborator_id": "12",
+                "order_number": "CMD-2026-006",
+                "status": "Livrée",
+                "created_at": "2026-02-15 14:00:00",
                 "updated_by_id": "1",
-                "updated_at": "2026-02-24 10:28:40"
+                "updated_at": "2026-02-20 09:45:00"
             },
             {
                 "id": "7",
-                "collaborator_id": "1",
-                "order_number": "CMD-DB7FB83D",
-                "status": "Annulée",
-                "created_at": "2026-01-15 11:30:13",
+                "collaborator_id": "3",
+                "order_number": "CMD-2026-007",
+                "status": "Validé",
+                "created_at": "2026-03-01 10:00:00",
                 "updated_by_id": "1",
-                "updated_at": "2026-02-24 10:28:40"
+                "updated_at": "2026-03-02 15:00:00"
             },
             {
                 "id": "8",
                 "collaborator_id": "1",
-                "order_number": "CMD-41E34563",
-                "status": "Livrée",
-                "created_at": "2026-01-15 11:30:20",
+                "order_number": "CMD-2026-008",
+                "status": "Validé",
+                "created_at": "2026-03-05 09:00:00",
                 "updated_by_id": "1",
-                "updated_at": "2026-02-24 10:28:40"
+                "updated_at": "2026-03-06 08:30:00"
             },
             {
                 "id": "9",
                 "collaborator_id": "3",
-                "order_number": "CMD-BA7C40A0",
+                "order_number": "CMD-2026-009",
                 "status": "Réservation",
-                "created_at": "2026-01-16 10:56:06",
-                "updated_by_id": "1",
-                "updated_at": "2026-02-24 10:28:40"
+                "created_at": "2026-03-09 16:00:00",
+                "updated_by_id": "3",
+                "updated_at": "2026-03-09 16:00:00"
             },
             {
                 "id": "10",
-                "collaborator_id": "1",
-                "order_number": "CMD-BC97D781",
-                "status": "Livrée",
-                "created_at": "2026-01-19 09:16:36",
-                "updated_by_id": "1",
-                "updated_at": "2026-02-24 10:28:40"
-            },
-            {
-                "id": "11",
-                "collaborator_id": "1",
-                "order_number": "CMD-E5EC138C",
+                "collaborator_id": "12",
+                "order_number": "CMD-2026-010",
                 "status": "Réservation",
-                "created_at": "2026-01-19 09:27:38",
-                "updated_by_id": "1",
-                "updated_at": "2026-02-24 10:28:40"
-            },
-            {
-                "id": "12",
-                "collaborator_id": "1",
-                "order_number": "CMD-11BCA3BE",
-                "status": "Livrée",
-                "created_at": "2026-01-19 09:40:35",
-                "updated_by_id": "1",
-                "updated_at": "2026-02-24 10:28:40"
-            },
-            {
-                "id": "13",
-                "collaborator_id": "1",
-                "order_number": "CMD-B7894EF7",
-                "status": "Annulée",
-                "created_at": "2026-01-23 15:11:51",
-                "updated_by_id": "1",
-                "updated_at": "2026-02-24 10:28:40"
-            },
-            {
-                "id": "14",
-                "collaborator_id": "1",
-                "order_number": "CMD-1A584D6B",
-                "status": "Annulée",
-                "created_at": "2026-01-23 15:17:44",
-                "updated_by_id": "1",
-                "updated_at": "2026-02-24 10:28:40"
-            },
-            {
-                "id": "15",
-                "collaborator_id": "1",
-                "order_number": "CMD-ED7987B4",
-                "status": "Réservation",
-                "created_at": "2026-01-26 08:34:33",
-                "updated_by_id": "1",
-                "updated_at": "2026-02-24 10:28:40"
-            },
-            {
-                "id": "16",
-                "collaborator_id": "1",
-                "order_number": "CMD-3E72CE55",
-                "status": "Livrée",
-                "created_at": "2026-01-26 08:45:08",
-                "updated_by_id": "1",
-                "updated_at": "2026-02-24 10:28:40"
-            },
-            {
-                "id": "17",
-                "collaborator_id": "1",
-                "order_number": "CMD-B148FFAC",
-                "status": "Annulée",
-                "created_at": "2026-01-26 09:01:10",
-                "updated_by_id": "1",
-                "updated_at": "2026-02-24 10:28:40"
-            },
-            {
-                "id": "18",
-                "collaborator_id": "1",
-                "order_number": "CMD-AE7177F2",
-                "status": "Annulée",
-                "created_at": "2026-01-26 09:15:26",
-                "updated_by_id": "1",
-                "updated_at": "2026-02-24 10:28:40"
-            },
-            {
-                "id": "19",
-                "collaborator_id": "1",
-                "order_number": "CMD-B885A6AF",
-                "status": "Annulée",
-                "created_at": "2026-01-26 09:16:12",
-                "updated_by_id": "1",
-                "updated_at": "2026-02-24 10:28:40"
-            },
-            {
-                "id": "20",
-                "collaborator_id": "1",
-                "order_number": "CMD-0CE5E425",
-                "status": "Réservation",
-                "created_at": "2026-02-24 11:05:54",
-                "updated_by_id": "1",
-                "updated_at": "2026-02-24 11:05:54"
-            },
-            {
-                "id": "21",
-                "collaborator_id": "1",
-                "order_number": "CMD-A3BB8282",
-                "status": "Réservation",
-                "created_at": "2026-02-27 09:22:31",
-                "updated_by_id": "1",
-                "updated_at": "2026-02-27 09:22:31"
-            },
-            {
-                "id": "22",
-                "collaborator_id": "1",
-                "order_number": "CMD-004700CA",
-                "status": "Annulée",
-                "created_at": "2026-03-03 08:46:40",
-                "updated_by_id": "1",
-                "updated_at": "2026-03-03 10:44:24"
+                "created_at": "2026-03-10 10:30:00",
+                "updated_by_id": "12",
+                "updated_at": "2026-03-10 10:30:00"
             }
         ]
     },
@@ -280,156 +172,120 @@
                 "id": "1",
                 "stock_id": "46",
                 "purchase_order_id": "1",
-                "quantity": "50"
-            },
-            {
-                "id": "2",
-                "stock_id": "44",
-                "purchase_order_id": "2",
-                "quantity": "88"
-            },
-            {
-                "id": "3",
-                "stock_id": "46",
-                "purchase_order_id": "3",
-                "quantity": "70"
-            },
-            {
-                "id": "4",
-                "stock_id": "13",
-                "purchase_order_id": "4",
-                "quantity": "66"
-            },
-            {
-                "id": "5",
-                "stock_id": "28",
-                "purchase_order_id": "5",
-                "quantity": "55"
-            },
-            {
-                "id": "6",
-                "stock_id": "35",
-                "purchase_order_id": "6",
-                "quantity": "33"
-            },
-            {
-                "id": "7",
-                "stock_id": "47",
-                "purchase_order_id": "7",
-                "quantity": "12"
-            },
-            {
-                "id": "8",
-                "stock_id": "48",
-                "purchase_order_id": "8",
-                "quantity": "23"
-            },
-            {
-                "id": "9",
-                "stock_id": "18",
-                "purchase_order_id": "9",
-                "quantity": "15"
-            },
-            {
-                "id": "10",
-                "stock_id": "25",
-                "purchase_order_id": "10",
-                "quantity": "50"
-            },
-            {
-                "id": "11",
-                "stock_id": "25",
-                "purchase_order_id": "11",
-                "quantity": "50"
-            },
-            {
-                "id": "12",
-                "stock_id": "18",
-                "purchase_order_id": "12",
-                "quantity": "20"
-            },
-            {
-                "id": "13",
-                "stock_id": "49",
-                "purchase_order_id": "13",
-                "quantity": "150"
-            },
-            {
-                "id": "14",
-                "stock_id": "18",
-                "purchase_order_id": "14",
-                "quantity": "150"
-            },
-            {
-                "id": "15",
-                "stock_id": "42",
-                "purchase_order_id": "15",
-                "quantity": "20"
-            },
-            {
-                "id": "16",
-                "stock_id": "44",
-                "purchase_order_id": "15",
                 "quantity": "10"
             },
             {
-                "id": "17",
+                "id": "2",
+                "stock_id": "42",
+                "purchase_order_id": "1",
+                "quantity": "5"
+            },
+            {
+                "id": "3",
+                "stock_id": "18",
+                "purchase_order_id": "2",
+                "quantity": "20"
+            },
+            {
+                "id": "4",
                 "stock_id": "16",
-                "purchase_order_id": "16",
+                "purchase_order_id": "2",
                 "quantity": "15"
+            },
+            {
+                "id": "5",
+                "stock_id": "11",
+                "purchase_order_id": "3",
+                "quantity": "100"
+            },
+            {
+                "id": "6",
+                "stock_id": "13",
+                "purchase_order_id": "3",
+                "quantity": "50"
+            },
+            {
+                "id": "7",
+                "stock_id": "46",
+                "purchase_order_id": "4",
+                "quantity": "30"
+            },
+            {
+                "id": "8",
+                "stock_id": "47",
+                "purchase_order_id": "4",
+                "quantity": "10"
+            },
+            {
+                "id": "9",
+                "stock_id": "42",
+                "purchase_order_id": "5",
+                "quantity": "5"
+            },
+            {
+                "id": "10",
+                "stock_id": "18",
+                "purchase_order_id": "5",
+                "quantity": "2"
+            },
+            {
+                "id": "11",
+                "stock_id": "16",
+                "purchase_order_id": "6",
+                "quantity": "40"
+            },
+            {
+                "id": "12",
+                "stock_id": "46",
+                "purchase_order_id": "6",
+                "quantity": "10"
+            },
+            {
+                "id": "13",
+                "stock_id": "11",
+                "purchase_order_id": "7",
+                "quantity": "25"
+            },
+            {
+                "id": "14",
+                "stock_id": "42",
+                "purchase_order_id": "7",
+                "quantity": "5"
+            },
+            {
+                "id": "15",
+                "stock_id": "13",
+                "purchase_order_id": "8",
+                "quantity": "12"
+            },
+            {
+                "id": "16",
+                "stock_id": "18",
+                "purchase_order_id": "8",
+                "quantity": "8"
+            },
+            {
+                "id": "17",
+                "stock_id": "46",
+                "purchase_order_id": "9",
+                "quantity": "50"
             },
             {
                 "id": "18",
                 "stock_id": "42",
-                "purchase_order_id": "17",
-                "quantity": "14"
+                "purchase_order_id": "9",
+                "quantity": "20"
             },
             {
                 "id": "19",
-                "stock_id": "44",
-                "purchase_order_id": "18",
-                "quantity": "6"
+                "stock_id": "16",
+                "purchase_order_id": "10",
+                "quantity": "10"
             },
             {
                 "id": "20",
-                "stock_id": "46",
-                "purchase_order_id": "19",
-                "quantity": "6"
-            },
-            {
-                "id": "21",
-                "stock_id": "42",
-                "purchase_order_id": "20",
-                "quantity": "10"
-            },
-            {
-                "id": "22",
-                "stock_id": "46",
-                "purchase_order_id": "20",
-                "quantity": "10"
-            },
-            {
-                "id": "23",
-                "stock_id": "42",
-                "purchase_order_id": "21",
-                "quantity": "10"
-            },
-            {
-                "id": "24",
-                "stock_id": "46",
-                "purchase_order_id": "21",
-                "quantity": "10"
-            },
-            {
-                "id": "25",
                 "stock_id": "11",
-                "purchase_order_id": "22",
-                "quantity": "10"
-            },
-            {
-                "id": "26",
-                "stock_id": "13",
-                "purchase_order_id": "22",
+                "purchase_order_id": "10",
                 "quantity": "10"
             }
         ]
@@ -441,31 +297,171 @@
         "data": [
             {
                 "id": "1",
-                "changed_by_id": "1",
-                "purchase_order_id": "20",
+                "changed_by_id": "3",
+                "purchase_order_id": "1",
                 "status": "Réservation",
-                "created_at": "2026-02-24 11:05:54"
+                "created_at": "2026-01-10 09:00:00"
             },
             {
                 "id": "2",
                 "changed_by_id": "1",
-                "purchase_order_id": "21",
-                "status": "Réservation",
-                "created_at": "2026-02-27 09:22:31"
+                "purchase_order_id": "1",
+                "status": "Validé",
+                "created_at": "2026-01-12 14:00:00"
             },
             {
                 "id": "3",
                 "changed_by_id": "1",
-                "purchase_order_id": "22",
-                "status": "Réservation",
-                "created_at": "2026-03-03 08:46:40"
+                "purchase_order_id": "1",
+                "status": "Livrée",
+                "created_at": "2026-01-15 14:00:00"
             },
             {
                 "id": "4",
+                "changed_by_id": "12",
+                "purchase_order_id": "2",
+                "status": "Réservation",
+                "created_at": "2026-01-12 10:30:00"
+            },
+            {
+                "id": "5",
                 "changed_by_id": "1",
-                "purchase_order_id": "22",
+                "purchase_order_id": "2",
+                "status": "Validé",
+                "created_at": "2026-01-14 09:00:00"
+            },
+            {
+                "id": "6",
+                "changed_by_id": "1",
+                "purchase_order_id": "2",
+                "status": "Livrée",
+                "created_at": "2026-01-18 11:00:00"
+            },
+            {
+                "id": "7",
+                "changed_by_id": "3",
+                "purchase_order_id": "3",
+                "status": "Réservation",
+                "created_at": "2026-01-20 15:00:00"
+            },
+            {
+                "id": "8",
+                "changed_by_id": "1",
+                "purchase_order_id": "3",
+                "status": "Validé",
+                "created_at": "2026-01-21 10:00:00"
+            },
+            {
+                "id": "9",
+                "changed_by_id": "1",
+                "purchase_order_id": "3",
                 "status": "Annulée",
-                "created_at": "2026-03-03 10:44:24"
+                "created_at": "2026-01-22 09:00:00"
+            },
+            {
+                "id": "10",
+                "changed_by_id": "1",
+                "purchase_order_id": "4",
+                "status": "Réservation",
+                "created_at": "2026-02-01 08:00:00"
+            },
+            {
+                "id": "11",
+                "changed_by_id": "1",
+                "purchase_order_id": "4",
+                "status": "Validé",
+                "created_at": "2026-02-02 10:00:00"
+            },
+            {
+                "id": "12",
+                "changed_by_id": "1",
+                "purchase_order_id": "4",
+                "status": "Livrée",
+                "created_at": "2026-02-05 16:30:00"
+            },
+            {
+                "id": "13",
+                "changed_by_id": "3",
+                "purchase_order_id": "5",
+                "status": "Réservation",
+                "created_at": "2026-02-10 11:00:00"
+            },
+            {
+                "id": "14",
+                "changed_by_id": "1",
+                "purchase_order_id": "5",
+                "status": "Validé",
+                "created_at": "2026-02-10 15:00:00"
+            },
+            {
+                "id": "15",
+                "changed_by_id": "1",
+                "purchase_order_id": "5",
+                "status": "Annulée",
+                "created_at": "2026-02-11 10:00:00"
+            },
+            {
+                "id": "16",
+                "changed_by_id": "12",
+                "purchase_order_id": "6",
+                "status": "Réservation",
+                "created_at": "2026-02-15 14:00:00"
+            },
+            {
+                "id": "17",
+                "changed_by_id": "1",
+                "purchase_order_id": "6",
+                "status": "Validé",
+                "created_at": "2026-02-17 11:00:00"
+            },
+            {
+                "id": "18",
+                "changed_by_id": "1",
+                "purchase_order_id": "6",
+                "status": "Livrée",
+                "created_at": "2026-02-20 09:45:00"
+            },
+            {
+                "id": "19",
+                "changed_by_id": "3",
+                "purchase_order_id": "7",
+                "status": "Réservation",
+                "created_at": "2026-03-01 10:00:00"
+            },
+            {
+                "id": "20",
+                "changed_by_id": "1",
+                "purchase_order_id": "7",
+                "status": "Validé",
+                "created_at": "2026-03-02 15:00:00"
+            },
+            {
+                "id": "21",
+                "changed_by_id": "1",
+                "purchase_order_id": "8",
+                "status": "Réservation",
+                "created_at": "2026-03-05 09:00:00"
+            },
+            {
+                "id": "22",
+                "changed_by_id": "1",
+                "purchase_order_id": "8",
+                "status": "Validé",
+                "created_at": "2026-03-06 08:30:00"
+            },
+            {
+                "id": "23",
+                "changed_by_id": "3",
+                "purchase_order_id": "9",
+                "status": "Réservation",
+                "created_at": "2026-03-09 16:00:00"
+            },
+            {
+                "id": "24",
+                "changed_by_id": "12",
+                "purchase_order_id": "10",
+                "status": "Réservation",
+                "created_at": "2026-03-10 10:30:00"
             }
         ]
     },
