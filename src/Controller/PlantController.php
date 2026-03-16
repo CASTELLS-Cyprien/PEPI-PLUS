@@ -124,6 +124,12 @@ final class PlantController extends AbstractController
     public function delete(Request $request, Plant $plant, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $plant->getId(), $request->getPayload()->getString('_token'))) {
+            // Vérification : le plant est-il lié à des stocks ?
+            if (!$plant->getStocks()->isEmpty()) {
+                $this->addFlash('error', 'Impossible de supprimer ce plant : il est lié à ' . $plant->getStocks()->count() . ' stock(s).');
+                return $this->redirectToRoute('app_plant_index', [], Response::HTTP_SEE_OTHER);
+            }
+
             try {
                 $entityManager->remove($plant);
                 $entityManager->flush();

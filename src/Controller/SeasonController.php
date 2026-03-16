@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Form\SearchType;
 use Knp\Component\Pager\PaginatorInterface;
+
 #[Route('/season')]
 final class SeasonController extends AbstractController
 {
@@ -139,10 +140,15 @@ final class SeasonController extends AbstractController
     public function delete(Request $request, Season $season, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $season->getId(), $request->getPayload()->getString('_token'))) {
+            // Vérification : la saison est-elle liée à des stocks ?
+            if (!$season->getStocks()->isEmpty()) {
+                $this->addFlash('error', 'Impossible de supprimer cette saison : elle est liée à ' . $season->getStocks()->count() . ' stock(s).');
+                return $this->redirectToRoute('app_season_index', [], Response::HTTP_SEE_OTHER);
+            }
+
             try {
                 $entityManager->remove($season);
                 $entityManager->flush();
-
                 $this->addFlash('success', 'Saison supprimée avec succès !');
 
                 return $this->redirectToRoute('app_season_index', [], Response::HTTP_SEE_OTHER);

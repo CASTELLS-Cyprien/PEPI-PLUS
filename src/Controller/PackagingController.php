@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Form\SearchType;
 use Knp\Component\Pager\PaginatorInterface;
+
 #[Route('/packaging')]
 final class PackagingController extends AbstractController
 {
@@ -118,19 +119,22 @@ final class PackagingController extends AbstractController
     public function delete(Request $request, Packaging $packaging, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $packaging->getId(), $request->getPayload()->getString('_token'))) {
+            // Vérification : le conditionnement est-il lié à des stocks ?
+            if (!$packaging->getStocks()->isEmpty()) {
+                $this->addFlash('error', 'Impossible de supprimer ce conditionnement : il est lié à ' . $packaging->getStocks()->count() . ' stock(s).');
+                return $this->redirectToRoute('app_packaging_index', [], Response::HTTP_SEE_OTHER);
+            }
 
             try {
                 $entityManager->remove($packaging);
                 $entityManager->flush();
-
-                $this->addFlash('success', 'Conditionnement supprimée avec succès !');
+                $this->addFlash('success', 'Conditionnement supprimé avec succès !');
 
                 return $this->redirectToRoute('app_packaging_index', [], Response::HTTP_SEE_OTHER);
             } catch (\Exception $e) {
                 $this->addFlash('error', 'Impossible de supprimer le conditionnement : ' . $e->getMessage());
             }
         }
-
 
         return $this->redirectToRoute('app_packaging_index', [], Response::HTTP_SEE_OTHER);
     }
