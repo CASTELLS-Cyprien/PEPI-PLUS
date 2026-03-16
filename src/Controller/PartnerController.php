@@ -254,4 +254,29 @@ final class PartnerController extends AbstractController
             'stocks'     => $pagination,
         ]);
     }
+
+    #[Route('/my-stock/delete/{id}', name: 'app_partner_deleteMyStock', methods: ['POST'])]
+    public function deleteMyStock(Request $request, Stock $stock, EntityManagerInterface $entityManager): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        // Vérifier que le stock appartient bien au partenaire connecté
+        if ($stock->getPartner() !== $user->getPartner()) {
+            $this->addFlash('error', 'Vous n\'êtes pas autorisé à supprimer ce stock.');
+            return $this->redirectToRoute('app_partner_myStock', [], Response::HTTP_SEE_OTHER);
+        }
+
+        if ($this->isCsrfTokenValid('delete' . $stock->getId(), $request->getPayload()->getString('_token'))) {
+            try {
+                $entityManager->remove($stock);
+                $entityManager->flush();
+                $this->addFlash('success', 'Stock supprimé avec succès !');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Impossible de supprimer le stock : ' . $e->getMessage());
+            }
+        }
+
+        return $this->redirectToRoute('app_partner_myStock', [], Response::HTTP_SEE_OTHER);
+    }
 }
