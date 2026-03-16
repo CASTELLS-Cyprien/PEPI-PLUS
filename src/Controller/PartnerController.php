@@ -16,7 +16,7 @@ use App\Repository\StockRepository;
 use App\Entity\Stock;
 use App\Entity\User;
 use App\Form\SearchType;
-use App\Repository\OrderLineRepository;
+use App\Repository\OrderRepository;
 use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/partner')]
@@ -226,8 +226,9 @@ final class PartnerController extends AbstractController
             'form' => $form,
         ]);
     }
+
     #[Route('/my-reservations/liste', name: 'app_partner_reservations', methods: ['GET'])]
-    public function reservations(Request $request, OrderLineRepository $orderLineRepo, PartnerRepository $partnerRepository, PaginatorInterface $paginator): Response
+    public function reservations(Request $request, OrderRepository $orderRepo, PartnerRepository $partnerRepository, PaginatorInterface $paginator): Response
     {
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
@@ -245,12 +246,12 @@ final class PartnerController extends AbstractController
             8
         );
 
-        $orderLines = $orderLineRepo->searchReservations($partner, $searchTerm);
+        $orders = $orderRepo->searchOrdersByPartner($partner, $searchTerm);
 
         return $this->render('partner/myReservation.html.twig', [
-            'orderLines' => $orderLines,
+            'orders' => $orders,
             'searchForm' => $form->createView(),
-            'stocks' => $pagination,
+            'stocks'     => $pagination,
         ]);
     }
 }

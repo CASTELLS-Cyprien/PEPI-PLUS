@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
 use App\Model\OrderFilterData;
+use App\Entity\Partner;
 
 
 /**
@@ -46,7 +47,7 @@ class OrderRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-    
+
     public function findWithFilters(OrderFilterData $filters): Query
     {
         $qb = $this->createQueryBuilder('o')
@@ -55,42 +56,69 @@ class OrderRepository extends ServiceEntityRepository
         // Filtre de recherche textuelle
         if ($filters->query) {
             $qb->andWhere('o.orderNumber LIKE :q')
-               ->setParameter('q', "%{$filters->query}%");
+                ->setParameter('q', "%{$filters->query}%");
         }
 
         // Filtre par Statut
         if ($filters->status) {
             $qb->andWhere('o.status = :status')
-               ->setParameter('status', $filters->status);
+                ->setParameter('status', $filters->status);
         }
 
         // Filtre par plage de dates updated_at
         if ($filters->updatedAtStart && $filters->updatedAtEnd) {
             $qb->andWhere('o.updated_at BETWEEN :updatedStart AND :updatedEnd')
-               ->setParameter('updatedStart', $filters->updatedAtStart->format('Y-m-d 00:00:00'))
-               ->setParameter('updatedEnd', $filters->updatedAtEnd->format('Y-m-d 23:59:59'));
+                ->setParameter('updatedStart', $filters->updatedAtStart->format('Y-m-d 00:00:00'))
+                ->setParameter('updatedEnd', $filters->updatedAtEnd->format('Y-m-d 23:59:59'));
         } elseif ($filters->updatedAtStart) {
             $qb->andWhere('o.updated_at >= :updatedStart')
-               ->setParameter('updatedStart', $filters->updatedAtStart->format('Y-m-d 00:00:00'));
+                ->setParameter('updatedStart', $filters->updatedAtStart->format('Y-m-d 00:00:00'));
         } elseif ($filters->updatedAtEnd) {
             $qb->andWhere('o.updated_at <= :updatedEnd')
-               ->setParameter('updatedEnd', $filters->updatedAtEnd->format('Y-m-d 23:59:59'));
+                ->setParameter('updatedEnd', $filters->updatedAtEnd->format('Y-m-d 23:59:59'));
         }
 
         // Filtre par plage de dates createdAt
         if ($filters->createdAtStart && $filters->createdAtEnd) {
             $qb->andWhere('o.createdAt BETWEEN :createdStart AND :createdEnd')
-               ->setParameter('createdStart', $filters->createdAtStart->format('Y-m-d 00:00:00'))
-               ->setParameter('createdEnd', $filters->createdAtEnd->format('Y-m-d 23:59:59'));
+                ->setParameter('createdStart', $filters->createdAtStart->format('Y-m-d 00:00:00'))
+                ->setParameter('createdEnd', $filters->createdAtEnd->format('Y-m-d 23:59:59'));
         } elseif ($filters->createdAtStart) {
             $qb->andWhere('o.createdAt >= :createdStart')
-               ->setParameter('createdStart', $filters->createdAtStart->format('Y-m-d 00:00:00'));
+                ->setParameter('createdStart', $filters->createdAtStart->format('Y-m-d 00:00:00'));
         } elseif ($filters->createdAtEnd) {
             $qb->andWhere('o.createdAt <= :createdEnd')
-               ->setParameter('createdEnd', $filters->createdAtEnd->format('Y-m-d 23:59:59'));
+                ->setParameter('createdEnd', $filters->createdAtEnd->format('Y-m-d 23:59:59'));
         }
-        
+
         return $qb->getQuery();
+    }
+
+    public function searchOrdersByPartner(Partner $partner, ?string $term): array
+    {
+        $qb = $this->createQueryBuilder('o')
+            ->innerJoin('o.orderLines', 'ol')
+            ->innerJoin('ol.stock', 's')
+            ->leftJoin('s.plant', 'p')
+            ->leftJoin('s.packaging', 'pack')
+            ->leftJoin('s.season', 'sea')
+            ->where('s.partner = :partner')
+            ->setParameter('partner', $partner)
+            ->distinct();
+
+        if ($term) {
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    'p.latinName LIKE :term',
+                    'p.commonName LIKE :term',
+                    'o.orderNumber LIKE :term',
+                    'pack.label LIKE :term',
+                    'sea.year LIKE :term'
+                )
+            )->setParameter('term', '%' . $term . '%');
+        }
+
+        return $qb->orderBy('o.createdAt', 'DESC')->getQuery()->getResult();
     }
 }
     //    /**
