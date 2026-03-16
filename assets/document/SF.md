@@ -6,7 +6,7 @@
 | Champ               | Valeur                                         |
 |---------------------|------------------------------------------------|
 | **Projet**          | Pépi+ – Gestion de Stock Pépinière             |
-| **Version**         | V1.0                                           |
+| **Version**         | V1.2                                           |
 | **Date de rendu**   | 27/03/2026                                     |
 | **Date d'évaluation** | Avril 2026                                   |
 | **Auteur**          | CASTELLS Cyprien                               |
@@ -117,23 +117,24 @@ Visiteur
 Collaborateur (hérite de Visiteur)
 ├── UC-02 : Consulter le tableau de bord
 ├── UC-03 : Visualiser le stock global (réel + virtuel)
-├── UC-04 : Rechercher et filtrer les plants
-├── UC-05 : Créer une commande
-├── UC-06 : Modifier une commande
-├── UC-07 : Supprimer / Annuler une commande
-└── UC-08 : Consulter l'historique des commandes
-├── UC-09 : Gérer le référentiel de plants (CRUD)
-├── UC-10 : Gérer les conditionnements (CRUD)
-└── UC-11 : Gérer les saisons (CRUD)
+├── UC-04 : Rechercher et filtrer les stocks
+├── UC-05 : Créer une commande via le panier
+├── UC-06 : Modifier une commande (statut + ajout de lignes)
+├── UC-07 : Annuler une commande avec restitution des stocks
+├── UC-08 : Livrer une commande avec bascule du stock virtuel en interne
+└── UC-09 : Consulter l'historique des statuts d'une commande
 
 Administrateur (hérite de Collaborateur)
-├── UC-12 : Gérer les collaborateurs (CRUD)
-├── UC-13 : Gérer les partenaires fournisseurs (CRUD)
+├── UC-10 : Gérer les collaborateurs (CRUD + réinitialisation mot de passe)
+├── UC-11 : Gérer les partenaires fournisseurs (CRUD)
+├── UC-12 : Gérer le référentiel de plants (CRUD)
+├── UC-13 : Gérer les conditionnements (CRUD)
+└── UC-14 : Gérer les saisons (CRUD)
 
 
 Partenaire (hérite de Visiteur)
-├── UC-14 : Gérer son stock pour une saison donnée
-└── UC-15 : Consulter les réservations effectuées sur son stock
+├── UC-15 : Gérer son stock pour une saison donnée
+└── UC-16 : Consulter les réservations effectuées sur son stock
 ```
 
 ### 3.3 Fiches de cas d'utilisation
@@ -167,16 +168,16 @@ Partenaire (hérite de Visiteur)
 
 ---
 
-#### UC-05 : Créer une commande
+#### UC-05 : Créer une commande via le panier
 
 | Champ | Détail |
 |---|---|
 | **Acteur principal** | Collaborateur, Administrateur |
 | **Pré-conditions** | L'utilisateur est authentifié. Le stock contient des plants disponibles |
-| **Déclencheur** | L'utilisateur clique sur « Nouvelle commande » |
-| **Scénario nominal** | 1. Sélection des plants et des quantités – 2. Vérification de la disponibilité en stock (réel ou virtuel) – 3. Réservation des plants et décrémentation du stock – 4. Association à un numéro de commande – 5. Enregistrement et affichage du récapitulatif |
-| **Scénarios alternatifs** | A1 : Plant indisponible → message d'alerte, impossibilité de valider. A2 : Quantité demandée supérieure au stock → message d'erreur |
-| **Post-conditions** | La commande est enregistrée. Les stocks sont mis à jour. La traçabilité (provenance + saison) est associée à chaque plant réservé |
+| **Déclencheur** | L'utilisateur ajoute un plant au panier depuis `/stock/global` puis valide |
+| **Scénario nominal** | 1. Depuis la vue stock global, l'utilisateur saisit une quantité et clique sur « Ajouter au panier » (`/add/{id}`) – 2. Il consulte et ajuste son panier (`/cart`) : modification de quantité (ajustée automatiquement au stock max) ou suppression (`/remove/{id}`) – 3. Il valide le panier (`/validate`) – 4. La commande est créée avec le statut `Réservation`, un numéro au format `CMD-XXXXXXXX`, et les stocks sont décrémentés immédiatement – 5. Un historique de statut est créé |
+| **Scénarios alternatifs** | A1 : Panier vide → redirection vers le panier sans création. A2 : Quantité supérieure au stock → ajustée automatiquement au maximum disponible avec message d'avertissement |
+| **Post-conditions** | La commande est enregistrée avec statut `Réservation`. Les stocks sont mis à jour. La traçabilité est assurée via les `OrderLine` liées à chaque `Stock` |
 | **Règles de gestion** | RG-04, RG-05, RG-06 |
 
 ---
@@ -186,62 +187,90 @@ Partenaire (hérite de Visiteur)
 | Champ | Détail |
 |---|---|
 | **Acteur principal** | Collaborateur, Administrateur |
-| **Pré-conditions** | La commande existe et l'utilisateur est authentifié |
-| **Déclencheur** | L'utilisateur modifie une commande existante (problème sur les stocks saisis) |
-| **Scénario nominal** | 1. Sélection de la commande – 2. Modification des plants ou des quantités – 3. Recalcul et mise à jour des réservations – 4. Impact automatique sur les stocks (libération et re-réservation) |
+| **Pré-conditions** | La commande existe avec le statut `Réservation` et l'utilisateur est authentifié |
+| **Déclencheur** | L'utilisateur accède à `/order/edit/{id}` |
+| **Scénario nominal** | 1. Consultation de la commande – 2. Modification du statut via formulaire – 3. Possibilité d'ajouter une ligne directement via recherche de stock (`?q=...`) et ajout (`/order/{id}/add-line-direct`) – 4. L'ajout d'une ligne décrémente immédiatement le stock concerné – 5. Enregistrement de l'historique si le statut change |
 | **Post-conditions** | La commande est mise à jour. Les stocks reflètent la modification |
-| **Règles de gestion** | RG-05, RG-06, RG-07 |
+| **Règles de gestion** | RG-05, RG-05b, RG-06, RG-07 |
 
 ---
 
-#### UC-07 : Supprimer / Annuler une commande
+#### UC-07 : Annuler une commande
+
+| Champ | Détail |
+|---|---|
+| **Acteur principal** | Collaborateur, Administrateur |
+| **Pré-conditions** | La commande existe et n'est pas au statut `Livrée` |
+| **Déclencheur** | L'utilisateur clique sur « Annuler » depuis la fiche commande (`/order/{id}/cancel`) |
+| **Scénario nominal** | 1. Vérification que la commande n'est pas déjà annulée ou livrée – 2. Restitution de la quantité de chaque `OrderLine` au stock d'origine – 3. Passage au statut `Annulée` – 4. Enregistrement de l'historique |
+| **Scénarios alternatifs** | A1 : Commande déjà annulée → message d'avertissement. A2 : Commande `Livrée` → annulation impossible, message d'erreur |
+| **Post-conditions** | Les plants réservés sont restitués aux stocks appropriés |
+| **Règles de gestion** | RG-05b, RG-07 |
+
+---
+
+#### UC-08 : Livrer une commande
+
+| Champ | Détail |
+|---|---|
+| **Acteur principal** | Collaborateur, Administrateur |
+| **Pré-conditions** | La commande existe et n'est pas au statut `Livrée` |
+| **Déclencheur** | L'utilisateur clique sur « Livrer » depuis la fiche commande (`/order/{id}/deliver`) |
+| **Scénario nominal** | 1. Pour chaque `OrderLine`, le stock virtuel du partenaire est basculé en stock réel interne Pépi+ (recherche par plant + packaging + saison avec `partner = NULL`) – 2. Si un stock interne identique existe, la quantité est cumulée ; sinon un nouveau stock interne est créé – 3. Passage au statut `Livrée` – 4. Enregistrement de l'historique |
+| **Scénarios alternatifs** | A1 : Commande déjà livrée → message d'avertissement, pas de double traitement |
+| **Post-conditions** | Les plants réservés sont intégrés dans le stock réel de Pépi+. La commande est irréversiblement clôturée |
+| **Règles de gestion** | RG-05b, RG-05c |
+
+---
+
+#### UC-09 : Consulter l'historique des statuts d'une commande
 
 | Champ | Détail |
 |---|---|
 | **Acteur principal** | Collaborateur, Administrateur |
 | **Pré-conditions** | La commande existe |
-| **Déclencheur** | L'utilisateur supprime ou annule une commande |
-| **Scénario nominal** | 1. Confirmation de la suppression – 2. Libération des stocks réservés – 3. Mise à jour des quantités disponibles |
-| **Post-conditions** | Les plants réservés sont restitués aux stocks appropriés |
-| **Règles de gestion** | RG-07 |
+| **Déclencheur** | L'utilisateur consulte la fiche commande (`/order/show/{id}`) |
+| **Scénario nominal** | Affichage chronologique des changements de statut avec date et utilisateur responsable |
+| **Post-conditions** | L'utilisateur dispose d'un audit trail complet de la commande |
+| **Règles de gestion** | RG-06 |
 
 ---
 
-#### UC-09 : Gérer les collaborateurs
+#### UC-10 : Gérer les collaborateurs
 
 | Champ | Détail |
 |---|---|
 | **Acteur principal** | Administrateur |
 | **Pré-conditions** | L'utilisateur est authentifié avec le rôle ADMIN |
-| **Déclencheur** | L'administrateur accède au module de gestion des utilisateurs |
-| **Scénario nominal** | 1. Consultation de la liste des collaborateurs – 2. Création / modification / désactivation d'un compte – 3. Attribution du rôle (ADMIN ou COLLABORATOR) – 4. Gestion des problèmes d'accès |
-| **Post-conditions** | Les modifications sont persistées en base |
-| **Règles de gestion** | RG-08, RG-09 |
+| **Déclencheur** | L'administrateur accède au module de gestion des utilisateurs (`/user`) |
+| **Scénario nominal** | 1. Consultation de la liste des collaborateurs et partenaires – 2. Création (`/user/new`) / modification (`/user/edit/{id}`) / désactivation d'un compte – 3. Attribution du rôle (ADMIN, COLLABORATOR ou PARTNER) et association à un partenaire si PARTNER – 4. Réinitialisation du mot de passe : mot de passe provisoire `Password123!` + flag `must_change_password` activé |
+| **Post-conditions** | Les modifications sont persistées en base. L'utilisateur réinitialisé est forcé à changer son mot de passe à la prochaine connexion |
+| **Règles de gestion** | RG-08, RG-09, RG-15 |
 
 ---
 
-#### UC-14 : Gérer son stock (Partenaire)
+#### UC-15 : Gérer son stock (Partenaire)
 
 | Champ | Détail |
 |---|---|
 | **Acteur principal** | Partenaire |
-| **Pré-conditions** | L'utilisateur est authentifié avec le rôle PARTNER |
-| **Déclencheur** | Le partenaire accède à son espace de gestion de stock |
-| **Scénario nominal** | 1. Visualisation du stock du partenaire par plant et par saison – 2. Mise à jour des quantités disponibles – 3. Enregistrement |
+| **Pré-conditions** | L'utilisateur est authentifié avec le rôle PARTNER et possède un profil partenaire associé |
+| **Déclencheur** | Le partenaire accède à son espace de gestion de stock (`/partner/my-stock/liste`) |
+| **Scénario nominal** | 1. Visualisation du stock du partenaire par plant et par saison (liste paginée, 8/page) – 2. Création d'un nouveau stock (`/partner/my-stock/new`) : plant, conditionnement, saison, quantité – le partenaire et les champs `created_by`/`updated_by` sont renseignés automatiquement – 3. Modification des quantités (`/partner/my-stock/edit/{id}`) – 4. Consultation du détail d'un stock (`/partner/my-stock/show/{id}`) |
 | **Post-conditions** | Le stock virtuel du partenaire est mis à jour dans le stock global de Pépi+ |
 | **Règles de gestion** | RG-10, RG-14 |
 
 ---
 
-#### UC-15 : Consulter ses réservations (Partenaire)
+#### UC-16 : Consulter ses réservations (Partenaire)
 
 | Champ | Détail |
 |---|---|
 | **Acteur principal** | Partenaire |
 | **Pré-conditions** | L'utilisateur est authentifié avec le rôle PARTNER |
 | **Déclencheur** | Le partenaire accède à la section « Mes réservations » |
-| **Scénario nominal** | 1. Affichage des réservations effectuées sur son stock – 2. Détail par commande : plant, saison, quantité réservée |
-| **Post-conditions** | Le partenaire dispose d'une vue en lecture seule de l'utilisation de son stock |
+| **Scénario nominal** | 1. Affichage des commandes regroupées portant sur son stock – 2. Chaque ligne représente une commande unique (numéro + date) – 3. Les plants réservés sont listés en badges inline avec leur quantité (ex. : *Quercus petraea ×10*) – 4. Statut de la commande affiché par badge coloré |
+| **Post-conditions** | Le partenaire dispose d'une vue en lecture seule et lisible de l'utilisation de son stock, sans duplication de commandes |
 | **Règles de gestion** | RG-10 |
 
 ---
@@ -259,32 +288,38 @@ Modules : **AUTH** (authentification), **DASH** (tableau de bord), **STOCK** (st
 | ID | Description | Priorité | Complexité | Module | Acteurs |
 |---|---|---|---|---|---|
 | EF-AUTH-01 | Connexion sécurisée par email / mot de passe | MUST | Faible | AUTH | Tous |
-| EF-AUTH-02 | Réinitialisation du mot de passe par email | MUST | Moyenne | AUTH | Tous |
+| EF-AUTH-02 | Réinitialisation du mot de passe par email (token usage unique, expiration 24h) | MUST | Moyenne | AUTH | Tous |
 | EF-AUTH-03 | Gestion des rôles : ADMIN, COLLABORATOR, PARTNER | MUST | Moyenne | AUTH | ADMIN |
 | EF-AUTH-04 | Déconnexion et expiration de session | MUST | Faible | AUTH | Tous |
-| EF-DASH-01 | Tableau de bord avec vue d'ensemble de l'activité | MUST | Moyenne | DASH | Collaborateur, Admin |
-| EF-DASH-02 | Alertes visuelles pour les stocks faibles en temps réel | MUST | Moyenne | DASH | Collaborateur, Admin |
-| EF-DASH-03 | Affichage des dernières commandes | SHOULD | Faible | DASH | Collaborateur, Admin |
-| EF-STOCK-01 | Visualisation du stock global (réel + virtuel) de manière ergonomique | MUST | Haute | STOCK | Collaborateur, Admin |
-| EF-STOCK-02 | Recherche de plants par nom latin et nom commun (les deux champs sont obligatoires) | MUST | Moyenne | STOCK | Collaborateur, Admin |
-| EF-STOCK-03 | Filtres avancés : saison, conditionnement, origine, disponibilité | MUST | Moyenne | STOCK | Collaborateur, Admin |
-| EF-STOCK-04 | Traçabilité : affichage provenance + saison pour chaque plant | MUST | Haute | STOCK | Collaborateur, Admin |
-| EF-STOCK-05 | Distinction visuelle stock réel / stock virtuel | MUST | Faible | STOCK | Collaborateur, Admin |
-| EF-STOCK-06 | Gestion du stock réel par saison (CRUD) | MUST | Haute | STOCK | Collaborateur, Admin |
-| EF-CMD-01 | Création d'une commande avec sélection de plants et quantités | MUST | Haute | CMD | Collaborateur, Admin |
-| EF-CMD-02 | Réservation automatique des plants à la validation de la commande | MUST | Haute | CMD | Collaborateur, Admin |
-| EF-CMD-03 | Décrémentation automatique du stock à la réservation | MUST | Haute | CMD | Collaborateur, Admin |
-| EF-CMD-04 | Modification d'une commande avec recalcul automatique des stocks | MUST | Haute | CMD | Collaborateur, Admin |
-| EF-CMD-05 | Suppression / annulation avec restitution automatique des stocks réservés | MUST | Moyenne | CMD | Collaborateur, Admin |
-| EF-CMD-06 | Historique et suivi des statuts de commande | MUST | Moyenne | CMD | Collaborateur, Admin |
-| EF-CMD-07 | Traçabilité sanitaire : provenance + saison pour tous les plants d'une commande | MUST | Haute | CMD | Collaborateur, Admin |
-| EF-REF-01 | Gestion du référentiel de plants : nom latin + nom commun (CRUD) | MUST | Faible | REF | Admin |
-| EF-REF-02 | Gestion des conditionnements (ex. GF400, racine nue…) (CRUD) | MUST | Faible | REF | Admin |
-| EF-REF-03 | Gestion des saisons (CRUD) | MUST | Faible | REF | Admin |
-| EF-ADMIN-01 | Gestion des comptes collaborateurs (CRUD + activation/désactivation) | MUST | Moyenne | ADMIN | Admin |
-| EF-ADMIN-02 | Gestion des partenaires : nom, coordonnées, accès applicatif (CRUD) | MUST | Moyenne | ADMIN | Admin |
-| EF-PART-01 | Espace partenaire : gestion de son stock par plant et par saison | MUST | Haute | PART | Partenaire |
-| EF-PART-02 | Espace partenaire : consultation en lecture seule des réservations sur son stock | MUST | Moyenne | PART | Partenaire |
+| EF-AUTH-05 | Changement de mot de passe par l'utilisateur connecté (`/user/profile/change-password`) | MUST | Faible | AUTH | Tous |
+| EF-AUTH-06 | Forçage du changement de mot de passe à la première connexion après réinitialisation admin (flag `must_change_password`) | MUST | Faible | AUTH | Tous |
+| EF-DASH-01 | Tableau de bord collaborateur/admin : total commandes, total partenaires, stocks bas, 5 dernières commandes | MUST | Moyenne | DASH | Collaborateur, Admin |
+| EF-DASH-02 | Alertes visuelles stocks faibles (seuil < 10) – vue globale pour admin/collaborateur, vue filtrée par partenaire pour PARTNER | MUST | Moyenne | DASH | Tous |
+| EF-DASH-03 | Tableau de bord partenaire : ses stocks, ses stocks critiques, commandes récentes contenant ses produits | MUST | Moyenne | DASH | Partenaire |
+| EF-STOCK-01 | Visualisation du stock global (réel + virtuel) dans un tableau paginé (7/page) avec filtres | MUST | Haute | STOCK | Collaborateur, Admin |
+| EF-STOCK-02 | Recherche textuelle dans le stock : nom latin, nom commun, partenaire, saison, conditionnement | MUST | Moyenne | STOCK | Collaborateur, Admin |
+| EF-STOCK-03 | Filtres avancés sur le stock global : quantité min/max | MUST | Moyenne | STOCK | Collaborateur, Admin |
+| EF-STOCK-04 | Traçabilité : affichage provenance (partenaire ou Pépi+) + saison pour chaque plant | MUST | Haute | STOCK | Collaborateur, Admin |
+| EF-STOCK-05 | Distinction visuelle stock réel (badge bleu) / stock virtuel (badge violet avec nom partenaire) | MUST | Faible | STOCK | Collaborateur, Admin |
+| EF-STOCK-06 | Gestion du stock interne uniquement (`/stock/gestion`) : CRUD avec cumul automatique si stock identique existant | MUST | Haute | STOCK | Collaborateur, Admin |
+| EF-STOCK-07 | Suppression d'un stock avec `onDelete: SET NULL` sur les OrderLines associées (conservation de l'historique) | MUST | Moyenne | STOCK | Collaborateur, Admin |
+| EF-CMD-01 | Création d'une commande via le panier : ajout de plants depuis le stock global, ajustement des quantités, validation | MUST | Haute | CMD | Collaborateur, Admin |
+| EF-CMD-02 | Réservation automatique à la validation du panier : statut `Réservation`, numéro `CMD-XXXXXXXX`, décrémentation immédiate | MUST | Haute | CMD | Collaborateur, Admin |
+| EF-CMD-03 | Décrémentation automatique du stock virtuel à la réservation | MUST | Haute | CMD | Collaborateur, Admin |
+| EF-CMD-04 | Modification du statut d'une commande avec enregistrement de l'historique | MUST | Moyenne | CMD | Collaborateur, Admin |
+| EF-CMD-05 | Ajout d'une ligne directement sur une commande existante en `Réservation` via recherche de stock (`/order/{id}/add-line-direct`) | SHOULD | Moyenne | CMD | Collaborateur, Admin |
+| EF-CMD-06 | Annulation avec restitution automatique des stocks réservés (impossible si statut `Livrée`) | MUST | Moyenne | CMD | Collaborateur, Admin |
+| EF-CMD-07 | Livraison : bascule automatique du stock virtuel partenaire en stock réel interne Pépi+ (cumul ou création) | MUST | Haute | CMD | Collaborateur, Admin |
+| EF-CMD-08 | Historique et suivi des statuts de commande (date + utilisateur responsable pour chaque changement) | MUST | Moyenne | CMD | Collaborateur, Admin |
+| EF-CMD-09 | Traçabilité sanitaire : provenance + saison accessibles pour tous les plants d'une commande | MUST | Haute | CMD | Collaborateur, Admin |
+| EF-REF-01 | Gestion du référentiel de plants : nom latin + nom commun + type (CRUD, pagination 9/page) | MUST | Faible | REF | Admin |
+| EF-REF-02 | Gestion des conditionnements (CRUD, pagination 10/page) | MUST | Faible | REF | Admin |
+| EF-REF-03 | Gestion des saisons (CRUD, pagination 10/page) | MUST | Faible | REF | Admin |
+| EF-ADMIN-01 | Gestion des comptes utilisateurs (CRUD + activation/désactivation + réinitialisation mot de passe + assignation rôle et partenaire) | MUST | Moyenne | ADMIN | Admin |
+| EF-ADMIN-02 | Gestion des partenaires fournisseurs : nom société, coordonnées (CRUD) | MUST | Moyenne | ADMIN | Admin |
+| EF-ADMIN-03 | Page profil utilisateur : modification des informations personnelles (`/user/my-account/profile`) | SHOULD | Faible | ADMIN | Tous |
+| EF-PART-01 | Espace partenaire : gestion de son stock virtuel par plant, conditionnement et saison (CRUD, pagination 8/page) | MUST | Haute | PART | Partenaire |
+| EF-PART-02 | Espace partenaire : consultation en lecture seule des réservations sur son stock, regroupées par commande avec affichage des plants en badges | MUST | Moyenne | PART | Partenaire |
 
 > **MoSCoW :** **MUST** = obligatoire | **SHOULD** = importante non bloquante | **COULD** = souhaitée si temps disponible
 
@@ -372,7 +407,7 @@ Ajout de stocks au panier, modification des quantités (avec ajustement automati
 
 **Espace partenaire**
 - *Mon stock* (`/partner/my-stock/liste`) : liste paginée (8/page) du stock du partenaire connecté, avec recherche par nom latin / commun.
-- *Mes réservations* (`/partner/my-reservations/liste`) : liste des `OrderLine` portant sur son stock.
+- *Mes réservations* (`/partner/my-reservations/liste`) : liste des commandes (`Order`) regroupées portant sur le stock du partenaire, via `OrderRepository::searchOrdersByPartner()`. Chaque ligne représente une commande unique. Les plants réservés sont affichés en badges inline avec leur quantité (ex. : *Quercus petraea ×10*). La colonne "Quantité réservée" a été fusionnée dans la colonne "Plants commandés" pour éviter les doublons de lignes.
 - *Nouveau stock* (`/partner/my-stock/new`) : formulaire de création d'une entrée de stock virtuel.
 
 **Administration**
@@ -392,18 +427,20 @@ Ajout de stocks au panier, modification des quantités (avec ajustement automati
 | RG-02 | Une alerte de stock critique est déclenchée lorsque la quantité d'un stock passe sous **10 unités** (seuil fixé dans `DashboardController` et `StockRepository::findLowStockAlert(10)`). La quantité s'affiche en rouge dans les tableaux | EF-DASH-02, EF-STOCK-01 |
 | RG-02b | Le stock global (`/stock/global`) affiche tous les stocks (réels + virtuels) dans un seul tableau. Le stock interne uniquement est accessible via `/stock/gestion` | EF-STOCK-01, EF-STOCK-05 |
 | RG-03 | Le stock réel et le stock virtuel sont distingués dans l'affichage (origine visible pour chaque plant) | EF-STOCK-05 |
-| RG-04 | Les plants réservés dans une commande peuvent provenir seulement du stock virtuel| EF-CMD-01, EF-CMD-02 |
+| RG-04 | Les plants ajoutés au panier peuvent provenir du stock virtuel (partenaires) ou du stock réel interne (Pépi+). Le bouton d'ajout au panier est disponible sur les deux types de stock depuis `/stock/global` | EF-CMD-01, EF-CMD-02 |
 | RG-05 | La réservation est automatique dès la validation du panier : la commande est créée avec le statut `Réservation` et le stock est décrémenté immédiatement | EF-CMD-02, EF-CMD-03 |
 | RG-05b | Cycle de vie d'une commande : `Réservation` → `Livrée` (irréversible) ou `Annulée` (impossible si déjà `Livrée`) | EF-CMD-06 |
 | RG-05c | Lors du passage au statut `Livrée`, les plants réservés sur le stock virtuel d'un partenaire sont basculés dans le stock réel interne de Pépi+ (création ou mise à jour d'un stock avec `partner = NULL`) | EF-CMD-02, EF-STOCK-06 |
 | RG-06 | Pour tous les plants d'une commande, la traçabilité sanitaire (pépinière de provenance + saison) doit être disponible | EF-CMD-07 |
 | RG-08 | L'administrateur gère les rôles par défaut des utilisateurs | EF-ADMIN-01 |
 | RG-09 | L'adresse email est l'identifiant unique de chaque utilisateur dans le système | EF-AUTH-01, EF-ADMIN-01 |
-| RG-10 | Un partenaire ne peut accéder qu'à son propre stock et à ses propres réservations, pas à ceux des autres partenaires | EF-PART-01, EF-PART-02 |
+| RG-10 | Un partenaire ne peut accéder qu'à son propre stock et à ses propres réservations, pas à ceux des autres partenaires. Les réservations sont affichées regroupées par commande (une ligne = une commande), sans duplication par plant | EF-PART-01, EF-PART-02 |
 | RG-11 | Chaque plant doit obligatoirement avoir un nom latin ET un nom commun (les deux champs sont `NOT NULL` dans la base de données) | EF-REF-01 |
 | RG-12 | La saison correspond à l'année de production du plant et permet de connaître son âge au moment de la vente | EF-REF-03, EF-CMD-07 |
 | RG-13 | Un plant ne peut être réservé dans une commande que si sa quantité disponible est supérieure à 0 | EF-CMD-01 |
-| RG-15 | Lorsqu'un admin réinitialise le mot de passe d'un utilisateur, un mot de passe provisoire `Password123!` est attribué et le flag `must_change_password` est activé : l'utilisateur est forcé à changer son mot de passe à la prochaine connexion | EF-ADMIN-01 |
+| RG-14 | Lors de la création d'un stock interne (`/stock/gestion/new`), si un stock identique (même plant + conditionnement + saison + `partner = NULL`) existe déjà, la quantité est cumulée automatiquement au lieu de créer un doublon | EF-STOCK-06 |
+| RG-15 | Lorsqu'un admin réinitialise le mot de passe d'un utilisateur, un mot de passe provisoire `Password123!` est attribué et le flag `must_change_password` est activé : l'utilisateur est forcé à changer son mot de passe à la prochaine connexion | EF-ADMIN-01, EF-AUTH-06 |
+| RG-16 | Tout utilisateur connecté peut consulter et modifier ses informations personnelles (prénom, nom, email) depuis la page profil, sans pouvoir modifier son rôle | EF-ADMIN-03 |
 
 ---
 
@@ -469,7 +506,7 @@ packaging              (id, label)
 season                 (id, year)
 
 stock                  (id, plant_id, packaging_id, season_id, partner_id,
-                        updated_by_id, quantity, created_at, updated_at)
+                        updated_by_id, created_by_id, quantity, created_at, updated_at)
                         → partner_id NULL  = stock réel (Pépi+)
                         → partner_id renseigné = stock virtuel (partenaire)
 
@@ -490,6 +527,7 @@ reset_password_request (id, user_id, selector, hashed_token,
 - `order_status_history` trace chaque changement de statut avec l'horodatage et l'utilisateur responsable
 - Un `user` peut être lié à un `partner` (rôle PARTNER) ou avoir `partner_id` NULL (COLLABORATOR / ADMIN)
 - `plant.common_name` est **obligatoire** dans l'entité Doctrine (NOT NULL, VARCHAR 255)
+- `stock.created_by` et `stock.updated_by` tracent respectivement le créateur initial et le dernier modificateur du stock
 
 ### 8.2 Dictionnaire de données
 
@@ -514,6 +552,7 @@ reset_password_request (id, user_id, selector, hashed_token,
 | `stock.quantity` | INT | — | NOT NULL | Quantité disponible – peut être 0 à la création |
 | `stock.partner_id` | INT | — | NULL | NULL = stock réel interne Pépi+ ; renseigné = stock virtuel partenaire |
 | `stock.updated_by_id` | INT | — | NULL | FK vers `user` – dernier utilisateur ayant modifié ce stock |
+| `stock.created_by_id` | INT | — | NULL | FK vers `user` – utilisateur ayant créé l'entrée de stock (renseigné à la création, non modifié ensuite) |
 | `stock.created_at` | DATETIME | — | NOT NULL | Date de création de l'entrée de stock |
 | `stock.updated_at` | DATETIME | — | NOT NULL | Date de dernière mise à jour (décrémentation, modification…) |
 | `order.order_number` | VARCHAR | 255 | NOT NULL | Numéro de commande généré : format `CMD-XXXXXXXX` (hex aléatoire) |
@@ -555,28 +594,49 @@ reset_password_request (id, user_id, selector, hashed_token,
 |---|---|---|---|---|
 | `/login` | GET | `app_login` | Public | Page de connexion |
 | `/logout` | GET | `app_logout` | Connecté | Déconnexion |
-| `/reset-password` | GET/POST | `app_forgot_password_request` | Public | Demande de réinitialisation |
+| `/reset-password` | GET/POST | `app_forgot_password_request` | Public | Demande de réinitialisation de mot de passe |
+| `/reset-password/check-email` | GET | `app_check_email` | Public | Confirmation d'envoi de l'email |
+| `/reset-password/reset/{token}` | GET/POST | `app_reset_password` | Public | Formulaire de nouveau mot de passe |
 | `/dashboard` | GET | `app_dashboard` | Connecté | Tableau de bord (vue adaptée au rôle) |
-| `/stock/global` | GET | `app_stock_index` | COLLABORATOR/ADMIN | Stock global (réel + virtuel) |
-| `/stock/gestion` | GET | `app_stock_gestion_index` | COLLABORATOR/ADMIN | Stock interne uniquement |
+| `/stock/global` | GET | `app_stock_index` | COLLABORATOR/ADMIN | Stock global (réel + virtuel), filtres quantité min/max |
+| `/stock/gestion` | GET | `app_stock_gestion_index` | COLLABORATOR/ADMIN | Stock interne uniquement (partner IS NULL) |
+| `/stock/gestion/new` | GET/POST | `app_stock_gestion_new` | COLLABORATOR/ADMIN | Nouveau stock interne (cumul si doublon) |
+| `/stock/gestion/show/{id}` | GET | `app_stock_gestion_show` | COLLABORATOR/ADMIN | Détail stock interne |
+| `/stock/edit/{id}` | GET/POST | `app_stock_edit` | COLLABORATOR/ADMIN | Modifier stock interne (interdit si partenaire) |
+| `/stock/show/{id}` | GET | `app_stock_show` | COLLABORATOR/ADMIN | Détail stock global |
+| `/stock/{id}` | POST | `app_stock_delete` | COLLABORATOR/ADMIN | Supprimer stock (redirection dynamique selon type) |
 | `/cart` | GET | `app_cart_index` | COLLABORATOR/ADMIN | Panier |
-| `/add/{id}` | POST | `app_cart_add` | COLLABORATOR/ADMIN | Ajout au panier |
+| `/add/{id}` | POST | `app_cart_add` | COLLABORATOR/ADMIN | Ajout au panier depuis stock global |
+| `/remove/{id}` | GET | `app_cart_remove` | COLLABORATOR/ADMIN | Retirer un article du panier |
+| `/update/{id}` | POST | `app_cart_update` | COLLABORATOR/ADMIN | Mettre à jour la quantité (ajustée au stock max) |
 | `/validate` | POST | `app_cart_validate` | COLLABORATOR/ADMIN | Validation du panier → création commande |
-| `/order` | GET | `app_order_index` | COLLABORATOR/ADMIN | Liste des commandes |
-| `/order/show/{id}` | GET | `app_order_show` | COLLABORATOR/ADMIN | Détail commande |
-| `/order/edit/{id}` | GET/POST | `app_order_edit` | COLLABORATOR/ADMIN | Modification commande |
-| `/order/{id}/deliver` | POST | `app_order_deliver` | COLLABORATOR/ADMIN | Passer en `Livrée` + bascule stock |
+| `/order` | GET | `app_order_index` | COLLABORATOR/ADMIN | Liste des commandes (filtres statut, dates) |
+| `/order/show/{id}` | GET | `app_order_show` | COLLABORATOR/ADMIN | Détail commande + historique des statuts |
+| `/order/edit/{id}` | GET/POST | `app_order_edit` | COLLABORATOR/ADMIN | Modifier statut + recherche et ajout de ligne |
+| `/order/{id}/add-line-direct` | POST | `app_order_add_line_direct` | COLLABORATOR/ADMIN | Ajouter une ligne à une commande existante |
+| `/order/{id}/deliver` | POST | `app_order_deliver` | COLLABORATOR/ADMIN | Passer en `Livrée` + bascule stock virtuel → réel |
 | `/order/{id}/cancel` | POST | `app_order_cancel` | COLLABORATOR/ADMIN | Annuler + restitution stock |
-| `/plant` | GET | `app_plant_index` | COLLABORATOR/ADMIN | Référentiel plants |
-| `/packaging` | GET | `app_packaging_index` | COLLABORATOR/ADMIN | Conditionnements |
-| `/season` | GET | `app_season_index` | COLLABORATOR/ADMIN | Saisons |
-| `/partner` | GET | `app_partner_index` | ADMIN | Liste partenaires |
+| `/plant` | GET | `app_plant_index` | COLLABORATOR/ADMIN | Référentiel plants (pagination 9/page) |
+| `/plant/new` | GET/POST | `app_plant_new` | ADMIN | Nouveau plant |
+| `/plant/show/{id}` | GET | `app_plant_show` | COLLABORATOR/ADMIN | Détail plant |
+| `/plant/edit/{id}` | GET/POST | `app_plant_edit` | ADMIN | Modifier plant |
+| `/packaging` | GET | `app_packaging_index` | COLLABORATOR/ADMIN | Conditionnements (pagination 10/page) |
+| `/season` | GET | `app_season_index` | COLLABORATOR/ADMIN | Saisons (pagination 10/page) |
+| `/partner` | GET | `app_partner_index` | ADMIN | Liste partenaires (pagination 8/page) |
 | `/partner/gestion/new` | GET/POST | `app_partner_new` | ADMIN | Nouveau partenaire |
-| `/user` | GET | `app_user_index` | ADMIN | Liste utilisateurs |
-| `/user/profile/change-password` | GET/POST | `app_user_change_password` | Connecté | Changement de mot de passe |
-| `/partner/my-stock/liste` | GET | `app_partner_myStock` | PARTNER | Mon stock |
+| `/partner/show/{id}` | GET | `app_partner_show` | ADMIN | Détail partenaire |
+| `/partner/edit/{id}` | GET/POST | `app_partner_edit` | ADMIN | Modifier partenaire |
+| `/user` | GET | `app_user_index` | ADMIN | Liste utilisateurs (pagination 10/page) |
+| `/user/new` | GET/POST | `app_user_new` | ADMIN | Créer un utilisateur |
+| `/user/show/{id}` | GET | `app_user_show` | ADMIN | Détail utilisateur |
+| `/user/edit/{id}` | GET/POST | `app_user_edit` | ADMIN | Modifier utilisateur + réinitialisation mot de passe |
+| `/user/profile/change-password` | GET/POST | `app_user_change_password` | Connecté | Changement de mot de passe (libère `must_change_password`) |
+| `/user/my-account/profile` | GET/POST | `app_user_profile` | Connecté | Page profil : modification des informations personnelles |
+| `/partner/my-stock/liste` | GET | `app_partner_myStock` | PARTNER | Mon stock virtuel (pagination 8/page) |
 | `/partner/my-stock/new` | GET/POST | `app_partner_newMyStock` | PARTNER | Nouveau stock virtuel |
-| `/partner/my-reservations/liste` | GET | `app_partner_reservations` | PARTNER | Mes réservations |
+| `/partner/my-stock/show/{id}` | GET | `app_partner_showMyStock` | PARTNER | Détail d'un stock virtuel |
+| `/partner/my-stock/edit/{id}` | GET/POST | `app_partner_editMyStock` | PARTNER | Modifier un stock virtuel |
+| `/partner/my-reservations/liste` | GET | `app_partner_reservations` | PARTNER | Mes réservations (groupées par commande) |
 
 ---
 
@@ -588,11 +648,13 @@ reset_password_request (id, user_id, selector, hashed_token,
 |---|---|
 | **Plant** | Végétal cultivé, identifié obligatoirement par son nom latin ET son nom commun (les deux champs sont requis dans l'application) |
 | **Essence** | Espèce végétale identifiée par son nom latin (plus de 100 disponibles chez Pépi+) |
-| **Stock réel** | Plants produits en interne par la pépinière Pépi+, physiquement disponibles |
-| **Stock virtuel** | Plants mis à disposition par un partenaire fournisseur, intégrés dans le stock global de Pépi+ |
+| **Stock réel** | Plants produits en interne par la pépinière Pépi+, physiquement disponibles (`partner_id = NULL`) |
+| **Stock virtuel** | Plants mis à disposition par un partenaire fournisseur, intégrés dans le stock global de Pépi+ (`partner_id` renseigné) |
 | **Conditionnement** | Mode de présentation du plant (ex. : GF400, racine nue, pot normalisé) |
 | **Saison** | Année de production d'un plant, permettant de connaître son âge au moment de la vente |
-| **Réservation** | Blocage automatique d'une quantité de plants lors de la validation d'une commande |
+| **Panier** | Mécanisme de sélection temporaire de plants (stocké en session via `CartService`) avant la validation d'une commande |
+| **Réservation** | Blocage automatique d'une quantité de plants lors de la validation du panier – décrémentation immédiate du stock |
+| **Bascule de stock** | Opération déclenchée à la livraison : le stock virtuel d'un partenaire est transféré dans le stock réel interne de Pépi+ |
 | **Traçabilité** | Obligation sanitaire réglementaire : capacité à fournir la pépinière de provenance et la saison pour chaque plant vendu |
 | **Partenaire** | Fournisseur externe de plants, disposant d'un accès restreint à l'application |
 | **Référentiel** | Ensemble des données de base partagées entre Pépi+ et ses partenaires : plants, conditionnements, saisons |
@@ -600,6 +662,8 @@ reset_password_request (id, user_id, selector, hashed_token,
 | **3-tiers** | Architecture client / serveur applicatif / base de données |
 | **MCD** | Modèle Conceptuel de Données |
 | **MLD** | Modèle Logique de Données |
+| **DTO** | Data Transfer Object – objet de transport utilisé pour les filtres (`StockFilterData`, `OrderFilterData`) |
+| **CartService** | Service Symfony gérant le panier en session : ajout, retrait, mise à jour de quantité (plafonnée au stock disponible), vidage après validation |
 
 ### 10.2 Matrice de traçabilité
 
@@ -607,20 +671,22 @@ reset_password_request (id, user_id, selector, hashed_token,
 |---|---|---|---|
 | B-01 : Accès distinct et sécurisé par collaborateur | EF-AUTH-01, EF-AUTH-03, EF-AUTH-04 | UC-01 | CT-AUTH-01, CT-AUTH-02 |
 | B-02 : Réinitialisation de mot de passe | EF-AUTH-02 | UC-01 | CT-AUTH-03 |
-| B-03 : Gestion des accès collaborateurs par l'admin | EF-ADMIN-01 | UC-09 | CT-ADMIN-01 |
-| B-04 : Gestion du référentiel de plants | EF-REF-01 | UC-11 | CT-REF-01 |
-| B-05 : Gestion des conditionnements | EF-REF-02 | UC-12 | CT-REF-02 |
-| B-06 : Gestion des saisons | EF-REF-03 | UC-13 | CT-REF-03 |
-| B-07 : Gestion des partenaires fournisseurs | EF-ADMIN-02 | UC-10 | CT-ADMIN-02 |
+| B-02b : Changement de mot de passe + forçage post-reset | EF-AUTH-05, EF-AUTH-06 | UC-01 | CT-AUTH-04 |
+| B-03 : Gestion des accès utilisateurs par l'admin | EF-ADMIN-01 | UC-10 | CT-ADMIN-01 |
+| B-04 : Gestion du référentiel de plants | EF-REF-01 | UC-12 | CT-REF-01 |
+| B-05 : Gestion des conditionnements | EF-REF-02 | UC-13 | CT-REF-02 |
+| B-06 : Gestion des saisons | EF-REF-03 | UC-14 | CT-REF-03 |
+| B-07 : Gestion des partenaires fournisseurs | EF-ADMIN-02 | UC-11 | CT-ADMIN-02 |
 | B-08 : Visualisation ergonomique du stock complet | EF-STOCK-01, EF-STOCK-02, EF-STOCK-03, EF-STOCK-05 | UC-03, UC-04 | CT-STOCK-01, CT-STOCK-02 |
 | B-09 : Gestion du stock réel par saison | EF-STOCK-06 | UC-03 | CT-STOCK-03 |
 | B-10 : Tableau de bord de pilotage | EF-DASH-01, EF-DASH-02, EF-DASH-03 | UC-02 | CT-DASH-01, CT-DASH-02 |
-| B-11 : Création de commande avec réservation automatique | EF-CMD-01, EF-CMD-02, EF-CMD-03 | UC-05 | CT-CMD-01, CT-CMD-02 |
-| B-12 : Traçabilité sanitaire sur les commandes | EF-CMD-07, EF-STOCK-04 | UC-05, UC-03 | CT-CMD-03, CT-STOCK-04 |
-| B-13 : Modification de commande avec impact stocks | EF-CMD-04 | UC-06 | CT-CMD-04 |
-| B-14 : Suppression de commande avec restitution des stocks | EF-CMD-05 | UC-07 | CT-CMD-05 |
-| B-15 : Accès partenaire – gestion du stock virtuel | EF-PART-01 | UC-14 | CT-PART-01 |
-| B-16 : Accès partenaire – consultation des réservations | EF-PART-02 | UC-15 | CT-PART-02 |
+| B-11 : Création de commande via panier avec réservation automatique | EF-CMD-01, EF-CMD-02, EF-CMD-03 | UC-05 | CT-CMD-01, CT-CMD-02 |
+| B-12 : Traçabilité sanitaire sur les commandes | EF-CMD-09, EF-STOCK-04 | UC-05, UC-03 | CT-CMD-03, CT-STOCK-04 |
+| B-13 : Modification de commande (statut + ajout de ligne) | EF-CMD-04, EF-CMD-05 | UC-06 | CT-CMD-04 |
+| B-14 : Annulation de commande avec restitution des stocks | EF-CMD-06 | UC-07 | CT-CMD-05 |
+| B-14b : Livraison avec bascule du stock virtuel en stock réel | EF-CMD-07 | UC-08 | CT-CMD-06 |
+| B-15 : Accès partenaire – gestion du stock virtuel | EF-PART-01 | UC-15 | CT-PART-01 |
+| B-16 : Accès partenaire – consultation des réservations | EF-PART-02 | UC-16 | CT-PART-02 |
 
 ---
 
@@ -650,6 +716,8 @@ reset_password_request (id, user_id, selector, hashed_token,
 | V0.18 | 19/02/2026 | CASTELLS Cyprien | Fixtures de données complètes, renommage champ `year` dans l'entité `Season` |
 | V0.19 | 27/02/2026 | CASTELLS Cyprien | Résolution problème réservation partenaires, renommage `purchaseOrder` → `PurchaseOrder`, désactivation temporaire envoi email dans `CartController`, ajustement MCD et ajout fichier draw.io |
 | V1.0 | 27/02/2026 | CASTELLS Cyprien | Rédaction V1 de la spécification fonctionnelle, mise à jour MCD – **version complète prête pour livraison le 27/03/2026** |
+| V1.1 | 16/03/2026 | CASTELLS Cyprien | Correction affichage « Mes réservations » partenaire : passage de l'itération sur `OrderLine` à une itération sur `Order` – les commandes ne s'affichent plus en doublon ; plants affichés en badges inline (nom latin × quantité) |
+| V1.2 | 16/03/2026 | CASTELLS Cyprien | Audit complet de la SF sur la base du code réel : correction du diagramme UC (numérotation, périmètre par rôle) ; ajout des UC 06/07/08/09 manquants (modifier, annuler, livrer, historique) ; refonte du tableau EF (34 EF au lieu de 27, modules alignés sur le code) ; correction RG-04 (panier accepte stock réel ET virtuel) ; ajout RG-14/16 ; tableau des routes complet (46 routes documentées contre 25 auparavant) ; ajout `stock.created_by_id` dans le schéma et le dictionnaire ; glossaire enrichi (Panier, Bascule de stock, DTO, CartService) ; matrice de traçabilité mise à jour avec les nouvelles références |
 
 ### 11.2 Processus de validation
 
@@ -667,12 +735,17 @@ reset_password_request (id, user_id, selector, hashed_token,
 | Page de garde | Titre, version, dates, auteur, établissement | ✅ |
 | Table des matières | Navigation complète | ✅ |
 | Présentation générale | Contexte Pépi+, parties prenantes, périmètre | ✅ |
-| Acteurs & Cas d'utilisation | 15 UC avec fiches détaillées | ✅ |
-| Exigences fonctionnelles | 27 EF avec priorités MoSCoW | ✅ |
-| Maquettes / IHM | Charte graphique, sitemap, description des wireframes | ✅ |
-| Règles de gestion | 14 RG liées aux EF | ✅ |
+| Acteurs & Cas d'utilisation | 16 UC avec fiches détaillées | ✅ |
+| Exigences fonctionnelles | 34 EF avec priorités MoSCoW | ✅ |
+| Maquettes / IHM | Charte graphique, sitemap, description des pages principales | ✅ |
+| Règles de gestion | 16 RG liées aux EF | ✅ |
 | Exigences non fonctionnelles | Performances, sécurité, dispo., compatibilité, règles de codage CdC | ✅ |
-| Modèle de données | 9 entités + dictionnaire de données | ✅ |
+| Modèle de données | 9 entités + dictionnaire de données (champ `created_by` inclus) | ✅ |
+| Interfaces externes | SMTP, Doctrine, KnpPaginator, Webpack, CartService, GitHub | ✅ |
+| Routes | 46 routes documentées | ✅ |
+| Glossaire | Termes métier et techniques du projet (17 entrées) | ✅ |
+| Matrice de traçabilité | 18 besoins CdC → EF → UC → Tests | ✅ |
+| Gestion du document | Révisions V0.1 → V1.2, processus de validation | ✅ |
 | Interfaces externes | SMTP, Doctrine, KnpPaginator, Webpack, GitHub | ✅ |
 | Glossaire | Termes métier et techniques du projet | ✅ |
 | Matrice de traçabilité | 16 besoins CdC → EF → UC → Tests | ✅ |
