@@ -109,33 +109,27 @@
 										</span>
 									</td>
 									<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-										<div class="flex justify-end space-x-3">
-											{% if stock.partner is null %}
-												<a href="{{ path('app_stock_edit', {'id': stock.id}) }}" class="text-blue-600 hover:text-blue-900">
-													<twig:ux:icon name="cuida:edit-outline" class="w-5 h-5"/>
-												</a>
+										<div
+											class="flex justify-end space-x-3">
+											{# ACTIONS DE COMMANDE (Disponible pour TOUS les stocks désormais) #}
+											{% if editOrderId %}
+												<form action="{{ path('app_order_add_line_direct', {'id': editOrderId}) }}" method="POST" class="flex items-center space-x-2">
+													<input type="hidden" name="stockId" value="{{ stock.id }}">
+													<input type="number" name="qty" min="1" max="{{ stock.quantity }}" value="1" class="w-16 border border-gray-300 rounded-md text-sm px-2 py-1">
+													<button type="submit" class="text-green-600 hover:text-green-900" title="Ajouter à la commande">
+														<twig:ux:icon name="mingcute:add-circle-line" class="w-6 h-6"/>
+													</button>
+												</form>
+											{% else %}
+												<form action="{{ path('app_cart_add', {'id': stock.id}) }}" method="POST" class="flex items-center space-x-2">
+													<input type="number" name="quantity" min="1" max="{{ stock.quantity }}" class="w-16 border border-gray-300 rounded-md text-sm px-2 py-1" placeholder="Qté" required/>
+													<button type="submit" class="text-blue-600 hover:text-blue-900">
+														<twig:ux:icon name="iconoir:cart" class="w-5 h-5"/>
+													</button>
+												</form>
 											{% endif %}
-											{% if stock.partner is not null %}
-												{% if editOrderId %}
-													{# MODE COMMANDE : Icône d'ajout direct #}
-													<form action="{{ path('app_order_add_line_direct', {'id': editOrderId}) }}" method="POST" class="flex items-center space-x-2">
-														<input type="hidden" name="stockId" value="{{ stock.id }}">
-														<input type="number" name="qty" min="1" max="{{ stock.quantity }}" value="1" class="w-16 border border-gray-300 rounded-md text-sm px-2 py-1">
-														<button type="submit" class="text-green-600 hover:text-green-900" title="Ajouter à la commande">
-															<twig:ux:icon name="mingcute:add-circle-line" class="w-6 h-6"/>
-														</button>
-													</form>
-												{% else %}
-													{# MODE NORMAL : Ton icône de panier habituelle #}
-													<form action="{{ path('app_cart_add', {'id': stock.id}) }}" method="POST" class="flex items-center space-x-2">
-														<input type="number" name="quantity" min="1" max="{{ stock.quantity }}" class="w-16 border border-gray-300 rounded-md text-sm px-2 py-1" placeholder="Qté" required/>
-														<button type="submit" class="text-blue-600 hover:text-blue-900">
-															<twig:ux:icon name="iconoir:cart" class="w-5 h-5"/>
-														</button>
-													</form>
-												{% endif %}
-											{% endif %}
-											<a href="{{ path('app_stock_show', {'id': stock.id}) }}" class="text-green-600 hover:text-green-900 flex items-center">
+
+											<a href="{{ path('app_stock_show', {'id': stock.id}) }}" class="text-green-600 hover:text-green-900">
 												<twig:ux:icon name="mingcute:eye-line" class="w-5 h-5"/>
 											</a>
 										</div>

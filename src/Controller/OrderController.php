@@ -141,57 +141,30 @@ final class OrderController extends AbstractController
     }
 
     #[Route('/{id}/deliver', name: 'app_order_deliver', methods: ['POST'])]
-    public function deliver(Order $order, EntityManagerInterface $em, StockRepository $stockRepo): Response
+    public function deliver(Order $order, EntityManagerInterface $em): Response
     {
-        if ($order->getStatus() === 'Livrée') {
-            $this->addFlash('warning', 'Cette commande est déjà livrée.');
-            return $this->redirectToRoute('app_order_index');
+        // Sécurité : On ne livre pas une commande déjà terminée ou annulée
+        if (in_array($order->getStatus(), ['Livrée', 'Annulée'])) {
+            $this->addFlash('warning', 'Le statut de cette commande ne peut plus être modifié.');
+            return $this->redirectToRoute('app_order_show', ['id' => $order->getId()]);
         }
 
-        foreach ($order->getOrderLines() as $line) {
-            $originalStock = $line->getStock();
-
-            // Chercher le stock interne de Pépi+ (Partner NULL ou spécifique à l'entreprise)
-            // On se base sur le Plant, le Packaging et le Season pour identifier un produit identique
-            $internalStock = $em->getRepository(Stock::class)->findOneBy([
-                'plant' => $originalStock->getPlant(),
-                'packaging' => $originalStock->getPackaging(),
-                'season' => $originalStock->getSeason(),
-                'partner' => null // Représente le stock propre à Pépi+
-            ]);
-
-            if ($internalStock) {
-                // Mise à jour du stock existant
-                $internalStock->setQuantity($internalStock->getQuantity() + $line->getQuantity());
-                $internalStock->setUpdatedAt(new \DateTimeImmutable());
-            } else {
-                // Création d'une nouvelle entrée de stock interne
-                $newStock = new Stock();
-                $newStock->setPlant($originalStock->getPlant());
-                $newStock->setPackaging($originalStock->getPackaging());
-                $newStock->setSeason($originalStock->getSeason());
-                $newStock->setQuantity($line->getQuantity());
-                $newStock->setPartner(null); // Stock Pépi+
-                $newStock->setCreatedAt(new \DateTimeImmutable());
-                $newStock->setUpdatedAt(new \DateTimeImmutable());
-                $newStock->setUpdatedBy($this->getUser());
-                $em->persist($newStock);
-            }
-        }
-
+        // MISE À JOUR DU STATUT UNIQUEMENT
+        // Le stock a déjà été déduit lors de la validation/réservation.
         $order->setStatus('Livrée');
         $order->setUpdatedAt(new \DateTimeImmutable());
+        $order->setUpdatedBy($this->getUser());
 
         $history = new OrderStatusHistory();
-        $history->setStatus($order->getStatus());
+        $history->setStatus('Livrée');
         $history->setChangedBy($this->getUser());
         $history->setCreatedAt(new \DateTimeImmutable());
+        $history->setPurchaseOrder($order);
 
-        $order->addOrderStatusHistory($history);
-
+        $em->persist($history);
         $em->flush();
 
-        $this->addFlash('success', 'Commande livrée : le stock a été basculé en interne.');
+        $this->addFlash('success', 'La commande est désormais marquée comme livrée au client.');
         return $this->redirectToRoute('app_order_show', ['id' => $order->getId()]);
     }
 

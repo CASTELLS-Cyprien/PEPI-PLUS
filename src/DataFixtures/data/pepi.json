@@ -170,7 +170,7 @@
         "data": [
             {
                 "id": "1",
-                "stock_id": "46",
+                "stock_id": "14",
                 "purchase_order_id": "1",
                 "quantity": "10"
             },
@@ -188,7 +188,7 @@
             },
             {
                 "id": "4",
-                "stock_id": "16",
+                "stock_id": "14",
                 "purchase_order_id": "2",
                 "quantity": "15"
             },
@@ -206,7 +206,7 @@
             },
             {
                 "id": "7",
-                "stock_id": "46",
+                "stock_id": "22",
                 "purchase_order_id": "4",
                 "quantity": "30"
             },
@@ -230,7 +230,7 @@
             },
             {
                 "id": "11",
-                "stock_id": "16",
+                "stock_id": "22",
                 "purchase_order_id": "6",
                 "quantity": "40"
             },
@@ -242,7 +242,7 @@
             },
             {
                 "id": "13",
-                "stock_id": "11",
+                "stock_id": "15",
                 "purchase_order_id": "7",
                 "quantity": "25"
             },
@@ -266,7 +266,7 @@
             },
             {
                 "id": "17",
-                "stock_id": "46",
+                "stock_id": "15",
                 "purchase_order_id": "9",
                 "quantity": "50"
             },

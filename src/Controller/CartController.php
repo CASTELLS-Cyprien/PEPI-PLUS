@@ -41,11 +41,7 @@ final class CartController extends AbstractController
     }
 
     #[Route('/validate', name: 'app_cart_validate', methods: ['POST'])]
-    public function validate(
-        CartService $cartService,
-        EntityManagerInterface $em,
-        OrderNotificationService $notificationService
-    ): Response {
+    public function validate(CartService $cartService, EntityManagerInterface $em, OrderNotificationService $notificationService): Response {
         $items = $cartService->getFullCart();
         if (empty($items)) {
             return $this->redirectToRoute('app_cart_index');
@@ -55,6 +51,7 @@ final class CartController extends AbstractController
         $year = (new \DateTime())->format('Y');
         $lastOrder = $em->getRepository(Order::class)->findOneBy([], ['id' => 'DESC']);
         $nextNumber = $lastOrder ? (int) substr($lastOrder->getOrderNumber(), -3) + 1 : 1;
+
         $order->setOrderNumber('CMD-' . $year . '-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT));
         $order->setStatus('Réservation');
         $order->setCreatedAt(new \DateTimeImmutable());
@@ -72,38 +69,35 @@ final class CartController extends AbstractController
             $line->setPurchaseOrder($order);
             $order->addOrderLine($line);
 
-            // Décrémentation immédiate du stock
+            // Décrémentation immédiate de la SOURCE (Réel ou Virtuel)
             $stock->setQuantity($stock->getQuantity() - $qty);
             $stock->setUpdatedAt(new \DateTimeImmutable());
 
             $em->persist($line);
         }
 
-        // Création de l'historique
         $history = new OrderStatusHistory();
         $history->setStatus('Réservation');
         $history->setChangedBy($this->getUser());
         $history->setCreatedAt(new \DateTimeImmutable());
-
         $order->addOrderStatusHistory($history);
 
         $em->persist($order);
         $em->flush();
 
-        // Envoi des emails aux partenaires
+        // Notification : Le service doit filtrer pour n'envoyer qu'aux partenaires concernés
         // try {
         //     $notificationService->notifyPartnersForOrder($order);
-        //     $this->addFlash('success', 'Emails envoyés aux partenaires.');
         // } catch (\Exception $e) {
-        //     // On log l'erreur mais on continue
-        //     $this->addFlash('warning', 'Erreur email : ' . $e->getMessage());
+        //     $this->addFlash('warning', 'Commande créée, mais erreur lors de l\'envoi des emails.');
         // }
 
         $cartService->clear();
 
-        $this->addFlash('success', 'Commande créée avec succès.');
+        $this->addFlash('success', 'Commande client enregistrée avec succès.');
         return $this->redirectToRoute('app_order_show', ['id' => $order->getId()]);
     }
+    
     #[Route('/update/{id}', name: 'app_cart_update', methods: ['POST'])]
     public function update(int $id, Request $request, CartService $cartService, \App\Repository\StockRepository $stockRepository): Response
     {
