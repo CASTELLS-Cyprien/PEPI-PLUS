@@ -26,22 +26,22 @@
 		{# Content #}
 		<div class="sm:px-8 lg:px-8 py-8">
 			{% if editOrder %}
-				<div class="mb-6 bg-indigo-50 border-l-4 border-indigo-400 p-4 rounded-r-lg shadow-sm flex justify-between items-center">
+				<div class="mb-6 bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg shadow-sm flex justify-between items-center">
 					<div class="flex items-center">
 						<div class="flex-shrink-0">
-							<twig:ux:icon name="mingcute:information-line" class="h-5 w-5 text-indigo-400"/>
+							<twig:ux:icon name="mingcute:information-line" class="h-5 w-5 text-blue-400"/>
 						</div>
 						<div class="ml-3">
-							<p class="text-sm text-indigo-700">
+							<p class="text-sm text-blue-700">
 								Mode ajout activé pour la commande
 								<span class="font-bold">#{{ editOrder.orderNumber }}</span>.
 								<br>
-								<span class="text-xs text-indigo-500 italic">Utilisez l'icône verte (+) pour ajouter un article à cette commande.</span>
+								<span class="text-xs text-blue-500 italic">Utilisez l'icône verte (+) pour ajouter un article à cette commande.</span>
 							</p>
 						</div>
 					</div>
 					<div>
-						<a href="{{ path('app_stock_index') }}" class="text-xs font-medium text-indigo-600 hover:text-indigo-500 bg-white px-3 py-1 rounded-full border border-indigo-200 transition-all">
+						<a href="{{ path('app_stock_index') }}" class="text-xs font-medium text-blue-600 hover:text-blue-500 bg-white px-3 py-1 rounded-full border border-blue-200 transition-all">
 							Quitter le mode ajout
 						</a>
 					</div>

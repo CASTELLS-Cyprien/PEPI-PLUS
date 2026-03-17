@@ -347,7 +347,7 @@ Modules : **AUTH** (authentification), **DASH** (tableau de bord), **STOCK** (st
 | **Flash succès** | `bg-green-50 border-green-200 text-green-800` |
 | **Flash erreur** | `bg-red-50 border-red-200 text-red-800` |
 | **Icônes actions – voir** | `text-green-600 hover:text-green-900` |
-| **Icônes actions – modifier** | `text-blue-600 hover:text-blue-900` (aussi `text-indigo-600` pour commandes) |
+| **Icônes actions – modifier** | `text-blue-600 hover:text-blue-900` (aussi `text-blue-600` pour commandes) |
 | **Bouton panier** | `text-blue-600 bg-blue-50 rounded-lg` |
 | **Typographie titre** | Google Fonts : **Montserrat** (weight 500, 600, 700) |
 | **Typographie corps** | Google Fonts : **Open Sans** (weight 300, 400, 600) |

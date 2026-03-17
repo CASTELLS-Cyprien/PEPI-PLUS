@@ -27,7 +27,7 @@
 
 				{# Bouton Icône Filtres (si filterForm existe) #}
 				{% if filterForm is defined %}
-					<button type="button" @click="open = !open" class="p-1 text-gray-400 hover:text-green-600 transition-colors" :class="{ 'text-indigo-green bg-green-50 rounded': open }">
+					<button type="button" @click="open = !open" class="p-1 text-gray-400 hover:text-green-600 transition-colors" :class="{ 'text-blue-green bg-green-50 rounded': open }">
 						<twig:ux:icon name="lucide:sliders-horizontal" class="w-5 h-5"/>
 					</button>
 				{% endif %}
