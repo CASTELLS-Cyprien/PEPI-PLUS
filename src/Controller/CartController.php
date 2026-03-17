@@ -52,7 +52,10 @@ final class CartController extends AbstractController
         }
 
         $order = new Order();
-        $order->setOrderNumber('CMD-' . strtoupper(bin2hex(random_bytes(4))));
+        $year = (new \DateTime())->format('Y');
+        $lastOrder = $em->getRepository(Order::class)->findOneBy([], ['id' => 'DESC']);
+        $nextNumber = $lastOrder ? (int) substr($lastOrder->getOrderNumber(), -3) + 1 : 1;
+        $order->setOrderNumber('CMD-' . $year . '-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT));
         $order->setStatus('Réservation');
         $order->setCreatedAt(new \DateTimeImmutable());
         $order->setCollaborator($this->getUser());
