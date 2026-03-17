@@ -44,6 +44,11 @@ Pépi+ est une application web complète permettant aux pépiniéristes de gére
 ### Gestion du stock global
 ![Stock](public/img/stock.png)
 
+### Gestion des commandes
+![Stock](public/img/order.png)
+
+### Gestion des users
+![Stock](public/img/users.png)
 </div>
 
 ---
