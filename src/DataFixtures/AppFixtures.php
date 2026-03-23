@@ -2,15 +2,15 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Plant;
-use App\Entity\Partner;
-use App\Entity\Season;
-use App\Entity\Packaging;
-use App\Entity\User;
-use App\Entity\Stock;
 use App\Entity\Order;
 use App\Entity\OrderLine;
 use App\Entity\OrderStatusHistory;
+use App\Entity\Packaging;
+use App\Entity\Partner;
+use App\Entity\Plant;
+use App\Entity\Season;
+use App\Entity\Stock;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -21,11 +21,11 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         // 1. Chargement et décodage du JSON
-        $json = file_get_contents(__DIR__ . '/data/pepi.json');
+        $json = file_get_contents(__DIR__.'/data/pepi.json');
         $data = json_decode($json, true);
 
         foreach ($data as $item) {
-            if (isset($item['type']) && $item['type'] === 'table') {
+            if (isset($item['type']) && 'table' === $item['type']) {
                 $this->tables[$item['name']] = $item['data'];
             }
         }
@@ -57,7 +57,7 @@ class AppFixtures extends Fixture
             $entity = new Packaging();
             $entity->setLabel($row['label']);
             $manager->persist($entity);
-            $this->addReference('packaging_' . $row['id'], $entity);
+            $this->addReference('packaging_'.$row['id'], $entity);
         }
     }
 
@@ -67,7 +67,7 @@ class AppFixtures extends Fixture
             $entity = new Season();
             $entity->setYear($row['year']);
             $manager->persist($entity);
-            $this->addReference('season_' . $row['id'], $entity);
+            $this->addReference('season_'.$row['id'], $entity);
         }
     }
 
@@ -79,7 +79,7 @@ class AppFixtures extends Fixture
             $entity->setCommonName($row['common_name']);
             $entity->setType($row['type']);
             $manager->persist($entity);
-            $this->addReference('plant_' . $row['id'], $entity);
+            $this->addReference('plant_'.$row['id'], $entity);
         }
     }
 
@@ -91,7 +91,7 @@ class AppFixtures extends Fixture
             $entity->setContactDetails($row['contact_details']);
             $entity->setCreatedAt(new \DateTimeImmutable($row['created_at']));
             $manager->persist($entity);
-            $this->addReference('partner_' . $row['id'], $entity);
+            $this->addReference('partner_'.$row['id'], $entity);
         }
     }
 
@@ -107,11 +107,11 @@ class AppFixtures extends Fixture
             $entity->setIsActive((bool) $row['is_active']);
 
             if (!empty($row['partner_id'])) {
-                $entity->setPartner($this->getReference('partner_' . $row['partner_id'], Partner::class));
+                $entity->setPartner($this->getReference('partner_'.$row['partner_id'], Partner::class));
             }
 
             $manager->persist($entity);
-            $this->addReference('user_' . $row['id'], $entity);
+            $this->addReference('user_'.$row['id'], $entity);
         }
     }
 
@@ -123,24 +123,24 @@ class AppFixtures extends Fixture
             $entity->setCreatedAt(new \DateTimeImmutable($row['created_at']));
             $entity->setUpdatedAt(new \DateTimeImmutable($row['updated_at']));
 
-            $entity->setPlant($this->getReference('plant_' . $row['plant_id'], Plant::class));
-            $entity->setPackaging($this->getReference('packaging_' . $row['packaging_id'], Packaging::class));
-            $entity->setSeason($this->getReference('season_' . $row['season_id'], Season::class));
+            $entity->setPlant($this->getReference('plant_'.$row['plant_id'], Plant::class));
+            $entity->setPackaging($this->getReference('packaging_'.$row['packaging_id'], Packaging::class));
+            $entity->setSeason($this->getReference('season_'.$row['season_id'], Season::class));
 
             if (!empty($row['partner_id'])) {
-                $entity->setPartner($this->getReference('partner_' . $row['partner_id'], Partner::class));
+                $entity->setPartner($this->getReference('partner_'.$row['partner_id'], Partner::class));
             }
 
             // RÉPARATION : Import du créateur et du modificateur
             if (!empty($row['created_by_id'])) {
-                $entity->setCreatedBy($this->getReference('user_' . $row['created_by_id'], User::class));
+                $entity->setCreatedBy($this->getReference('user_'.$row['created_by_id'], User::class));
             }
             if (!empty($row['updated_by_id'])) {
-                $entity->setUpdatedBy($this->getReference('user_' . $row['updated_by_id'], User::class));
+                $entity->setUpdatedBy($this->getReference('user_'.$row['updated_by_id'], User::class));
             }
 
             $manager->persist($entity);
-            $this->addReference('stock_' . $row['id'], $entity);
+            $this->addReference('stock_'.$row['id'], $entity);
         }
     }
 
@@ -153,14 +153,14 @@ class AppFixtures extends Fixture
             $entity->setCreatedAt(new \DateTimeImmutable($row['created_at']));
             $entity->setUpdatedAt(new \DateTimeImmutable($row['updated_at']));
 
-            $entity->setCollaborator($this->getReference('user_' . $row['collaborator_id'], User::class));
-            
+            $entity->setCollaborator($this->getReference('user_'.$row['collaborator_id'], User::class));
+
             if (!empty($row['updated_by_id'])) {
-                $entity->setUpdatedBy($this->getReference('user_' . $row['updated_by_id'], User::class));
+                $entity->setUpdatedBy($this->getReference('user_'.$row['updated_by_id'], User::class));
             }
 
             $manager->persist($entity);
-            $this->addReference('order_' . $row['id'], $entity);
+            $this->addReference('order_'.$row['id'], $entity);
         }
     }
 
@@ -169,10 +169,10 @@ class AppFixtures extends Fixture
         foreach ($this->tables['order_line'] ?? [] as $row) {
             $entity = new OrderLine();
             $entity->setQuantity((int) $row['quantity']);
-            $entity->setStock($this->getReference('stock_' . $row['stock_id'], Stock::class));
-            
+            $entity->setStock($this->getReference('stock_'.$row['stock_id'], Stock::class));
+
             // RÉPARATION : Utilisation de purchase_order_id
-            $entity->setPurchaseOrder($this->getReference('order_' . $row['purchase_order_id'], Order::class));
+            $entity->setPurchaseOrder($this->getReference('order_'.$row['purchase_order_id'], Order::class));
 
             $manager->persist($entity);
         }
@@ -184,9 +184,9 @@ class AppFixtures extends Fixture
             $entity = new OrderStatusHistory();
             $entity->setStatus($row['status']);
             $entity->setCreatedAt(new \DateTimeImmutable($row['created_at']));
-            
-            $entity->setPurchaseOrder($this->getReference('order_' . $row['purchase_order_id'], Order::class));
-            $entity->setChangedBy($this->getReference('user_' . $row['changed_by_id'], User::class));
+
+            $entity->setPurchaseOrder($this->getReference('order_'.$row['purchase_order_id'], Order::class));
+            $entity->setChangedBy($this->getReference('user_'.$row['changed_by_id'], User::class));
 
             $manager->persist($entity);
         }

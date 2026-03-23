@@ -9,8 +9,9 @@ class CartService
 {
     public function __construct(
         private RequestStack $requestStack,
-        private StockRepository $stockRepository
-    ) {}
+        private StockRepository $stockRepository,
+    ) {
+    }
 
     public function add(int $id, int $quantity, bool $replace = false): void
     {
@@ -31,6 +32,7 @@ class CartService
 
         $session->set('cart', $cart);
     }
+
     public function getFullCart(): array
     {
         $session = $this->requestStack->getSession();
@@ -42,10 +44,11 @@ class CartService
             if ($stock) {
                 $cartData[] = [
                     'stock' => $stock,
-                    'quantity' => $quantity
+                    'quantity' => $quantity,
                 ];
             }
         }
+
         return $cartData;
     }
 
@@ -53,7 +56,9 @@ class CartService
     {
         $session = $this->requestStack->getSession();
         $cart = $session->get('cart', []);
-        if (isset($cart[$id])) unset($cart[$id]);
+        if (isset($cart[$id])) {
+            unset($cart[$id]);
+        }
         $session->set('cart', $cart);
     }
 

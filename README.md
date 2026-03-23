@@ -17,9 +17,9 @@
 
 ---
 
-##  À propos du projet
+## À propos du projet
 
-Pépi+ est une application web complète permettant aux pépiniéristes de gérer efficacement leurs stocks de plants, leurs commandes et leurs partenaires fournisseurs. L'application répond à la traçabilité correspond aussi aux régles UI/UX.
+Pépi+ est une application web complète permettant aux pépiniéristes de gérer efficacement leurs stocks de plants, leurs commandes et leurs partenaires fournisseurs. L'application répond à la traçabilité et correspond aussi aux règles UI/UX.
 
 ### Objectifs
 
@@ -47,7 +47,6 @@ Pépi+ est une application web complète permettant aux pépiniéristes de gére
 ### Visualisation d'une commande
 ![Stock](public/img/orderShow.png)
 
-
 </div>
 
 ---
@@ -60,7 +59,7 @@ Pépi+ est une application web complète permettant aux pépiniéristes de gére
   - Vue d'ensemble de l'activité
   - Alertes stock en temps réel
   - Dernières commandes
-  
+
 - **Gestion complète des stocks**
   - Visualisation du stock global (réel + virtuel)
   - Recherche et filtres avancés
@@ -71,19 +70,13 @@ Pépi+ est une application web complète permettant aux pépiniéristes de gére
   - Réservation automatique des plants disponibles
   - Historique des statuts
   - Impact automatique sur les stocks
-  
-  - **Administration**
-  - Gestion des utilisateurs (collaborateurs et partenaires)
-  - Gestion des partenaires fournisseurs
-  - Catalogue des plants (noms latin/commun, types)
-  - Gestion des conditionnements et saisons
-  
+
 ### Pour les admin
 
 - **Administration**
   - Gestion des utilisateurs (collaborateurs et partenaires)
   - Gestion des partenaires fournisseurs
-  - A les même droit que les collaborateur
+  - A les mêmes droits que les collaborateurs
 
 ### Pour les partenaires
 
@@ -152,7 +145,6 @@ php bin/console doctrine:fixtures:load
 ```
 Si besoin, les exports de la base de données sont stockés dans **/var/backups/db_export_xxxx-xx-xx.sql**
 
-
 6. **Compiler les assets**
 ```bash
 npm run build
@@ -183,6 +175,74 @@ Pour tester l'application, utilisez les identifiants suivants :
 
 ---
 
+## Documentation
+
+### Documents disponibles
+
+Tous les documents sont disponibles dans le dossier `assets/` :
+
+- **Cahier des charges** : `assets/document/CdC_PepiPlus.pdf`
+- **MCD** (Schéma conceptuel) : `assets/schema/MCD.pdf`
+- **MLD** (Schéma logique) : `assets/schema/MLD.pdf`
+
+---
+
+#### Structure des commentaires
+
+Chaque classe, méthode et propriété suit le format suivant :
+
+```php
+/**
+ * Description courte de la classe ou méthode.
+ *
+ * Description longue optionnelle expliquant le comportement,
+ * les règles métier associées et les cas particuliers.
+ *
+ * @param Type  $parametre  Description du paramètre.
+ * @param Type  $autre      Description du second paramètre.
+ *
+ * @return Type Description de la valeur retournée.
+ *
+ * @throws ExceptionType Dans quel cas l'exception est levée.
+ *
+ * @author CASTELLS Cyprien
+ * @version 1.2
+ */
+```
+
+#### Fichiers commentés
+
+| Dossier | Fichiers documentés |
+|---|---|
+| `src/Controller/` | DashboardController, CartController, OrderController, OrderLineController, PackagingController, PlantController, PartnerController, StockController, SeasonController, SecurityController, UserController |
+| `src/Entity/` | Order, Stock (et toutes les entités associées) |
+| `src/Repository/` | OrderRepository, StockRepository, OrderLineRepository, PartnerRepository |
+| `src/Model/` | OrderFilterData, StockFilterData |
+
+#### Générer la documentation HTML
+
+La documentation peut être générée localement avec **PHPDocumentor** :
+
+1. Télécharge le fichier `.phar` :
+```powershell
+Invoke-WebRequest -Uri "https://github.com/phpDocumentor/phpDocumentor/releases/download/v3.9.1/phpDocumentor.phar" -OutFile "phpDocumentor.phar"
+```
+
+2. Génère la documentation :
+```bash
+php phpDocumentor.phar -d src/ -t public/api-docs
+```
+
+## 🔐 Sécurité et Accès
+
+Pour éviter d'exposer l'architecture du code en production, la documentation est générée dans un dossier non-public et protégée par le composant Security de Symfony.
+
+* **Accès :** `http://localhost:8000/admin/doc`
+* **Rôle requis :** `ROLE_ADMIN`
+* **Stockage :** `var/api-docs/` (Ignoré par Git)
+
+---
+
 ### Schémas disponibles
 
 Les schémas détaillés sont disponibles dans le dossier `assets/` :
@@ -196,34 +256,27 @@ Les schémas détaillés sont disponibles dans le dossier `assets/` :
 ```
 PEPI-PLUS/
 ├── assets/              # Documentation (MCD, MLD, CDC)
-├── config/             # Configuration Symfony
-├── public/             # Point d'entrée et assets compilés
-│   └── img/            # Captures d'écran
+├── config/              # Configuration Symfony
+├── docs/
+│   └── api/             # Documentation PHPDoc générée (ignorée par Git)
+├── public/              # Point d'entrée et assets compilés
+│   └── img/             # Captures d'écran
 ├── src/
-│   ├── Controller/     # Contrôleurs
-│   ├── Entity/         # Entités Doctrine
-│   ├── Form/           # Formulaires
-│   ├── Repository/     # Repositories
-│   └── Security/       # Configuration sécurité
-├── templates/          # Templates Twig
-└── migrations/         # Migrations de base de données
+│   ├── Controller/      # Contrôleurs (commentés PHPDoc)
+│   ├── Entity/          # Entités Doctrine (commentées PHPDoc)
+│   ├── Form/            # Formulaires
+│   ├── Model/           # DTOs de filtrage (commentés PHPDoc)
+│   ├── Repository/      # Repositories (commentés PHPDoc)
+│   └── Security/        # Configuration sécurité
+├── templates/           # Templates Twig
+├── migrations/          # Migrations de base de données
 └── var/
-    └── backups/        # Export de base de données 
+    └── backups/         # Export de base de données
 ```
 
 ---
 
-## Documentation
-
-### Documents disponibles
-
-Tous les documents sont disponibles dans le dossier `assets/` :
-
-- **Cahier des charges** : `assets/document/CdC_PepiPlus.pdf`
-- **MCD** (Schéma conceptuel) : `assets/schema/MCD.pdf`
-- **MLD** (Schéma logique) : `assets/schema/LD.pdf`
-
-### Commandes utiles
+## Commandes utiles
 
 ```bash
 # Créer une nouvelle migration
@@ -238,10 +291,17 @@ php bin/console doctrine:fixtures:load
 # Vider le cache
 php bin/console cache:clear
 
-# Supprimer la base de donnée
+# Supprimer la base de données
 php bin/console doctrine:database:drop --force
+
+# Générer la documentation PHPDoc
+php phpDocumentor.phar -d src/ -t public/api-docs
+
+# Corriger le style du code (normes Symfony)
+vendor/bin/php-cs-fixer fix src/
 ```
 
+---
 
 ## Contexte académique
 

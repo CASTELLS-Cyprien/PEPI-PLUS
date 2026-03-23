@@ -23,13 +23,13 @@ class ExportFixturesCommand extends Command
 
         // L'ordre doit respecter les dépendances de votre MLD [cite: 210, 251, 235]
         $entities = [
-            'Season'    => \App\Entity\Season::class,   // [cite: 276]
-            'Plant'     => \App\Entity\Plant::class,    // [cite: 210]
-            'Partner'   => \App\Entity\Partner::class,  // [cite: 306]
-            'User'      => \App\Entity\User::class,     // [cite: 258]
-            'Stock'     => \App\Entity\Stock::class,    // [cite: 251]
-            'Order'     => \App\Entity\Order::class,    // [cite: 235]
-            'OrderLine' => \App\Entity\OrderLine::class // [cite: 216]
+            'Season' => \App\Entity\Season::class,   // [cite: 276]
+            'Plant' => \App\Entity\Plant::class,    // [cite: 210]
+            'Partner' => \App\Entity\Partner::class,  // [cite: 306]
+            'User' => \App\Entity\User::class,     // [cite: 258]
+            'Stock' => \App\Entity\Stock::class,    // [cite: 251]
+            'Order' => \App\Entity\Order::class,    // [cite: 235]
+            'OrderLine' => \App\Entity\OrderLine::class, // [cite: 216]
         ];
 
         $phpCode = "<?php\n\nnamespace App\DataFixtures;\n\nuse Doctrine\Bundle\FixturesBundle\Fixture;\nuse Doctrine\Persistence\ObjectManager;\n";
@@ -38,7 +38,7 @@ class ExportFixturesCommand extends Command
 
         foreach ($entities as $shortName => $class) {
             $items = $this->entityManager->getRepository($class)->findAll();
-            $io->writeln("Exportation de : $shortName (" . count($items) . " lignes)");
+            $io->writeln("Exportation de : $shortName (".count($items).' lignes)');
 
             foreach ($items as $item) {
                 $id = $item->getId();
@@ -48,7 +48,9 @@ class ExportFixturesCommand extends Command
                 $reflect = new \ReflectionClass($item);
                 foreach ($reflect->getProperties() as $prop) {
                     $name = ucfirst($prop->getName());
-                    if ($name === 'Id') continue;
+                    if ('Id' === $name) {
+                        continue;
+                    }
 
                     $getter = "get$name";
                     $setter = "set$name";
@@ -60,7 +62,7 @@ class ExportFixturesCommand extends Command
                             // Détection du type (DateTime ou DateTimeImmutable)
                             $setterParam = new \ReflectionParameter([$item, $setter], 0);
                             $type = $setterParam->getType()?->getName();
-                            $dateClass = ($type === 'DateTimeImmutable') ? '\DateTimeImmutable' : '\DateTime';
+                            $dateClass = ('DateTimeImmutable' === $type) ? '\DateTimeImmutable' : '\DateTime';
 
                             // On utilise la date réelle, sinon 'now' si la donnée est corrompue/nulle
                             $dateStr = $val ? $val->format('Y-m-d H:i:s') : 'now';
@@ -71,7 +73,7 @@ class ExportFixturesCommand extends Command
                             $targetKey = "{$targetShortName}_{$val->getId()}";
                             $phpCode .= "        if (isset(\$entities['{$targetKey}'])) \$entities['{$refKey}']->{$setter}(\$entities['{$targetKey}']);\n";
                         } else {
-                            $phpCode .= "        \$entities['{$refKey}']->{$setter}(" . var_export($val, true) . ");\n";
+                            $phpCode .= "        \$entities['{$refKey}']->{$setter}(".var_export($val, true).");\n";
                         }
                     }
                 }

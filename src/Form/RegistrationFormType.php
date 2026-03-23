@@ -12,23 +12,47 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * Formulaire d'inscription d'un nouvel utilisateur.
+ *
+ * Utilisé dans {@see RegistrationController::register()}.
+ * Expose trois champs :
+ * - `email` : adresse email de connexion (mappé sur l'entité)
+ * - `agreeTerms` : case à cocher CGU (non mappé, validation seule)
+ * - `plainPassword` : mot de passe en clair (non mappé, haché dans le contrôleur)
+ *
+ * Contraintes sur le mot de passe :
+ * - Obligatoire (NotBlank)
+ * - Minimum 6 caractères (Length)
+ *
+ * @author CASTELLS Cyprien
+ *
+ * @version 1.2
+ */
 class RegistrationFormType extends AbstractType
 {
+    /**
+     * Construit le formulaire d'inscription.
+     *
+     * @param FormBuilderInterface $builder constructeur de formulaire Symfony
+     * @param array<string, mixed> $options options du formulaire
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            // Email de connexion (mappé sur l'entité User)
             ->add('email')
+            // Case à cocher CGU — non mappée, validation uniquement
             ->add('agreeTerms', CheckboxType::class, [
-                                'mapped' => false,
+                'mapped' => false,
                 'constraints' => [
                     new IsTrue([
                         'message' => 'You should agree to our terms.',
                     ]),
                 ],
             ])
+            // Mot de passe en clair — non mappé, haché manuellement dans le contrôleur
             ->add('plainPassword', PasswordType::class, [
-                                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
@@ -38,14 +62,18 @@ class RegistrationFormType extends AbstractType
                     new Length([
                         'min' => 6,
                         'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
+                        // Limite maximale imposée par Symfony pour des raisons de sécurité
                         'max' => 4096,
                     ]),
                 ],
-            ])
-        ;
+            ]);
     }
 
+    /**
+     * Configure les options du formulaire.
+     *
+     * @param OptionsResolver $resolver résolveur d'options Symfony
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
