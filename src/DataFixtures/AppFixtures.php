@@ -18,17 +18,19 @@ use Doctrine\Persistence\ObjectManager;
  * Classe de chargement des données initiales de l'application.
  *
  * Cette classe orchestre l'importation de données complexes depuis un fichier JSON.
- * Elle gère l'ordre des dépendances entre les entités (parents avant enfants) et 
+ * Elle gère l'ordre des dépendances entre les entités (parents avant enfants) et
  * utilise le système de références de Doctrine pour lier les objets entre eux.
  *
  * @author CASTELLS Cyprien
+ *
  * @version 1.2
  */
 class AppFixtures extends Fixture
 {
     /**
      * Stockage temporaire des données brutes extraites du JSON.
-     * * @var array $tables Tableau associatif où chaque clé est le nom d'une table.
+     *
+     * * @var array Tableau associatif où chaque clé est le nom d'une table
      */
     private array $tables = [];
 
@@ -38,11 +40,10 @@ class AppFixtures extends Fixture
      * Charge le fichier JSON, décode les données et appelle les méthodes d'importation
      * spécifiques dans un ordre chronologique pour respecter l'intégrité référentielle.
      *
-     * @param ObjectManager $manager Le gestionnaire d'entités de Doctrine.
-     *
-     * @return void
+     * @param ObjectManager $manager le gestionnaire d'entités de Doctrine
      *
      * @author CASTELLS Cyprien
+     *
      * @version 1.2
      */
     public function load(ObjectManager $manager): void
@@ -81,9 +82,10 @@ class AppFixtures extends Fixture
     /**
      * Importation des types de conditionnement.
      *
-     * @param ObjectManager $manager Le gestionnaire d'entités.
-     * @return void
+     * @param ObjectManager $manager le gestionnaire d'entités
+     *
      * * @author CASTELLS Cyprien
+     *
      * @version 1.2
      */
     private function importPackagings(ObjectManager $manager): void
@@ -99,9 +101,10 @@ class AppFixtures extends Fixture
     /**
      * Importation des saisons de production.
      *
-     * @param ObjectManager $manager Le gestionnaire d'entités.
-     * @return void
+     * @param ObjectManager $manager le gestionnaire d'entités
+     *
      * * @author CASTELLS Cyprien
+     *
      * @version 1.2
      */
     private function importSeasons(ObjectManager $manager): void
@@ -117,9 +120,10 @@ class AppFixtures extends Fixture
     /**
      * Importation du catalogue de plantes.
      *
-     * @param ObjectManager $manager Le gestionnaire d'entités.
-     * @return void
+     * @param ObjectManager $manager le gestionnaire d'entités
+     *
      * * @author CASTELLS Cyprien
+     *
      * @version 1.2
      */
     private function importPlants(ObjectManager $manager): void
@@ -137,9 +141,10 @@ class AppFixtures extends Fixture
     /**
      * Importation des partenaires (pépinières, fournisseurs, etc.).
      *
-     * @param ObjectManager $manager Le gestionnaire d'entités.
-     * @return void
+     * @param ObjectManager $manager le gestionnaire d'entités
+     *
      * * @author CASTELLS Cyprien
+     *
      * @version 1.2
      */
     private function importPartners(ObjectManager $manager): void
@@ -157,9 +162,10 @@ class AppFixtures extends Fixture
     /**
      * Importation des utilisateurs du système.
      *
-     * @param ObjectManager $manager Le gestionnaire d'entités.
-     * @return void
+     * @param ObjectManager $manager le gestionnaire d'entités
+     *
      * * @author CASTELLS Cyprien
+     *
      * @version 1.2
      */
     private function importUsers(ObjectManager $manager): void
@@ -184,12 +190,13 @@ class AppFixtures extends Fixture
 
     /**
      * Importation des stocks de plantes.
-     * * Lie les stocks aux plantes, packagings, saisons et partenaires 
+     * * Lie les stocks aux plantes, packagings, saisons et partenaires
      * ainsi qu'aux utilisateurs ayant créé ou modifié l'entrée.
      *
-     * @param ObjectManager $manager Le gestionnaire d'entités.
-     * @return void
+     * @param ObjectManager $manager le gestionnaire d'entités
+     *
      * * @author CASTELLS Cyprien
+     *
      * @version 1.2
      */
     private function importStocks(ObjectManager $manager): void
@@ -223,9 +230,10 @@ class AppFixtures extends Fixture
     /**
      * Importation des commandes (en-têtes).
      *
-     * @param ObjectManager $manager Le gestionnaire d'entités.
-     * @return void
+     * @param ObjectManager $manager le gestionnaire d'entités
+     *
      * * @author CASTELLS Cyprien
+     *
      * @version 1.2
      */
     private function importOrders(ObjectManager $manager): void
@@ -251,9 +259,10 @@ class AppFixtures extends Fixture
     /**
      * Importation des lignes de commande détaillées.
      *
-     * @param ObjectManager $manager Le gestionnaire d'entités.
-     * @return void
+     * @param ObjectManager $manager le gestionnaire d'entités
+     *
      * * @author CASTELLS Cyprien
+     *
      * @version 1.2
      */
     private function importOrderLines(ObjectManager $manager): void
@@ -271,9 +280,10 @@ class AppFixtures extends Fixture
     /**
      * Importation de l'historique des statuts de commande.
      *
-     * @param ObjectManager $manager Le gestionnaire d'entités.
-     * @return void
+     * @param ObjectManager $manager le gestionnaire d'entités
+     *
      * * @author CASTELLS Cyprien
+     *
      * @version 1.2
      */
     private function importOrderStatusHistory(ObjectManager $manager): void

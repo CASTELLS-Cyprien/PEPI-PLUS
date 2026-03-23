@@ -20,14 +20,13 @@ namespace App\Model;
  * portées par `updatedAtStart`/`updatedAtEnd` et `createdAtStart`/`createdAtEnd`.
  *
  * @author CASTELLS Cyprien
+ *
  * @version 1.2
  */
 class OrderFilterData
 {
     /**
      * Terme de recherche textuelle sur le numéro de commande.
-     *
-     * @var string|null
      */
     public ?string $query = null;
 
@@ -35,8 +34,6 @@ class OrderFilterData
      * Filtre par statut exact de la commande.
      *
      * Valeurs possibles : "Réservation", "Livrée", "Annulée".
-     *
-     * @var string|null
      */
     public ?string $status = null;
 
@@ -45,22 +42,16 @@ class OrderFilterData
      *
      * Champ non mappé en base, utilisé uniquement pour l'affichage
      * et l'initialisation du composant flatpickr côté interface.
-     *
-     * @var string|null
      */
     public ?string $updatedAtRange = null;
 
     /**
      * Borne inférieure de la plage de dates de mise à jour (incluse).
-     *
-     * @var \DateTimeInterface|null
      */
     public ?\DateTimeInterface $updatedAtStart = null;
 
     /**
      * Borne supérieure de la plage de dates de mise à jour (incluse).
-     *
-     * @var \DateTimeInterface|null
      */
     public ?\DateTimeInterface $updatedAtEnd = null;
 
@@ -69,22 +60,16 @@ class OrderFilterData
      *
      * Champ non mappé en base, utilisé uniquement pour l'affichage
      * et l'initialisation du composant flatpickr côté interface.
-     *
-     * @var string|null
      */
     public ?string $createdAtRange = null;
 
     /**
      * Borne inférieure de la plage de dates de création (incluse).
-     *
-     * @var \DateTimeInterface|null
      */
     public ?\DateTimeInterface $createdAtStart = null;
 
     /**
      * Borne supérieure de la plage de dates de création (incluse).
-     *
-     * @var \DateTimeInterface|null
      */
     public ?\DateTimeInterface $createdAtEnd = null;
 }

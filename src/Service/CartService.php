@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
  * pas dans ce service.
  *
  * @author CASTELLS Cyprien
+ *
  * @version 1.2
  */
 class CartService
@@ -31,8 +32,8 @@ class CartService
     /**
      * Initialise le service avec les dépendances nécessaires.
      *
-     * @param RequestStack    $requestStack    Pile de requêtes pour accéder à la session.
-     * @param StockRepository $stockRepository Repository pour hydrater les stocks depuis les IDs en session.
+     * @param RequestStack    $requestStack    pile de requêtes pour accéder à la session
+     * @param StockRepository $stockRepository repository pour hydrater les stocks depuis les IDs en session
      */
     public function __construct(
         private RequestStack $requestStack,
@@ -49,9 +50,9 @@ class CartService
      * - **Mode remplacement** (`replace = true`) : remplace directement la quantité.
      *   Utilisé depuis la vue panier lors de la modification d'une quantité.
      *
-     * @param int  $id       Identifiant du stock à ajouter.
-     * @param int  $quantity Quantité souhaitée (doit être > 0).
-     * @param bool $replace  `true` pour remplacer, `false` pour additionner (défaut).
+     * @param int  $id       identifiant du stock à ajouter
+     * @param int  $quantity quantité souhaitée (doit être > 0)
+     * @param bool $replace  `true` pour remplacer, `false` pour additionner (défaut)
      */
     public function add(int $id, int $quantity, bool $replace = false): void
     {
@@ -81,9 +82,9 @@ class CartService
      * (cas de suppression d'un stock entre temps).
      *
      * @return array<int, array{stock: \App\Entity\Stock, quantity: int}>
-     *         Tableau indexé numériquement, chaque entrée contient :
-     *         - `stock` : l'objet Stock hydraté
-     *         - `quantity` : la quantité souhaitée dans le panier
+     *                                                                    Tableau indexé numériquement, chaque entrée contient :
+     *                                                                    - `stock` : l'objet Stock hydraté
+     *                                                                    - `quantity` : la quantité souhaitée dans le panier
      */
     public function getFullCart(): array
     {
@@ -111,7 +112,7 @@ class CartService
      * Si l'identifiant n'est pas présent dans le panier, l'opération
      * est silencieuse (pas d'exception).
      *
-     * @param int $id Identifiant du stock à retirer du panier.
+     * @param int $id identifiant du stock à retirer du panier
      */
     public function remove(int $id): void
     {

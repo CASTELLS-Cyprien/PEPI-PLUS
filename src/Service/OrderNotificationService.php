@@ -26,6 +26,7 @@ use Symfony\Component\Mime\Address;
  * l'appel est commenté et peut être réactivé en décommentant le bloc try/catch.
  *
  * @author CASTELLS Cyprien
+ *
  * @version 1.2
  */
 class OrderNotificationService
@@ -33,8 +34,8 @@ class OrderNotificationService
     /**
      * Initialise le service avec les dépendances d'envoi d'emails et de logging.
      *
-     * @param MailerInterface $mailer Service d'envoi d'emails Symfony Mailer.
-     * @param LoggerInterface $logger Service de journalisation PSR-3.
+     * @param MailerInterface $mailer service d'envoi d'emails Symfony Mailer
+     * @param LoggerInterface $logger service de journalisation PSR-3
      */
     public function __construct(
         private MailerInterface $mailer,
@@ -55,7 +56,7 @@ class OrderNotificationService
      *    de 5 secondes entre chaque envoi (protection anti-spam SMTP).
      *    Les erreurs d'envoi sont loguées sans bloquer les envois suivants.
      *
-     * @param Order $order La commande validée dont les partenaires doivent être notifiés.
+     * @param Order $order la commande validée dont les partenaires doivent être notifiés
      */
     public function notifyPartnersForOrder(Order $order): void
     {
@@ -67,7 +68,7 @@ class OrderNotificationService
 
             // Vérification de la chaîne complète stock → partenaire
             if (!$stock || !$stock->getPartner()) {
-                $this->logger->warning('Ligne de commande sans partenaire : ID ' . $line->getId());
+                $this->logger->warning('Ligne de commande sans partenaire : ID '.$line->getId());
                 continue;
             }
 
@@ -104,7 +105,7 @@ class OrderNotificationService
             }
 
             if (empty($recipients)) {
-                $this->logger->error('Aucun email configuré pour le partenaire : ' . $partner->getCompanyName());
+                $this->logger->error('Aucun email configuré pour le partenaire : '.$partner->getCompanyName());
                 continue;
             }
 
@@ -113,7 +114,7 @@ class OrderNotificationService
                     ->from(new Address('contact@pepiplus.fr', 'Pépi+'))
                     // Envoi à tous les utilisateurs du partenaire en un seul email
                     ->to(...$recipients)
-                    ->subject('Nouvelle commande #' . $order->getOrderNumber())
+                    ->subject('Nouvelle commande #'.$order->getOrderNumber())
                     ->htmlTemplate('emails/order_notification_partner.html.twig')
                     ->context([
                         'order' => $order,
@@ -122,13 +123,13 @@ class OrderNotificationService
                     ]);
 
                 $this->mailer->send($email);
-                $this->logger->info('Email de notification envoyé à : ' . $partner->getCompanyName());
+                $this->logger->info('Email de notification envoyé à : '.$partner->getCompanyName());
 
                 // Délai anti-spam entre les envois successifs
                 sleep(5);
             } catch (\Exception $e) {
                 // L'erreur est loguée mais ne bloque pas les notifications aux autres partenaires
-                $this->logger->error("Erreur envoi email partenaire ID $partnerId : " . $e->getMessage());
+                $this->logger->error("Erreur envoi email partenaire ID $partnerId : ".$e->getMessage());
             }
         }
     }

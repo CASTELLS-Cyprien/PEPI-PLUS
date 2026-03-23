@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,8 +12,8 @@ class DocController extends AbstractController
     public function displayDoc(string $path = 'index.html'): BinaryFileResponse
     {
         // Chemin vers le dossier où tu as généré la doc
-        $docDir = $this->getParameter('kernel.project_dir') . '/var/api-docs/';
-        
-        return new BinaryFileResponse($docDir . $path);
+        $docDir = $this->getParameter('kernel.project_dir').'/var/api-docs/';
+
+        return new BinaryFileResponse($docDir.$path);
     }
 }

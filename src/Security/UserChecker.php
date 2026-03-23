@@ -23,6 +23,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * Symfony (`security.yaml`) via la clé `user_checker`.
  *
  * @author CASTELLS Cyprien
+ *
  * @version 1.2
  */
 class UserChecker implements UserCheckerInterface
@@ -34,9 +35,9 @@ class UserChecker implements UserCheckerInterface
      * Cette vérification est faite en pré-authentification pour éviter
      * une vérification inutile du mot de passe sur un compte désactivé.
      *
-     * @param UserInterface $user L'utilisateur tentant de se connecter.
+     * @param UserInterface $user L'utilisateur tentant de se connecter
      *
-     * @throws CustomUserMessageAuthenticationException Si le compte est désactivé.
+     * @throws CustomUserMessageAuthenticationException si le compte est désactivé
      */
     public function checkPreAuth(UserInterface $user): void
     {
@@ -47,9 +48,7 @@ class UserChecker implements UserCheckerInterface
 
         if (!$user->isActive()) {
             // Lève une exception avec un message clair pour l'utilisateur
-            throw new CustomUserMessageAuthenticationException(
-                'Votre compte est désactivé. Veuillez contacter un administrateur.'
-            );
+            throw new CustomUserMessageAuthenticationException('Votre compte est désactivé. Veuillez contacter un administrateur.');
         }
     }
 
@@ -59,7 +58,7 @@ class UserChecker implements UserCheckerInterface
      * Aucune vérification supplémentaire post-authentification dans Pépi+.
      * Cette méthode est requise par l'interface mais laissée vide intentionnellement.
      *
-     * @param UserInterface $user L'utilisateur authentifié.
+     * @param UserInterface $user L'utilisateur authentifié
      */
     public function checkPostAuth(UserInterface $user): void
     {

@@ -15,6 +15,7 @@ namespace App\Model;
  * - Quantité maximum (filtre <= sur la quantité)
  *
  * @author CASTELLS Cyprien
+ *
  * @version 1.2
  */
 class StockFilterData
@@ -25,8 +26,6 @@ class StockFilterData
      * La recherche s'effectue selon le contexte :
      * - Stock global : nom commun/latin, partenaire, saison, conditionnement
      * - Stock interne : nom commun et latin du plant uniquement
-     *
-     * @var string|null
      */
     public ?string $query = null;
 
@@ -34,8 +33,6 @@ class StockFilterData
      * Quantité minimum pour filtrer les stocks (borne inférieure incluse).
      *
      * Filtre : `quantity >= minQuantity`
-     *
-     * @var int|null
      */
     public ?int $minQuantity = null;
 
@@ -43,8 +40,6 @@ class StockFilterData
      * Quantité maximum pour filtrer les stocks (borne supérieure incluse).
      *
      * Filtre : `quantity <= maxQuantity`
-     *
-     * @var int|null
      */
     public ?int $maxQuantity = null;
 }

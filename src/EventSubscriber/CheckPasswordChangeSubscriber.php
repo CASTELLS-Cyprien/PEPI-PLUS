@@ -31,6 +31,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  * - `app_logout` : la déconnexion
  *
  * @author CASTELLS Cyprien
+ *
  * @version 1.2
  */
 class CheckPasswordChangeSubscriber implements EventSubscriberInterface
@@ -38,8 +39,8 @@ class CheckPasswordChangeSubscriber implements EventSubscriberInterface
     /**
      * Initialise le subscriber avec les dépendances nécessaires.
      *
-     * @param Security              $security     Service de sécurité Symfony pour accéder à l'utilisateur connecté.
-     * @param UrlGeneratorInterface $urlGenerator Générateur d'URL pour les redirections.
+     * @param Security              $security     service de sécurité Symfony pour accéder à l'utilisateur connecté
+     * @param UrlGeneratorInterface $urlGenerator générateur d'URL pour les redirections
      */
     public function __construct(
         private Security $security,
@@ -53,7 +54,7 @@ class CheckPasswordChangeSubscriber implements EventSubscriberInterface
      * Ignoré pour les requêtes secondaires (sous-requêtes Symfony internes)
      * et pour les routes exclues afin d'éviter toute boucle infinie.
      *
-     * @param RequestEvent $event L'événement de requête Symfony.
+     * @param RequestEvent $event L'événement de requête Symfony
      */
     public function onKernelRequest(RequestEvent $event): void
     {
@@ -102,7 +103,7 @@ class CheckPasswordChangeSubscriber implements EventSubscriberInterface
      * S'abonne à {@see KernelEvents::REQUEST} pour intercepter toutes
      * les requêtes entrantes avant qu'elles n'atteignent le contrôleur.
      *
-     * @return array<string, string> Tableau [événement => méthode].
+     * @return array<string, string> tableau [événement => méthode]
      */
     public static function getSubscribedEvents(): array
     {

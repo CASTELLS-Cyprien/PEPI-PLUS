@@ -33,6 +33,7 @@ use Symfony\Component\Security\Http\Util\TargetPathTrait;
  * - Sinon, redirection vers le tableau de bord (`app_dashboard`).
  *
  * @author CASTELLS Cyprien
+ *
  * @version 1.2
  */
 class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
@@ -50,7 +51,7 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
     /**
      * Initialise l'authentificateur avec le générateur d'URL.
      *
-     * @param UrlGeneratorInterface $urlGenerator Générateur d'URL Symfony.
+     * @param UrlGeneratorInterface $urlGenerator générateur d'URL Symfony
      */
     public function __construct(private UrlGeneratorInterface $urlGenerator)
     {
@@ -62,9 +63,9 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
      * Extrait l'email et le mot de passe depuis le payload de la requête POST.
      * Stocke le dernier email saisi en session pour pré-remplissage en cas d'erreur.
      *
-     * @param Request $request La requête HTTP de connexion.
+     * @param Request $request la requête HTTP de connexion
      *
-     * @return Passport Le passeport contenant les badges d'authentification.
+     * @return Passport le passeport contenant les badges d'authentification
      */
     public function authenticate(Request $request): Passport
     {
@@ -92,11 +93,11 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
      * depuis une page protégée), il est renvoyé vers cette URL.
      * Sinon, redirection vers le tableau de bord de l'application.
      *
-     * @param Request        $request      La requête HTTP.
-     * @param TokenInterface $token        Le token d'authentification Symfony.
-     * @param string         $firewallName Nom du pare-feu Symfony configuré.
+     * @param Request        $request      la requête HTTP
+     * @param TokenInterface $token        le token d'authentification Symfony
+     * @param string         $firewallName nom du pare-feu Symfony configuré
      *
-     * @return Response|null Réponse de redirection ou null pour continuer la requête.
+     * @return Response|null réponse de redirection ou null pour continuer la requête
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
@@ -115,9 +116,9 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
      * Utilisé par {@see AbstractLoginFormAuthenticator} pour rediriger
      * les utilisateurs non connectés vers le formulaire de login.
      *
-     * @param Request $request La requête HTTP.
+     * @param Request $request la requête HTTP
      *
-     * @return string L'URL de la page de connexion.
+     * @return string L'URL de la page de connexion
      */
     protected function getLoginUrl(Request $request): string
     {
