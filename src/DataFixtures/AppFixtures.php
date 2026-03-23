@@ -14,10 +14,37 @@ use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
+/**
+ * Classe de chargement des données initiales de l'application.
+ *
+ * Cette classe orchestre l'importation de données complexes depuis un fichier JSON.
+ * Elle gère l'ordre des dépendances entre les entités (parents avant enfants) et 
+ * utilise le système de références de Doctrine pour lier les objets entre eux.
+ *
+ * @author CASTELLS Cyprien
+ * @version 1.2
+ */
 class AppFixtures extends Fixture
 {
+    /**
+     * Stockage temporaire des données brutes extraites du JSON.
+     * * @var array $tables Tableau associatif où chaque clé est le nom d'une table.
+     */
     private array $tables = [];
 
+    /**
+     * Méthode principale de chargement des fixtures.
+     *
+     * Charge le fichier JSON, décode les données et appelle les méthodes d'importation
+     * spécifiques dans un ordre chronologique pour respecter l'intégrité référentielle.
+     *
+     * @param ObjectManager $manager Le gestionnaire d'entités de Doctrine.
+     *
+     * @return void
+     *
+     * @author CASTELLS Cyprien
+     * @version 1.2
+     */
     public function load(ObjectManager $manager): void
     {
         // 1. Chargement et décodage du JSON
@@ -51,6 +78,14 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 
+    /**
+     * Importation des types de conditionnement.
+     *
+     * @param ObjectManager $manager Le gestionnaire d'entités.
+     * @return void
+     * * @author CASTELLS Cyprien
+     * @version 1.2
+     */
     private function importPackagings(ObjectManager $manager): void
     {
         foreach ($this->tables['packaging'] ?? [] as $row) {
@@ -61,6 +96,14 @@ class AppFixtures extends Fixture
         }
     }
 
+    /**
+     * Importation des saisons de production.
+     *
+     * @param ObjectManager $manager Le gestionnaire d'entités.
+     * @return void
+     * * @author CASTELLS Cyprien
+     * @version 1.2
+     */
     private function importSeasons(ObjectManager $manager): void
     {
         foreach ($this->tables['season'] ?? [] as $row) {
@@ -71,6 +114,14 @@ class AppFixtures extends Fixture
         }
     }
 
+    /**
+     * Importation du catalogue de plantes.
+     *
+     * @param ObjectManager $manager Le gestionnaire d'entités.
+     * @return void
+     * * @author CASTELLS Cyprien
+     * @version 1.2
+     */
     private function importPlants(ObjectManager $manager): void
     {
         foreach ($this->tables['plant'] ?? [] as $row) {
@@ -83,6 +134,14 @@ class AppFixtures extends Fixture
         }
     }
 
+    /**
+     * Importation des partenaires (pépinières, fournisseurs, etc.).
+     *
+     * @param ObjectManager $manager Le gestionnaire d'entités.
+     * @return void
+     * * @author CASTELLS Cyprien
+     * @version 1.2
+     */
     private function importPartners(ObjectManager $manager): void
     {
         foreach ($this->tables['partner'] ?? [] as $row) {
@@ -95,6 +154,14 @@ class AppFixtures extends Fixture
         }
     }
 
+    /**
+     * Importation des utilisateurs du système.
+     *
+     * @param ObjectManager $manager Le gestionnaire d'entités.
+     * @return void
+     * * @author CASTELLS Cyprien
+     * @version 1.2
+     */
     private function importUsers(ObjectManager $manager): void
     {
         foreach ($this->tables['user'] ?? [] as $row) {
@@ -115,6 +182,16 @@ class AppFixtures extends Fixture
         }
     }
 
+    /**
+     * Importation des stocks de plantes.
+     * * Lie les stocks aux plantes, packagings, saisons et partenaires 
+     * ainsi qu'aux utilisateurs ayant créé ou modifié l'entrée.
+     *
+     * @param ObjectManager $manager Le gestionnaire d'entités.
+     * @return void
+     * * @author CASTELLS Cyprien
+     * @version 1.2
+     */
     private function importStocks(ObjectManager $manager): void
     {
         foreach ($this->tables['stock'] ?? [] as $row) {
@@ -131,7 +208,6 @@ class AppFixtures extends Fixture
                 $entity->setPartner($this->getReference('partner_'.$row['partner_id'], Partner::class));
             }
 
-            // RÉPARATION : Import du créateur et du modificateur
             if (!empty($row['created_by_id'])) {
                 $entity->setCreatedBy($this->getReference('user_'.$row['created_by_id'], User::class));
             }
@@ -144,6 +220,14 @@ class AppFixtures extends Fixture
         }
     }
 
+    /**
+     * Importation des commandes (en-têtes).
+     *
+     * @param ObjectManager $manager Le gestionnaire d'entités.
+     * @return void
+     * * @author CASTELLS Cyprien
+     * @version 1.2
+     */
     private function importOrders(ObjectManager $manager): void
     {
         foreach ($this->tables['order'] ?? [] as $row) {
@@ -164,20 +248,34 @@ class AppFixtures extends Fixture
         }
     }
 
+    /**
+     * Importation des lignes de commande détaillées.
+     *
+     * @param ObjectManager $manager Le gestionnaire d'entités.
+     * @return void
+     * * @author CASTELLS Cyprien
+     * @version 1.2
+     */
     private function importOrderLines(ObjectManager $manager): void
     {
         foreach ($this->tables['order_line'] ?? [] as $row) {
             $entity = new OrderLine();
             $entity->setQuantity((int) $row['quantity']);
             $entity->setStock($this->getReference('stock_'.$row['stock_id'], Stock::class));
-
-            // RÉPARATION : Utilisation de purchase_order_id
             $entity->setPurchaseOrder($this->getReference('order_'.$row['purchase_order_id'], Order::class));
 
             $manager->persist($entity);
         }
     }
 
+    /**
+     * Importation de l'historique des statuts de commande.
+     *
+     * @param ObjectManager $manager Le gestionnaire d'entités.
+     * @return void
+     * * @author CASTELLS Cyprien
+     * @version 1.2
+     */
     private function importOrderStatusHistory(ObjectManager $manager): void
     {
         foreach ($this->tables['order_status_history'] ?? [] as $row) {

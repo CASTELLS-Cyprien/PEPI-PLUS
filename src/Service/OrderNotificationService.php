@@ -8,25 +8,66 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 
+/**
+ * Service d'envoi des notifications email aux partenaires lors d'une commande.
+ *
+ * À la validation d'une commande, ce service identifie les partenaires
+ * dont les stocks ont été réservés et leur envoie un email récapitulatif
+ * avec les détails des plants commandés.
+ *
+ * Comportement :
+ * - Groupe les lignes de commande par partenaire (un email par entreprise).
+ * - Collecte tous les emails des utilisateurs rattachés à chaque partenaire.
+ * - Envoie un email via le template Twig `emails/order_notification_partner.html.twig`.
+ * - Logue les avertissements et erreurs sans bloquer le processus global.
+ * - Un délai de 5 secondes est appliqué entre chaque email (anti-spam SMTP).
+ *
+ * Ce service est désactivé en v1 dans {@see \App\Controller\CartController::validate()} :
+ * l'appel est commenté et peut être réactivé en décommentant le bloc try/catch.
+ *
+ * @author CASTELLS Cyprien
+ * @version 1.2
+ */
 class OrderNotificationService
 {
+    /**
+     * Initialise le service avec les dépendances d'envoi d'emails et de logging.
+     *
+     * @param MailerInterface $mailer Service d'envoi d'emails Symfony Mailer.
+     * @param LoggerInterface $logger Service de journalisation PSR-3.
+     */
     public function __construct(
         private MailerInterface $mailer,
         private LoggerInterface $logger,
     ) {
     }
 
+    /**
+     * Notifie par email les partenaires concernés par une commande.
+     *
+     * Processus d'envoi :
+     * 1. **Groupement** : parcourt toutes les lignes de commande et regroupe
+     *    celles appartenant au même partenaire en un seul groupe.
+     *    Les lignes sans partenaire (stock interne) sont ignorées avec un warning.
+     * 2. **Collecte des destinataires** : récupère tous les emails des utilisateurs
+     *    rattachés à chaque partenaire.
+     * 3. **Envoi** : envoie un email récapitulatif par partenaire avec un délai
+     *    de 5 secondes entre chaque envoi (protection anti-spam SMTP).
+     *    Les erreurs d'envoi sont loguées sans bloquer les envois suivants.
+     *
+     * @param Order $order La commande validée dont les partenaires doivent être notifiés.
+     */
     public function notifyPartnersForOrder(Order $order): void
     {
         $linesByPartner = [];
 
-        // 1. Groupement : On s'assure de ne rien rater
+        // Étape 1 : Groupement des lignes par partenaire
         foreach ($order->getOrderLines() as $line) {
             $stock = $line->getStock();
 
-            // Sécurité : on vérifie toute la chaîne
+            // Vérification de la chaîne complète stock → partenaire
             if (!$stock || !$stock->getPartner()) {
-                $this->logger->warning('Ligne de commande sans partenaire : ID '.$line->getId());
+                $this->logger->warning('Ligne de commande sans partenaire : ID ' . $line->getId());
                 continue;
             }
 
@@ -42,19 +83,19 @@ class OrderNotificationService
             $linesByPartner[$partnerId]['lines'][] = $line;
         }
 
-        // DEBUG : On logue combien d'entreprises ont été trouvées dans la commande
+        // Log du nombre de partenaires distincts identifiés dans la commande
         $this->logger->info(sprintf(
             'Commande %s : %d entreprise(s) distincte(s) identifiée(s).',
             $order->getOrderNumber(),
             count($linesByPartner)
         ));
 
-        // 2. Envoi des emails
+        // Étape 2 : Envoi d'un email par partenaire
         foreach ($linesByPartner as $partnerId => $data) {
             $partner = $data['partner'];
-            $lines = $data['lines']; // Ici, il y aura vos 2 plants pour la Company A
+            $lines = $data['lines'];
 
-            // Collecte de TOUS les emails des utilisateurs du partenaire
+            // Collecte de tous les emails des utilisateurs du partenaire
             $recipients = [];
             foreach ($partner->getUsers() as $user) {
                 if ($user->getEmail()) {
@@ -63,15 +104,16 @@ class OrderNotificationService
             }
 
             if (empty($recipients)) {
-                $this->logger->error('Aucun email pour le partenaire : '.$partner->getCompanyName());
-                continue; // On passe au partenaire suivant sans bloquer le reste
+                $this->logger->error('Aucun email configuré pour le partenaire : ' . $partner->getCompanyName());
+                continue;
             }
 
             try {
                 $email = (new TemplatedEmail())
                     ->from(new Address('contact@pepiplus.fr', 'Pépi+'))
-                    ->to(...$recipients) // Envoie à tous les utilisateurs du partenaire
-                    ->subject('Nouvelle commande #'.$order->getOrderNumber())
+                    // Envoi à tous les utilisateurs du partenaire en un seul email
+                    ->to(...$recipients)
+                    ->subject('Nouvelle commande #' . $order->getOrderNumber())
                     ->htmlTemplate('emails/order_notification_partner.html.twig')
                     ->context([
                         'order' => $order,
@@ -80,11 +122,13 @@ class OrderNotificationService
                     ]);
 
                 $this->mailer->send($email);
-                $this->logger->info('Email envoyé à '.$partner->getCompanyName());
+                $this->logger->info('Email de notification envoyé à : ' . $partner->getCompanyName());
 
+                // Délai anti-spam entre les envois successifs
                 sleep(5);
             } catch (\Exception $e) {
-                $this->logger->error("Erreur partenaire ID $partnerId : ".$e->getMessage());
+                // L'erreur est loguée mais ne bloque pas les notifications aux autres partenaires
+                $this->logger->error("Erreur envoi email partenaire ID $partnerId : " . $e->getMessage());
             }
         }
     }

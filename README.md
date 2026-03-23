@@ -209,16 +209,6 @@ Chaque classe, méthode et propriété suit le format suivant :
  * @version 1.2
  */
 ```
-
-#### Fichiers commentés
-
-| Dossier | Fichiers documentés |
-|---|---|
-| `src/Controller/` | DashboardController, CartController, OrderController, OrderLineController, PackagingController, PlantController, PartnerController, StockController, SeasonController, SecurityController, UserController |
-| `src/Entity/` | Order, Stock (et toutes les entités associées) |
-| `src/Repository/` | OrderRepository, StockRepository, OrderLineRepository, PartnerRepository |
-| `src/Model/` | OrderFilterData, StockFilterData |
-
 #### Générer la documentation HTML
 
 La documentation peut être générée localement avec **PHPDocumentor** :
@@ -230,7 +220,7 @@ Invoke-WebRequest -Uri "https://github.com/phpDocumentor/phpDocumentor/releases/
 
 2. Génère la documentation :
 ```bash
-php phpDocumentor.phar -d src/ -t public/api-docs
+php phpDocumentor.phar -d src/ -t var/api-docs
 ```
 
 ## 🔐 Sécurité et Accès
@@ -257,8 +247,6 @@ Les schémas détaillés sont disponibles dans le dossier `assets/` :
 PEPI-PLUS/
 ├── assets/              # Documentation (MCD, MLD, CDC)
 ├── config/              # Configuration Symfony
-├── docs/
-│   └── api/             # Documentation PHPDoc générée (ignorée par Git)
 ├── public/              # Point d'entrée et assets compilés
 │   └── img/             # Captures d'écran
 ├── src/
@@ -271,7 +259,8 @@ PEPI-PLUS/
 ├── templates/           # Templates Twig
 ├── migrations/          # Migrations de base de données
 └── var/
-    └── backups/         # Export de base de données
+    ├── backups/         # Export de base de données
+│   └── api-docs/        # Documentation PHPDoc générée (ignorée par Git)└── backups/        
 ```
 
 ---
@@ -295,7 +284,7 @@ php bin/console cache:clear
 php bin/console doctrine:database:drop --force
 
 # Générer la documentation PHPDoc
-php phpDocumentor.phar -d src/ -t public/api-docs
+php phpDocumentor.phar -d src/ -t var/api-docs
 
 # Corriger le style du code (normes Symfony)
 vendor/bin/php-cs-fixer fix src/
