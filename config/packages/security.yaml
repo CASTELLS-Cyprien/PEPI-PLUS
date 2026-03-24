@@ -62,9 +62,6 @@ security:
 
         - { path: ^/, roles: [ROLE_USER, ROLE_ADMIN] }
 
-        # Seuls les utilisateurs avec le rôle ADMIN peuvent voir la doc
-        - { path: ^/admin/doc, roles: ROLE_ADMIN }
-
 when@test:
     security:
         password_hashers:

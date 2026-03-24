@@ -223,14 +223,11 @@ Invoke-WebRequest -Uri "https://github.com/phpDocumentor/phpDocumentor/releases/
 php phpDocumentor.phar -d src/ -t var/api-docs
 ```
 
-## 🔐 Sécurité et Accès
+3. Accès : 
 
-Pour éviter d'exposer l'architecture du code en production, la documentation est générée dans un dossier non-public et protégée par le composant Security de Symfony.
-
-* **Accès :** `http://localhost:8000/admin/doc`
-* **Rôle requis :** `ROLE_ADMIN`
-* **Stockage :** `var/api-docs/` (Ignoré par Git)
-
+```bash
+CheminApp/var/api-docs/index.html
+```
 ---
 
 ### Schémas disponibles
