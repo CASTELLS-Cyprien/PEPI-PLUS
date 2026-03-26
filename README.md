@@ -134,16 +134,19 @@ npm install
 
 Créez un fichier `.env.local` à la racine du projet :
 ```env
-DATABASE_URL="mysql://root:@127.0.0.1:3306/pepi?charset=utf8mb4"
+DATABASE_URL="mysql://pepi_user:Password123@127.0.0.1:3306/pepi?charset=utf8mb4"
 ```
 
 5. **Créer et initialiser la base de données**
+
+Une seule commande suffit pour créer l'utilisateur MySQL, la base de données, exécuter les migrations et charger les données initiales :
 ```bash
-php bin/console doctrine:database:create
-php bin/console doctrine:migrations:migrate
-php bin/console doctrine:fixtures:load
+php bin/console app:setup-database
 ```
-Si besoin, les exports de la base de données sont stockés dans **/var/backups/db_export_xxxx-xx-xx.sql**
+
+La commande vous demandera interactivement les identifiants **root** MySQL afin de créer l'utilisateur applicatif `pepi_user` (avec le mot de passe `Password123`) et de lui accorder les droits nécessaires.
+
+> **Note :** Si besoin, les exports de la base de données sont stockés dans `/var/backups/db_export_xxxx-xx-xx.sql`.
 
 6. **Compiler les assets**
 ```bash
@@ -247,6 +250,7 @@ PEPI-PLUS/
 ├── public/              # Point d'entrée et assets compilés
 │   └── img/             # Captures d'écran
 ├── src/
+│   ├── Command/         # Commandes console personnalisées
 │   ├── Controller/      # Contrôleurs (commentés PHPDoc)
 │   ├── Entity/          # Entités Doctrine (commentées PHPDoc)
 │   ├── Form/            # Formulaires
@@ -265,6 +269,9 @@ PEPI-PLUS/
 ## Commandes utiles
 
 ```bash
+# Initialiser complètement la base de données (création user MySQL + BDD + migrations + fixtures)
+php bin/console app:setup-database
+
 # Créer une nouvelle migration
 php bin/console make:migration
 

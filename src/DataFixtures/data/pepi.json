@@ -10,64 +10,6 @@
     },
     {
         "type": "table",
-        "name": "doctrine_migration_versions",
-        "database": "pepi",
-        "data": [
-            {
-                "version": "DoctrineMigrations\\Version20260106100215",
-                "executed_at": "2026-02-24 10:28:15",
-                "execution_time": "617"
-            },
-            {
-                "version": "DoctrineMigrations\\Version20260109094622",
-                "executed_at": "2026-02-24 10:28:15",
-                "execution_time": "133"
-            },
-            {
-                "version": "DoctrineMigrations\\Version20260109133917",
-                "executed_at": "2026-02-24 10:28:15",
-                "execution_time": "58"
-            },
-            {
-                "version": "DoctrineMigrations\\Version20260109145425",
-                "executed_at": "2026-02-24 10:28:15",
-                "execution_time": "5"
-            },
-            {
-                "version": "DoctrineMigrations\\Version20260114101934",
-                "executed_at": "2026-02-24 10:28:15",
-                "execution_time": "27"
-            },
-            {
-                "version": "DoctrineMigrations\\Version20260115102638",
-                "executed_at": "2026-02-24 10:28:16",
-                "execution_time": "64"
-            },
-            {
-                "version": "DoctrineMigrations\\Version20260116150855",
-                "executed_at": "2026-02-24 10:28:16",
-                "execution_time": "63"
-            },
-            {
-                "version": "DoctrineMigrations\\Version20260119090757",
-                "executed_at": "2026-02-24 10:28:16",
-                "execution_time": "154"
-            },
-            {
-                "version": "DoctrineMigrations\\Version20260304101507",
-                "executed_at": "2026-03-04 13:08:39",
-                "execution_time": "158"
-            }
-        ]
-    },
-    {
-        "type": "table",
-        "name": "messenger_messages",
-        "database": "pepi",
-        "data": []
-    },
-    {
-        "type": "table",
         "name": "order",
         "database": "pepi",
         "data": [
